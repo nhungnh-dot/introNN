@@ -4,7 +4,7 @@
 <body>
 <script>
 (async()=>{
-  const version='20261012-3';
+  const version='20261012-4';
 
   async function loadText(name){
     const r=await fetch(`${name}?v=${version}`,{cache:'no-store'});
@@ -26,8 +26,10 @@
   const newBlock='<div class="grid cards2">\n      <div class="card"><div class="small muted">Prerequisite</div><div><b>Partial derivatives, gradients, chain rule</b></div></div>\n      <div class="card"><div class="small muted">Central question</div><div><b>How does calculus tell neural networks and CNNs how to learn?</b></div></div>\n    </div>\n    <div class="small" style="margin-top:14px">\n      <div class="h3">How to use this app</div>\n      <p>Work through the five tabs in order. Read each short explanation, interact with the sliders and diagrams, and pause at the prediction questions and checkpoints before moving on. Try to connect each neural-network idea back to the calculus concepts you already know.</p>\n    </div>';
   lesson=lesson.replace(oldBlock,newBlock);
 
-  const title='<h1 class="title">Neural Networks and Convolutional Neural Networks Through Multivariable Calculus</h1>';
-  lesson=lesson.replace(title,title+'\n    <p class="small" style="margin-top:6px"><b>by Andrew Bennett and Nhung Nguyen</b></p>');
+  const byline='<p class="small" style="margin:6px 0 0"><b>by Andrew Bennett and Nhung Nguyen</b></p>';
+  if(!lesson.includes('by Andrew Bennett and Nhung Nguyen')){
+    lesson=lesson.replace(/(<h1\s+class=["']title["'][^>]*>[^<]*<\/h1>)/i,'$1\n    '+byline);
+  }
 
   lesson=lesson.replace(/\s*<div class="card panel small">\s*Try[\s\S]*?severe overshooting\/saturation\.\s*<\/div>/g,'');
   lesson=lesson.replace(/\s*<div class="card panel small">\s*<strong>You may change[\s\S]*?fixed during each run\.\s*<\/div>/g,'');
