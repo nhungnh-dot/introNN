@@ -4,15 +4,23 @@
 <body>
 <script>
 (async()=>{
-  const parts=[];
-  const version='20261012-1';
-  for(let i=1;i<=12;i++){
-    const name=`parts/app-${String(i).padStart(2,'0')}.txt?v=${version}`;
-    const r=await fetch(name,{cache:'no-store'});
+  const version='20261012-2';
+
+  async function loadText(name){
+    const r=await fetch(`${name}?v=${version}`,{cache:'no-store'});
     if(!r.ok) throw new Error(`Could not load ${name}`);
-    parts.push(await r.text());
+    return r.text();
   }
-  let lesson=parts.join('');
+
+  const baseNames=Array.from({length:12},(_,i)=>`parts/app-${String(i+1).padStart(2,'0')}.txt`);
+  const addonNames=Array.from({length:8},(_,i)=>`parts/neural-ode-${String(i+1).padStart(2,'0')}.txt`);
+
+  const [baseParts,addonParts]=await Promise.all([
+    Promise.all(baseNames.map(loadText)),
+    Promise.all(addonNames.map(loadText))
+  ]);
+
+  let lesson=baseParts.join('');
 
   const oldBlock='<div class="grid cards3">\n      <div class="card"><div class="small muted">Prerequisite</div><div><b>Partial derivatives, gradients, chain rule</b></div></div>\n      <div class="card"><div class="small muted">Central question</div><div><b>How does calculus tell neural networks and CNNs how to learn?</b></div></div>\n      <div class="card panel small" style="margin-top:14px"><div class="h3">How to use this app</div><p>Work through the four tabs in order. Read each short explanation, interact with the sliders and diagrams, and pause at the prediction questions and checkpoints before moving on. Try to connect each neural-network idea back to the calculus concepts you already know.</p></div>\n    </div>';
   const newBlock='<div class="grid cards2">\n      <div class="card"><div class="small muted">Prerequisite</div><div><b>Partial derivatives, gradients, chain rule</b></div></div>\n      <div class="card"><div class="small muted">Central question</div><div><b>How does calculus tell neural networks and CNNs how to learn?</b></div></div>\n    </div>\n    <div class="small" style="margin-top:14px">\n      <div class="h3">How to use this app</div>\n      <p>Work through the five tabs in order. Read each short explanation, interact with the sliders and diagrams, and pause at the prediction questions and checkpoints before moving on. Try to connect each neural-network idea back to the calculus concepts you already know.</p>\n    </div>';
@@ -21,19 +29,15 @@
   lesson=lesson.replace(/\s*<div class="card panel small">\s*Try[\s\S]*?severe overshooting\/saturation\.\s*<\/div>/g,'');
   lesson=lesson.replace(/\s*<div class="card panel small">\s*<strong>You may change[\s\S]*?fixed during each run\.\s*<\/div>/g,'');
 
-  const addon=[];
-  for(let i=1;i<=8;i++){
-    const name=`parts/neural-ode-${String(i).padStart(2,'0')}.txt?v=${version}`;
-    const r=await fetch(name,{cache:'no-store'});
-    if(!r.ok) throw new Error(`Could not load ${name}`);
-    addon.push(await r.text());
-  }
-  lesson=lesson.replace('</body>',addon.join('')+'\n</body>');
+  lesson=lesson.replace('</body>',addonParts.join('')+'\n</body>');
 
   document.open();
   document.write(lesson);
   document.close();
-})().catch(err=>{document.body.innerHTML='<pre style="white-space:pre-wrap;font-family:system-ui;padding:24px">'+err.message+'</pre>';});
+})().catch(err=>{
+  document.title='Lesson loading error';
+  document.body.innerHTML='<pre style="white-space:pre-wrap;font-family:system-ui;padding:24px">'+err.message+'</pre>';
+});
 </script>
 </body>
 </html>
