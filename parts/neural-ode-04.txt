@@ -1,0 +1,180 @@
+trajectory}+\text{observed trajectory}
+        \longrightarrow \text{loss}
+        \]
+      </div>
+
+      <p class="small">
+        A small loss means the predicted trajectory is close to the observed one.
+        A large loss means the model still needs to improve.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="h3">Training step 6 · Backpropagation finds the gradients</div>
+
+      <p class="small">
+        The loss tells us how good the prediction is, but it does not tell us how to change the neural network.
+        Backpropagation provides that information.
+      </p>
+
+      <div class="card center math-cell">
+        \[
+        \text{loss}\longrightarrow \text{backpropagation}
+        \longrightarrow \text{parameter gradients}
+        \]
+      </div>
+
+      <p class="small">
+        These gradients tell us how the weights and biases should change to reduce the loss.
+      </p>
+
+      <div class="card panel small">
+        <strong>Connection to the earlier lesson:</strong>
+        this is still the chain rule.
+        The only new feature is that the predicted trajectory was created by repeatedly using the neural network together with an ODE solver.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="h3">Training step 7 · Gradient descent updates the neural network</div>
+
+      <p class="small">
+        Gradient descent uses those gradients to update the weights and biases.
+      </p>
+
+      <div class="card center math-cell">
+        \[
+        \text{gradients}\longrightarrow \text{gradient descent}
+        \longrightarrow \text{updated parameters}
+        \]
+      </div>
+
+      <p class="small">
+        The updated parameters are sent back to the neural network, and the whole training cycle repeats.
+      </p>
+    </div>
+
+    <p class="small" style="margin:22px 4px 12px 4px">
+      Now that the <strong>Training view</strong> is complete, we follow the <strong>Prediction view</strong> from left to right.
+    </p>
+
+    <div class="card">
+      <div class="h3">Prediction step 1 · Last observed state</div>
+
+      <p class="small">
+        After training, we begin from the last observed state
+        \(z(T)\).
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="h3">Prediction step 2 · Learned neural network</div>
+
+      <p class="small">
+        The trained neural network uses the current state to predict the rate of change,
+        just as it did during training.
+      </p>
+
+      <div class="card center math-cell">
+        \[
+        (t,z(t))\longrightarrow \text{learned }f_\theta
+        \longrightarrow \text{predicted }z'(t)
+        \]
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="h3">Prediction step 3 · ODE solver continues forward</div>
+
+      <p class="small">
+        The ODE solver keeps applying the learned rate-of-change rule for times after
+        \(T\).
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="h3">Prediction step 4 · Future trajectory</div>
+
+      <p class="small">
+        Continuing the learned dynamics gives the predicted future trajectory:
+      </p>
+
+      <div class="card center math-cell">
+        \[
+        \text{last observed state}
+        \longrightarrow \text{learned neural network}
+        \longrightarrow \text{ODE solver}
+        \longrightarrow \text{future trajectory}
+        \]
+      </div>
+
+      <div class="card panel small">
+        <strong>Important:</strong>
+        no future points are used in the loss.
+        The future is predicted by continuing the learned dynamics beyond the observation interval.
+      </div>
+
+      <div class="card panel small">
+        <strong>Caution:</strong>
+        this is still extrapolation.
+        If the learned dynamics are inaccurate, the prediction may become less reliable farther into the future.
+      </div>
+    </div>
+
+    
+    <div class="card">
+      <div class="h3">Interactive example · Solve an ODE, then compare with the Neural ODE</div>
+
+      <p class="small">
+        First solve this ODE yourself:
+      </p>
+
+      <div class="card center math-cell" style="font-size:1.2em">
+        \[
+        z'(t)=-0.5\,z(t),\qquad z(0)=2.
+        \]
+      </div>
+
+      <p class="small">
+        Find an explicit formula for
+        \(z(t)\).
+        Then enter your answer below using <code>t</code>.
+      </p>
+
+
+
+      <div class="card" style="margin-top:10px;padding:14px;max-width:760px">
+        <div class="small" style="font-weight:650;margin-bottom:8px">Your solution</div>
+
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span style="font-size:1.2em">\(z(t)=\)</span>
+          <div id="odeMathEditor"
+               contenteditable="true"
+               spellcheck="false"
+               aria-label="Math answer editor"
+               style="flex:1;min-width:240px;min-height:46px;padding:9px 12px;
+                      border:1px solid var(--border);border-radius:10px;
+                      font-size:1.15em;background:white">
+          </div>
+        </div>
+
+        <div class="small muted" style="margin:10px 0 7px">
+          Use the math keyboard below to build your answer.
+        </div>
+
+        <div id="odeMathKeyboard"
+             style="display:grid;grid-template-columns:repeat(7,minmax(54px,1fr));
+                    gap:8px;max-width:700px">
+
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="7">7</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="8">8</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="9">9</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="(">(</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert=")">)</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="t">\(t\)</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="e">\(e\)</button>
+
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="4">4</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="5">5</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="6">6</button>
+          <button type="b
