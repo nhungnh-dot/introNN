@@ -1,0 +1,241 @@
+ = 0, tMax = 6, yMin = -0.15, yMax = 2.2;
+  const obsEnd = 3;
+  let studentFn = null;
+  let modelA = -0.12;
+  let modelTrained = false;
+  let trainingSteps = 0;
+  const internalLearningRate = 0.35;
+
+  function exact(t){ return 2*Math.exp(-0.5*t); }
+
+  function neuralTrajectory(a){
+    const dt = 0.02;
+    let z = 2;
+    const pts = [{t:0,z}];
+    for(let t=0; t<tMax-1e-12; t+=dt){
+      z = z + dt*(a*z);
+      pts.push({t:Math.min(t+dt,tMax), z});
+    }
+    return pts;
+  }
+
+  function observedLoss(a){
+    const tr = neuralTrajectory(a);
+    let s = 0, n = 0;
+    for(const p of tr){
+      if(p.t <= obsEnd + 1e-12){
+        const e = p.z - exact(p.t);
+        s += e*e; n++;
+      }
+    }
+    return s/Math.max(n,1);
+  }
+
+  function parseFormula(text){
+    let s = text.trim();
+    if(!s) throw new Error('Enter your formula first.');
+
+    s = s.replace(/\\left|\\right/g,'').replace(/\s+/g,'');
+    const openParens = (s.match(/\(/g) || []).length;
+    const closeParens = (s.match(/\)/g) || []).length;
+    if(openParens !== closeParens) throw new Error('Complete the exponent or parentheses before plotting.');
+    s = s.replace(/e\^\{([^{}]+)\}/g, 'Math.exp($1)');
+    s = s.replace(/e\^\(([^()]+)\)/g, 'Math.exp($1)');
+    s = s.replace(/\\exp/g,'Math.exp');
+
+    s = s.replace(/(\d)(t)/gi, '$1*$2');
+    s = s.replace(/(\d)(Math\.exp\()/g, '$1*$2');
+
+    if(/[^0-9tT+\-*/().,\sMathpex]/.test(s)){
+      throw new Error('Use a mathematical expression in t.');
+    }
+
+    const fn = new Function('t', '"use strict"; return (' + s + ');');
+    const tests = [0,1,2,3,4,5,6].map(t => fn(t));
+    if(tests.some(v => !Number.isFinite(v))) throw new Error('The formula could not be evaluated.');
+    return fn;
+  }
+
+  function updateMathPreview(){
+    if(!preview) return;
+    const raw = formulaInput.textContent.trim();
+    if(!raw){
+      preview.innerHTML = '<span class="muted">Your formatted equation will appear here.</span>';
+      return;
+    }
+    preview.innerHTML = '\\\\( z(t) = ' + raw + ' \\\\)';
+    if(window.MathJax && MathJax.typesetPromise){
+      MathJax.typesetPromise([preview]).catch(()=>{});
+    }
+  }
+
+  formulaInput.addEventListener('input', updateMathPreview);
+
+  function insertAtEnd(text){
+    formulaInput.focus();
+    const sel = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(formulaInput);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    document.execCommand('insertText', false, text);
+    updateMathPreview();
+  }
+
+  document.querySelectorAll('.ode-math-key').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const action = btn.dataset.action;
+      const insert = btn.dataset.insert;
+
+      if(action === 'backspace'){
+        const s = formulaInput.textContent || '';
+        formulaInput.textContent = s.slice(0,-1);
+        updateMathPreview();
+        return;
+      }
+
+      if(action === 'power'){
+        insertAtEnd('^(');
+        return;
+      }
+
+      if(insert){
+        insertAtEnd(insert);
+      }
+    });
+  });
+
+  function xMap(t){ return pad.l + (t-tMin)/(tMax-tMin)*(W-pad.l-pad.r); }
+  function yMap(y){ return H-pad.b - (y-yMin)/(yMax-yMin)*(H-pad.t-pad.b); }
+
+  function drawAxes(ctx){
+    ctx.clearRect(0,0,W,H);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#a0a0a0';
+    ctx.fillStyle = '#555';
+    ctx.font = '15px sans-serif';
+
+    ctx.beginPath();
+    ctx.moveTo(xMap(0), yMap(0));
+    ctx.lineTo(xMap(6), yMap(0));
+    ctx.moveTo(xMap(0), yMap(yMin));
+    ctx.lineTo(xMap(0), yMap(yMax));
+    ctx.stroke();
+
+    for(let t=0;t<=6;t++){
+      const x=xMap(t);
+      ctx.beginPath(); ctx.moveTo(x,yMap(0)-4); ctx.lineTo(x,yMap(0)+4); ctx.stroke();
+      ctx.fillText(String(t), x-4, H-pad.b+22);
+    }
+    for(let y=0;y<=2;y+=0.5){
+      const yy=yMap(y);
+      ctx.beginPath(); ctx.moveTo(xMap(0)-4,yy); ctx.lineTo(xMap(0)+4,yy); ctx.stroke();
+      ctx.fillText(y.toFixed(1), 22, yy+5);
+    }
+    ctx.fillText('t', W-18, H-pad.b+5);
+    ctx.fillText('z(t)', 15, 20);
+  }
+
+  function drawCurve(ctx, fn, dash, width){
+    ctx.save();
+    ctx.lineWidth = width || 3;
+    ctx.strokeStyle = '#222';
+    if(dash) ctx.setLineDash(dash);
+    ctx.beginPath();
+    let started=false;
+    for(let i=0;i<=300;i++){
+      const t=tMin+(tMax-tMin)*i/300;
+      const y=fn(t);
+      if(!Number.isFinite(y)) continue;
+      const x=xMap(t), yy=yMap(y);
+      if(!started){ctx.moveTo(x,yy);started=true;} else ctx.lineTo(x,yy);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawObservedPoints(ctx){
+    const obsTimes = [0,0.5,1,1.5,2,2.5,3];
+
+    ctx.save();
+    ctx.fillStyle = '#111';
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+
+    for(const t of obsTimes){
+      const x = xMap(t);
+      const y = yMap(exact(t));
+      ctx.beginPath();
+      ctx.arc(x,y,5.5,0,2*Math.PI);
+      ctx.fill();
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawTrueSolution(ctx){
+    ctx.save();
+    ctx.strokeStyle = '#16a34a';
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+
+    let started = false;
+    for(let i=0;i<=300;i++){
+      const t=tMin+(tMax-tMin)*i/300;
+      const y=exact(t);
+      const x=xMap(t), yy=yMap(y);
+      if(!started){ ctx.moveTo(x,yy); started=true; }
+      else ctx.lineTo(x,yy);
+    }
+
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawModel(ctx){
+    const pts = neuralTrajectory(modelA);
+
+    // Training / observed interval: solid blue
+    ctx.save();
+    ctx.lineWidth = 3.5;
+    ctx.strokeStyle = '#2563eb';
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    let startedTrain = false;
+    for(const p of pts){
+      if(p.t > obsEnd + 1e-12) break;
+      const x=xMap(p.t), y=yMap(p.z);
+      if(!startedTrain){ ctx.moveTo(x,y); startedTrain=true; }
+      else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // Future prediction interval: dashed orange
+    ctx.save();
+    ctx.lineWidth = 3.5;
+    ctx.strokeStyle = '#d97706';
+    ctx.setLineDash([10,7]);
+    ctx.beginPath();
+    let startedPred = false;
+    for(const p of pts){
+      if(p.t < obsEnd - 1e-12) continue;
+      const x=xMap(p.t), y=yMap(p.z);
+      if(!startedPred){ ctx.moveTo(x,y); startedPred=true; }
+      else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawLegend(ctx){
+    let x = pad.l, y = 16;
+    ctx.font = '14px sans-serif';
+
+    // Observations are always shown.
+    ctx.save();
+    ctx.fillStyle = '#111';
+    ctx.strokeStyle = '#fff';
+    ctx.l
