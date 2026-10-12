@@ -1,0 +1,114 @@
+utton" class="btn ghost ode-math-key" style="min-height:48px" data-insert="+">+</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="-">−</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="*">×</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="/">÷</button>
+
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="1">1</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="2">2</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="3">3</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert="0">0</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-action="power">\(x^y\)</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-insert=".">.</button>
+          <button type="button" class="btn ghost ode-math-key" style="min-height:48px" data-action="backspace">⌫</button>
+        </div>
+
+        <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:8px">
+          <button id="odePlotStudentBtn" class="btn">Plot my answer</button>
+          <button id="odeHintBtn" class="btn ghost">Show a hint</button>
+        </div>
+      </div>
+
+      <div id="odeStudentFeedback" class="card panel small" style="margin-top:12px">
+        Solve the ODE first. Use the hint only if you need it, then plot your answer.
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="h3">Your analytic solution</div>
+        <p class="small">
+          This plot is only for the formula you solved by hand.
+        </p>
+        <canvas id="odeAnalyticCanvas" width="900" height="420"
+                style="width:100%;height:auto;border:1px solid var(--border);border-radius:12px"></canvas>
+      </div>
+
+            <div class="card" style="margin-top:14px">
+        <div class="h3">Train the Neural ODE</div>
+        <p class="small" style="margin:4px 0 10px">
+          Train \(z'(t)=f_\theta(t,z(t))\) using only the observations on
+          \(0\le t\le3\), then continue the learned dynamics to \(t=6\).
+        </p>
+
+        <div class="node-train-layout">
+          <div class="node-train-left">
+
+            <div class="card panel small" style="padding:10px 12px">
+              <strong>Observed data</strong>
+              <div style="overflow-x:auto;margin-top:5px">
+                <table style="width:100%;border-collapse:collapse;font-size:.92em">
+                  <thead>
+                    <tr>
+                      <th style="padding:4px 7px;border-bottom:2px solid var(--border);text-align:center">\(t\)</th>
+                      <th style="padding:4px 7px;border-bottom:2px solid var(--border);text-align:center">\(z(t)\)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td style="padding:3px 7px;text-align:center">\(0\)</td><td style="padding:3px 7px;text-align:center">\(2.0000\)</td></tr>
+                    <tr><td style="padding:3px 7px;text-align:center">\(0.5\)</td><td style="padding:3px 7px;text-align:center">\(1.5576\)</td></tr>
+                    <tr><td style="padding:3px 7px;text-align:center">\(1\)</td><td style="padding:3px 7px;text-align:center">\(1.2131\)</td></tr>
+                    <tr><td style="padding:3px 7px;text-align:center">\(1.5\)</td><td style="padding:3px 7px;text-align:center">\(0.9447\)</td></tr>
+                    <tr><td style="padding:3px 7px;text-align:center">\(2\)</td><td style="padding:3px 7px;text-align:center">\(0.7358\)</td></tr>
+                    <tr><td style="padding:3px 7px;text-align:center">\(2.5\)</td><td style="padding:3px 7px;text-align:center">\(0.5730\)</td></tr>
+                    <tr><td style="padding:3px 7px;text-align:center">\(3\)</td><td style="padding:3px 7px;text-align:center">\(0.4463\)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="node-train-controls">
+              <button id="odeOneStepBtn" class="btn">1 training step</button>
+              <button id="odeResetTrainingBtn" class="btn ghost">Reset</button>
+              <button id="odeResetExampleBtn" class="btn ghost">Reset all</button>
+            </div>
+
+            <div class="node-train-metrics">
+              <div class="card panel small" style="padding:8px 10px">
+                <strong>Steps</strong><br>
+                <span id="odeTrainingStepCount">0</span>
+              </div>
+              <div class="card panel small" style="padding:8px 10px">
+                <strong>Loss</strong><br>
+                <span id="odeCurrentLoss">—</span>
+              </div>
+            </div>
+
+            <div id="odeModelStatus" class="small" style="margin-top:7px">
+              The plot begins with the observation points. Train the model to reveal the
+              Neural ODE trajectory and the true solution.
+            </div>
+
+            <div class="card panel small" style="margin-top:9px;padding:9px 11px">
+              <strong>Experiment questions</strong>
+              <ol style="margin:5px 0 0 18px;padding:0">
+                <li>After one training step, how does the model compare with the observations?</li>
+                <li>What happens to the loss after several steps?</li>
+                <li>Does the fit on \(0\le t\le3\) improve as the loss decreases?</li>
+                <li>How does the prediction for \(t>3\) compare with the true solution?</li>
+                <li>Does a small training loss guarantee a perfect future prediction?</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="node-train-plot">
+            <div style="font-weight:650;margin-bottom:5px">Training and prediction</div>
+            <canvas id="odeNeuralCanvas" width="900" height="420"
+                    style="width:100%;height:auto;border:1px solid var(--border);border-radius:12px"></canvas>
+            <p class="small muted" style="margin:6px 0 0">
+              Black dots = observations, blue = fit, orange dashed = future prediction,
+              green dashed = true solution.
+            </p>
+          </div>
+        </div>
+      </div>
+
+<details class="card">
+      
