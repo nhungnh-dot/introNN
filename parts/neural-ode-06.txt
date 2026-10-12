@@ -1,0 +1,149 @@
+<summary>Section 5 checkpoint</summary>
+      <div class="small">
+        <p>
+          1. In the equation
+        </p>
+        <div class="card center math-cell" style="margin:6px 0 10px">
+          \[
+          z'(t)=f_\theta(t,z(t))
+          \]
+        </div>
+        <p>
+          what does the neural network \(f_\theta\) predict?
+        </p>
+
+        <p>
+          2. After the neural network predicts \(z'(t)\), what does the ODE solver do with that prediction?
+        </p>
+
+        <p>
+          3. Why do we reuse the same neural network at each time step instead of creating a new one?
+        </p>
+
+        <p>
+          4. Which part of the trajectory is used to train the Neural ODE in the example?
+        </p>
+
+        <p>
+          5. After training, how does the Neural ODE produce a prediction beyond the final observation time?
+        </p>
+      </div>
+    </details>
+  </section>
+</template>
+<script>
+(function(){
+  const lesson=document.getElementById('lesson');
+  const tpl=document.getElementById('neuralOdeTemplate');
+  if(!lesson||!tpl||document.getElementById('panel-neuralode')) return;
+  lesson.appendChild(tpl.content.cloneNode(true));
+  const tabs=document.querySelector('.tabs');
+  if(tabs&&!tabs.querySelector('[data-tab="neuralode"]')){
+    const b=document.createElement('button'); b.className='btn tab'; b.dataset.tab='neuralode'; b.textContent='5. Neural ODEs'; tabs.appendChild(b);
+    b.addEventListener('click',()=>showNode());
+  }
+  const cnn=document.getElementById('panel-cnn');
+  if(cnn&&!cnn.querySelector('[data-next="neuralode"]')){
+    const b=document.createElement('button'); b.className='btn primary goto'; b.dataset.next='neuralode'; b.textContent='Continue to Neural ODEs →'; b.style.marginTop='18px'; cnn.appendChild(b); b.addEventListener('click',()=>showNode());
+  }
+  function showNode(){
+    document.querySelectorAll('.section').forEach(p=>p.classList.add('hidden'));
+    const p=document.getElementById('panel-neuralode'); if(p)p.classList.remove('hidden');
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    const b=document.querySelector('.tab[data-tab="neuralode"]'); if(b)b.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetPromise([document.getElementById('panel-neuralode')]).catch(()=>{});}
+})();
+</script>
+<style>
+  .ode-flow-block{
+    transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease, border-color .18s ease;
+  }
+  .ode-flow-dim{ opacity:.28; }
+  .ode-flow-active{
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0,0,0,.10);
+    border-color: var(--text) !important;
+  }
+  .ode-arrow-dim{ opacity:.22; }
+  #odeFeedbackPath{ transition:opacity .18s ease, stroke-width .18s ease; }
+  .ode-loop-dim{ opacity:.18; }
+</style>
+<script>
+(function(){
+  const forwardBtn = document.getElementById('odeForwardBtn');
+  const backwardBtn = document.getElementById('odeBackwardBtn');
+  const resetBtn = document.getElementById('odeResetFlowBtn');
+  const msg = document.getElementById('odeFlowMessage');
+  const blocks = [...document.querySelectorAll('.ode-flow-block')];
+  const fBlocks = [...document.querySelectorAll('.ode-forward-block')];
+  const bBlocks = [...document.querySelectorAll('.ode-backward-block')];
+  const fArrows = [...document.querySelectorAll('.ode-forward-arrow')];
+  const bArrows = [...document.querySelectorAll('.ode-backward-arrow')];
+  const loop = document.getElementById('odeFeedbackPath');
+  const nn = document.getElementById('odeBlockNN');
+
+  if(!forwardBtn || !backwardBtn || !resetBtn) return;
+
+  function clear(){
+    blocks.forEach(el => el.classList.remove('ode-flow-active','ode-flow-dim'));
+    fArrows.concat(bArrows).forEach(el => el.classList.remove('ode-arrow-dim'));
+    if(loop) loop.classList.remove('ode-loop-dim');
+  }
+
+  forwardBtn.addEventListener('click', () => {
+    clear();
+    bBlocks.forEach(el => el.classList.add('ode-flow-dim'));
+    bArrows.forEach(el => el.classList.add('ode-arrow-dim'));
+    if(loop) loop.classList.add('ode-loop-dim');
+    fBlocks.forEach(el => el.classList.add('ode-flow-active'));
+    msg.innerHTML =
+      '<b>Forward pass:</b> starting from the observed state, the neural network predicts the rate of change, ' +
+      'the ODE solver builds a trajectory, and the trajectory is compared with the data to produce the loss.';
+  });
+
+  backwardBtn.addEventListener('click', () => {
+    clear();
+    fBlocks.forEach(el => {
+      if(el.id !== 'odeBlockLoss' && el.id !== 'odeBlockNN') el.classList.add('ode-flow-dim');
+    });
+    fArrows.forEach(el => el.classList.add('ode-arrow-dim'));
+    bBlocks.forEach(el => el.classList.add('ode-flow-active'));
+    if(nn) nn.classList.add('ode-flow-active');
+    msg.innerHTML =
+      '<b>Learning update:</b> backpropagation uses the loss to compute gradients. ' +
+      'Gradient descent then changes the neural-network weights and biases, which is why the arrow loops back to the neural network.';
+  });
+
+  resetBtn.addEventListener('click', () => {
+    clear();
+    msg.innerHTML =
+      'The top row shows one complete training cycle. After gradient descent updates the parameters, ' +
+      'the model repeats the forward pass with the improved neural network.';
+  });
+})();
+</script>
+<script>
+(function(){
+  const formulaInput = document.getElementById('odeMathEditor');
+  const plotBtn = document.getElementById('odePlotStudentBtn');
+  const hintBtn = document.getElementById('odeHintBtn');
+  const oneStepBtn = document.getElementById('odeOneStepBtn');
+  const resetTrainingBtn = document.getElementById('odeResetTrainingBtn');
+  const resetBtn = document.getElementById('odeResetExampleBtn');
+  const currentLossEl = document.getElementById('odeCurrentLoss');
+  const trainingStepCountEl = document.getElementById('odeTrainingStepCount');
+  const feedback = document.getElementById('odeStudentFeedback');
+  const preview = document.getElementById('odeMathPreview');
+  const status = document.getElementById('odeModelStatus');
+  const analyticCanvas = document.getElementById('odeAnalyticCanvas');
+  const neuralCanvas = document.getElementById('odeNeuralCanvas');
+
+  if(!analyticCanvas || !neuralCanvas || !formulaInput || !plotBtn) return;
+
+  const analyticCtx = analyticCanvas.getContext('2d');
+  const neuralCtx = neuralCanvas.getContext('2d');
+  const W = analyticCanvas.width, H = analyticCanvas.height;
+  const pad = {l:64,r:24,t:28,b:52};
+  const tMin
