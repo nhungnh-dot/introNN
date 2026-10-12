@@ -1,0 +1,191 @@
+</p>
+
+      <div class="card">
+        <div class="h3">Picture: the initial state at \(t_0\)</div>
+        <div class="node-arch-wrap"><svg viewBox="0 0 860 320" style="width:100%" aria-label="Trajectory beginning at the initial state z(t0)">
+          <!-- axes -->
+          <line x1="70" y1="225" x2="790" y2="225" stroke="var(--border)" stroke-width="2"/>
+          <line x1="70" y1="225" x2="70" y2="45" stroke="var(--border)" stroke-width="2"/>
+          <text x="798" y="231" font-size="14" fill="var(--muted)">x</text>
+          <text x="62" y="41" font-size="14" fill="var(--muted)">y</text>
+
+          <!-- trajectory beginning at t0 -->
+          <path d="M150 198
+                   C220 170, 275 112, 355 118
+                   C445 125, 485 193, 565 170
+                   C640 148, 675 88, 745 98"
+                fill="none" stroke="var(--s3)" stroke-width="5" stroke-linecap="round"/>
+
+          <!-- initial point -->
+          <circle cx="150" cy="198" r="8" fill="var(--text)"/>
+
+          <!-- initial state callout -->
+          <rect x="105" y="62" width="235" height="70" rx="10"
+                fill="white" stroke="var(--border)" stroke-width="2"/>
+          <text x="122" y="90" font-size="16" fill="var(--text)">initial state = z(t₀)</text>
+          <text x="122" y="112" font-size="14" fill="var(--muted)">where the trajectory begins</text>
+          <line x1="185" y1="132" x2="153" y2="190" stroke="var(--text)" stroke-width="2"/>
+
+          <!-- t0 marker -->
+          <line x1="150" y1="198" x2="150" y2="225" stroke="var(--border)" stroke-width="2"/>
+          <text x="139" y="248" font-size="15" fill="var(--text)">t₀</text>
+
+          <text x="115" y="272" font-size="14" fill="var(--muted)">
+            We begin at the observed state z(t₀).
+          </text>
+          <text x="115" y="292" font-size="14" fill="var(--muted)">
+            Next, the neural network predicts how the state changes, and the ODE solver moves it forward in time.
+          </text>
+        </svg></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="h3">Training step 2 · Neural network predicts the rate of change</div>
+
+      <p class="small">
+        Before we continue, recall that
+        \(z'(t)\)
+        means the <strong>derivative of the state</strong>, or its instantaneous rate of change.
+        If
+        \(z(t)\)
+        =
+        (\(x(t)\),
+        \(y(t)\)),
+        then
+      </p>
+
+      <div class="card center math-cell">
+        \[
+        z'(t)=\bigl(x'(t),y'(t)\bigr).
+        \]
+      </div>
+
+      <p class="small">
+        For a moving object, this tells us the direction and speed of the motion at that instant.
+      </p>
+
+      <p class="small">
+        We now use the neural network for the first time.
+        It takes the current time and current state and predicts the current rate of change.
+        Later, we will use this <strong>same neural network again</strong> at each new time.
+      </p>
+
+      <div class="card center math-cell" style="font-size:1.2em">
+        \[
+        (t,z(t))\longrightarrow f_\theta
+        \longrightarrow \text{predicted }z'(t)
+        \]
+      </div>
+
+      <p class="small">
+        The diagram above shows the idea in words, while the equation below writes the same relationship mathematically.
+      </p>
+
+      <div class="card center math-cell" style="font-size:1.25em">
+        \[
+        z'(t)=f_\theta\bigl(t,z(t)\bigr).
+        \]
+      </div>
+
+      <div class="card panel small">
+        <strong>What is \(f_\theta\)?</strong><br>
+        It is the neural network.
+        Its job is simple: given the current \(t\) and \(z(t)\),
+        it predicts the current rate of change
+        \(z'(t)\).
+        We reuse this same network throughout the trajectory.
+      </div>
+
+      <p class="small">
+        At the starting time,
+        \[
+        z'(t_0)=f_\theta\bigl(t_0,z(t_0)\bigr).
+        \]
+        This is the first rate of change predicted by the neural network.
+      </p>
+
+    </div>
+
+    <div class="card">
+      <div class="h3">Training step 3 · ODE solver moves the state forward</div>
+
+      <p class="small">
+        The neural network and the ODE solver have different jobs.
+      </p>
+
+      <div class="grid two">
+        <div class="card panel small">
+          <strong>Neural network</strong><br>
+          predicts the current rate of change
+          \(z'(t)\).
+        </div>
+        <div class="card panel small">
+          <strong>ODE solver</strong><br>
+          uses that rate of change to estimate the next state.
+        </div>
+      </div>
+
+      <p class="small">
+        With Euler's method,
+      </p>
+
+      <div class="card center math-cell" style="font-size:1.12em">
+        \[
+        z_{n+1}\approx z_n+\Delta t\,f_\theta(t_n,z_n).
+        \]
+      </div>
+
+      <p class="small">
+        Here, \(\Delta t\) is a small time step.
+        The result is a new state
+        \(z_{n+1}\).
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="h3">Training step 4 · Repeat the same cycle to build the trajectory</div>
+
+      <p class="small">
+        After the solver gives us a new state, we do <strong>the same thing again</strong>.
+        We do not create a new neural network.
+        We reuse the same
+        \(f_\theta\) with the new state as input.
+      </p>
+
+      <div class="card center math-cell">
+        \[
+        z(t_0)\longrightarrow f_\theta\longrightarrow \text{ODE solver}
+        \longrightarrow z(t_1)\longrightarrow f_\theta\longrightarrow \text{ODE solver}
+        \longrightarrow z(t_2)\longrightarrow\cdots
+        \]
+      </div>
+
+      <p class="small">
+        At each new time, the input changes because the current state has changed,
+        but the neural network itself is the same.
+      </p>
+
+      <div class="card panel small">
+        <strong>Repeated cycle:</strong><br>
+        current state
+        → same neural network predicts the rate of change
+        → ODE solver finds the next state
+        → repeat
+      </div>
+
+      <p class="small">
+        Repeating this cycle across the observation interval gives the predicted trajectory.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="h3">Training step 5 · Compare with observations and compute the loss</div>
+
+      <p class="small">
+        Now we compare the predicted trajectory with the observed trajectory at the times where data are available.
+      </p>
+
+      <div class="card center math-cell">
+        \[
+        \text{predicted 
