@@ -1,0 +1,138 @@
+ime</span>
+                </div>
+              </div>
+
+              <div class="muted ode-forward-arrow" style="font-size:24px;display:flex;align-items:center">→</div>
+
+              <div id="odeBlockSolver" class="card center small ode-flow-block ode-forward-block"
+                   style="width:115px;min-width:115px;display:flex;align-items:center;justify-content:center;min-height:88px">
+                <b>ODE solver</b>
+              </div>
+
+              <div class="muted ode-forward-arrow" style="font-size:24px;display:flex;align-items:center">→</div>
+
+              <div id="odeBlockTrajectory" class="card center small ode-flow-block ode-forward-block"
+                   style="width:145px;min-width:145px;display:flex;align-items:center;justify-content:center;min-height:88px">
+                <b>predicted trajectory</b>
+              </div>
+
+              <div class="muted ode-forward-arrow" style="font-size:24px;display:flex;align-items:center">→</div>
+
+              <div id="odeBlockLoss" class="card center small ode-flow-block ode-forward-block ode-backward-block"
+                   style="width:185px;min-width:185px;display:flex;align-items:center;justify-content:center;min-height:88px">
+                <div>
+                  <b>compare with observed trajectory</b><br>
+                  <span class="muted">compute loss</span>
+                </div>
+              </div>
+
+              <div class="muted ode-backward-arrow" style="font-size:24px;display:flex;align-items:center">→</div>
+
+              <div id="odeBlockBackprop" class="card center small ode-flow-block ode-backward-block"
+                   style="width:145px;min-width:145px;display:flex;align-items:center;justify-content:center;min-height:88px">
+                <div>
+                  <b>backpropagation</b><br>
+                  <span class="muted">find gradients</span>
+                </div>
+              </div>
+
+              <div class="muted ode-backward-arrow" style="font-size:24px;display:flex;align-items:center">→</div>
+
+              <div id="odeBlockGD" class="card center small ode-flow-block ode-backward-block"
+                   style="width:150px;min-width:150px;display:flex;align-items:center;justify-content:center;min-height:88px">
+                <div>
+                  <b>gradient descent</b><br>
+                  <span class="muted">update parameters</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feedback loop from gradient descent back to the neural network -->
+            <div class="node-arch-wrap"><svg viewBox="0 0 1190 110" preserveAspectRatio="none"
+                 style="position:absolute;left:8px;bottom:0;width:1190px;height:92px;pointer-events:none">
+              <defs>
+                <marker id="odeLoopArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+                  <path d="M0,0 L10,5 L0,10 z" fill="currentColor"></path>
+                </marker>
+              </defs>
+
+              <!-- curved feedback arrow -->
+              <path id="odeFeedbackPath"
+                    d="M1110 8 C1080 48, 420 48, 255 18"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    marker-end="url(#odeLoopArrow)"/>
+
+              <!-- separate label box below the arrow -->
+              <rect x="430" y="64" width="520" height="30" rx="8"
+                    fill="white" stroke="var(--border)" stroke-width="1.5"/>
+              <text x="690" y="84" text-anchor="middle" font-size="14" fill="currentColor">
+                updated weights and biases are sent back to the neural network
+              </text>
+            </svg></div>
+          </div>
+
+          <div id="odeFlowMessage" class="card panel small" style="margin-top:4px">
+            The top row shows one complete training cycle. After gradient descent updates the parameters,
+            the model repeats the forward pass with the improved neural network.
+          </div>
+        </div>
+
+        <div class="card panel" style="padding:14px;overflow:hidden">
+          <div class="h3">Prediction view</div>
+
+          <div style="display:flex;align-items:stretch;justify-content:center;gap:8px;margin-top:14px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px">
+            <div class="card center small" style="width:145px;min-width:145px;display:flex;align-items:center;justify-content:center;min-height:88px">
+              <b>last observed state</b>
+            </div>
+
+            <div class="muted" style="font-size:24px;display:flex;align-items:center">→</div>
+
+            <div class="card center small" style="width:175px;min-width:175px;display:flex;align-items:center;justify-content:center;min-height:88px">
+              <div>
+                <b>learned neural network</b><br>
+                <span class="muted">predicts rate of change</span>
+              </div>
+            </div>
+
+            <div class="muted" style="font-size:24px;display:flex;align-items:center">→</div>
+
+            <div class="card center small" style="width:115px;min-width:115px;display:flex;align-items:center;justify-content:center;min-height:88px">
+              <b>ODE solver</b>
+            </div>
+
+            <div class="muted" style="font-size:24px;display:flex;align-items:center">→</div>
+
+            <div class="card center small" style="width:145px;min-width:145px;display:flex;align-items:center;justify-content:center;min-height:88px">
+              <b>future trajectory</b>
+            </div>
+          </div>
+
+          <p class="small" style="margin-top:14px">
+            After training, we no longer compare with data. We simply keep solving the learned ODE forward in time.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p class="small" style="margin:18px 4px 12px 4px">
+      Next, we follow the <strong>Training view</strong> from left to right and look at each block in the same order as the diagram above.
+    </p>
+
+    <div class="card">
+      <div class="h3">Training step 1 · Initial observed state</div>
+      <p class="small">
+        We begin with the state of the system at the starting time \(t_0\).
+        For a two-dimensional trajectory,
+      </p>
+
+      <div class="card center math-cell">
+        \[
+        z(t_0)=\bigl(x(t_0),y(t_0)\bigr).
+        \]
+      </div>
+
+      <p class="small">
+        The initial observed state \(z(t_0)\) tells us where the object is when we begin solving the Neural ODE.
+      
