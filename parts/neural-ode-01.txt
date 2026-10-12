@@ -1,0 +1,130 @@
+<style>
+@media (max-width:720px){#odeMathKeyboard{grid-template-columns:repeat(4,minmax(54px,1fr))!important;max-width:100%!important}}
+#panel-neuralode .node-arch-wrap{width:100%;overflow:hidden}
+#panel-neuralode .node-arch-wrap svg{width:100%!important;max-width:100%!important;height:auto!important;display:block}
+@media (min-width:900px){#panel-neuralode .node-arch-wrap svg{max-height:260px}}
+#panel-neuralode .node-train-layout{display:grid;grid-template-columns:minmax(235px,.78fr) minmax(0,1.55fr);gap:14px;align-items:start}
+#panel-neuralode .node-train-left,#panel-neuralode .node-train-plot{min-width:0}
+#panel-neuralode .node-train-controls{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+#panel-neuralode .node-train-metrics{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+#panel-neuralode .node-train-plot canvas{display:block;max-width:100%}
+@media(max-width:900px){#panel-neuralode .node-train-layout{grid-template-columns:1fr}#panel-neuralode .node-arch-wrap svg{max-height:none!important}}
+</style>
+<template id="neuralOdeTemplate">
+<section id="panel-neuralode" class="section hidden space">
+    <div class="card">
+      <div class="small muted">Section 5 · Neural ODEs</div>
+      <div class="h2">Learning a trajectory so we can predict what happens next</div>
+      <p>
+        Suppose we observe the position of a moving object only up to some time \(T\).
+        We want to use those observations to predict the trajectory <b>after the observations stop</b>.
+      </p>
+      <div class="card panel small">
+        <strong>Goal:</strong> learn how the state changes with time, then continue that learned motion beyond the observed interval.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="h3">Motivation · Why use a Neural ODE?</div>
+      <div class="card panel small" style="margin-top:12px">
+        <strong>The central idea:</strong><br>
+        We use <strong>one neural network</strong> repeatedly over time.
+        At the current time, it looks at the current state and predicts how that state is changing.
+        An ODE solver then moves the state forward a little.
+        We repeat the same two actions to build the trajectory.
+      </div>
+
+
+      <p class="small">
+        A regular neural network could take time as input and directly predict position:
+      </p>
+      <div class="card center math-cell">
+        \[
+        t\longrightarrow \text{regular neural network}
+        \longrightarrow \text{predicted state }z(t)
+        \]
+      </div>
+
+      <p class="small">
+        For trajectory prediction, however, we often want to model something more specific:
+        <b>how the current state changes over time</b>. That naturally leads to a differential-equation viewpoint.
+      </p>
+
+      <div class="grid two">
+        <div class="card panel">
+          <div class="h3">Regular neural network</div>
+          <p class="small">
+            Learns a direct map from time to state:
+          </p>
+          <div class="card center math-cell">
+            \[
+            t\longrightarrow z(t)
+            \]
+          </div>
+        </div>
+
+        <div class="card panel">
+          <div class="h3">Neural ODE</div>
+          <p class="small">
+            Learns a rule for the <b>rate of change</b> of the state:
+          </p>
+          <div class="card center math-cell">
+            current state → learned rate of change → ODE solver → future state
+          </div>
+        </div>
+      </div>
+
+      <div class="card panel small">
+        <strong>Why might a regular neural network be a weaker choice for this task?</strong>
+        If we train a network only to learn the map
+        \(t\mapsto z(t)\),
+        it mainly learns to match positions at the times it has seen.
+        When we ask for times beyond the observation interval, it must extrapolate that fitted function directly.
+        It does not explicitly use the idea that the next position should come from the current position and its rate of change.
+        For trajectory data, that continuous evolution structure is often exactly what we want to model.
+      </div>
+
+      <div class="card panel small">
+        <strong>Important:</strong> a regular neural network can still be used for future prediction.
+        The advantage of a Neural ODE here is that it builds continuous-time evolution directly into the model.
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="h3">Big picture · Neural ODE architecture for trajectory prediction</div>
+      <p class="small">
+        Before looking at the details, keep one picture in mind:
+        we start from an observed state, reuse the <strong>same neural network</strong> to predict the current rate of change,
+        and let the ODE solver move the state forward. Repeating this process builds the trajectory.
+      </p>
+
+      <div class="grid" style="gap:12px">
+        <div class="card panel" style="padding:14px;overflow:hidden">
+          <div class="h3">Training view</div>
+
+          <div class="small" style="margin-bottom:10px">
+            Click <b>Forward pass</b> or <b>Learning update</b> to see which part of the training loop is active.
+          </div>
+
+          <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+            <button id="odeForwardBtn" class="btn">Forward pass</button>
+            <button id="odeBackwardBtn" class="btn">Learning update</button>
+            <button id="odeResetFlowBtn" class="btn ghost">Show full loop</button>
+          </div>
+
+          <div id="odeTrainDiagram" style="position:relative;overflow-x:auto;padding:18px 8px 78px 8px">
+            <div style="display:flex;align-items:stretch;justify-content:center;gap:8px;min-width:1190px">
+
+              <div id="odeBlockState" class="card center small ode-flow-block ode-forward-block"
+                   style="width:145px;min-width:145px;display:flex;align-items:center;justify-content:center;min-height:88px">
+                <b>initial observed state</b>
+              </div>
+
+              <div class="muted ode-forward-arrow" style="font-size:24px;display:flex;align-items:center">→</div>
+
+              <div id="odeBlockNN" class="card center small ode-flow-block ode-forward-block ode-update-target"
+                   style="width:165px;min-width:165px;display:flex;align-items:center;justify-content:center;min-height:88px">
+                <div>
+                  <b>same neural network</b><br>
+                  <span class="muted">reused at every t
