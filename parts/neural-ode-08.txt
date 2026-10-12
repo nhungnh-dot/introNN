@@ -1,0 +1,220 @@
+ineWidth = 1.2;
+    ctx.beginPath();
+    ctx.arc(x+10,y,5,0,2*Math.PI);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = '#333';
+    ctx.fillText('Observed data', x+24, y+5);
+    x += 135;
+
+    if(!modelTrained) return;
+
+    ctx.save();
+    ctx.strokeStyle = '#16a34a';
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+32,y); ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = '#333';
+    ctx.fillText('True solution', x+40, y+5);
+    x += 140;
+
+    ctx.save();
+    ctx.strokeStyle = '#2563eb';
+    ctx.lineWidth = 3.5;
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+32,y); ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = '#333';
+    ctx.fillText('Neural ODE fit', x+40, y+5);
+    x += 165;
+
+    ctx.save();
+    ctx.strokeStyle = '#d97706';
+    ctx.lineWidth = 3.5;
+    ctx.setLineDash([10,7]);
+    ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+32,y); ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = '#333';
+    ctx.fillText('Future prediction', x+40, y+5);
+  }
+
+  function renderAnalytic(){
+    drawAxes(analyticCtx);
+    if(studentFn) drawCurve(analyticCtx, studentFn, [], 3);
+  }
+
+  function renderNeural(){
+    drawAxes(neuralCtx);
+
+    // Observation boundary.
+    const xb = xMap(obsEnd);
+    neuralCtx.save();
+    neuralCtx.setLineDash([7,6]);
+    neuralCtx.strokeStyle='#888';
+    neuralCtx.beginPath();
+    neuralCtx.moveTo(xb,pad.t);
+    neuralCtx.lineTo(xb,H-pad.b);
+    neuralCtx.stroke();
+    neuralCtx.setLineDash([]);
+    neuralCtx.fillStyle='#666';
+    neuralCtx.fillText('end of observations', xb+8, pad.t+18);
+    neuralCtx.restore();
+
+    // Always begin with the actual observed points.
+    drawObservedPoints(neuralCtx);
+
+    // Do not show any learned trajectory until students train the model.
+    if(modelTrained){
+      drawTrueSolution(neuralCtx);
+      drawModel(neuralCtx);
+    }
+
+    drawLegend(neuralCtx);
+  }
+
+  function render(){
+    renderAnalytic();
+    renderNeural();
+  }
+
+
+  function studentExpressionToLatex(raw){
+    let s = raw.trim();
+    s = s.replace(/\*/g, '\\cdot ');
+    s = s.replace(/e\^\(([^()]*)\)/g, 'e^{$1}');
+    s = s.replace(/e\^\{([^{}]*)\}/g, 'e^{$1}');
+    return s;
+  }
+
+  function showStudentAnswer(messageHtml){
+    const raw = (formulaInput.innerText || formulaInput.textContent || '').trim();
+    const latex = 'z(t)=' + studentExpressionToLatex(raw);
+
+    feedback.innerHTML =
+      '<div style="margin-bottom:8px"><b>Your answer</b></div>' +
+      '<div id="odeStudentLatexOutput" class="card center math-cell" ' +
+      'style="font-size:1.25em;margin:0 0 10px 0;padding:12px;min-height:56px"></div>' +
+      '<div>' + messageHtml + '</div>';
+
+    const out = document.getElementById('odeStudentLatexOutput');
+
+    if(window.MathJax && MathJax.tex2svgPromise){
+      MathJax.tex2svgPromise(latex, {display:true}).then((node)=>{
+        out.innerHTML = '';
+        out.appendChild(node);
+      }).catch(()=>{
+        out.textContent = latex;
+      });
+    }else if(window.MathJax && MathJax.tex2chtmlPromise){
+      MathJax.tex2chtmlPromise(latex, {display:true}).then((node)=>{
+        out.innerHTML = '';
+        out.appendChild(node);
+      }).catch(()=>{
+        out.textContent = latex;
+      });
+    }else{
+      out.textContent = latex;
+    }
+  }
+
+  function checkStudent(){
+    // Always replace the previous student curve with the expression
+    // currently shown in the math editor.
+    const raw = (formulaInput.innerText || formulaInput.textContent || '').trim();
+
+    studentFn = null;
+    render();
+
+    try{
+      updateMathPreview();
+      const newStudentFn = parseFormula(raw);
+      studentFn = newStudentFn;
+
+      let maxErr=0, mse=0, n=0;
+      for(let i=0;i<=120;i++){
+        const t=6*i/120;
+        const e=studentFn(t)-exact(t);
+        maxErr=Math.max(maxErr,Math.abs(e));
+        mse += e*e; n++;
+      }
+      mse/=n;
+
+      if(maxErr < 0.03){
+        showStudentAnswer(
+          '<b>Correct!</b> Your formula satisfies the ODE and the initial condition.'
+        );
+      }else{
+        showStudentAnswer(
+          '<b>Your solution is not correct yet.</b> This formula has been plotted. Check the initial condition and exponential decay rate, then revise it and try again.'
+        );
+      }
+
+      render();
+    }catch(err){
+      studentFn=null;
+      feedback.textContent = err.message;
+      render();
+    }
+  }
+
+  function updateTrainingReadout(){
+    if(trainingStepCountEl) trainingStepCountEl.textContent = String(trainingSteps);
+    if(currentLossEl) currentLossEl.textContent = observedLoss(modelA).toExponential(3);
+  }
+
+  function gradientAt(a){
+    const h = 1e-4;
+    return (observedLoss(a+h)-observedLoss(a-h))/(2*h);
+  }
+
+  function takeTrainingSteps(count){
+    for(let k=0;k<count;k++){
+      const grad = gradientAt(modelA);
+      modelA -= internalLearningRate*grad;
+      trainingSteps++;
+    }
+    modelTrained = trainingSteps > 0;
+    updateTrainingReadout();
+
+    status.innerHTML =
+      '<b>Training updated.</b> The loss is now ' +
+      observedLoss(modelA).toExponential(2) +
+      '. The black dots are the observations, the green dashed curve is the true solution, ' +
+      'the blue curve is the Neural ODE fit, and the orange dashed curve is the future prediction.';
+    render();
+  }
+
+  function resetTraining(){
+    modelA = -0.12;
+    trainingSteps = 0;
+    modelTrained = false;
+    updateTrainingReadout();
+    status.innerHTML =
+      'Training reset. The plot now shows only the observed data points. Start with one training step to reveal the Neural ODE trajectory.';
+    render();
+  }
+
+  plotBtn.addEventListener('click',checkStudent);
+  hintBtn.addEventListener('click',()=>{
+    feedback.innerHTML =
+      '<b>Hint:</b> Use separation of variables. Start by writing ' +
+      '<span style="white-space:nowrap">dz/z = -0.5\,dt</span>. ' +
+      'Integrate both sides, then use the initial condition ' +
+      '<span style="white-space:nowrap">z(0)=2</span> to determine the constant.';
+  });
+  oneStepBtn.addEventListener('click',()=>takeTrainingSteps(1));
+
+  resetTrainingBtn.addEventListener('click',resetTraining);
+  if(resetBtn){
+    resetBtn.addEventListener('click',()=>{
+      formulaInput.textContent=''; studentFn=null; feedback.innerHTML='Solve the ODE first. Use the hint only if you need it, then plot your answer.'; resetTraining(); render();
+    });
+  }
+
+  modelA = -0.12;
+  updateTrainingReadout();
+  render();
+})();
+</script>
