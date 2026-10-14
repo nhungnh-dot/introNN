@@ -4,7 +4,7 @@
 <body>
 <script>
 (async()=>{
-  const version='20261013-2';
+  const version='20261013-3';
 
   async function loadText(name){
     const r=await fetch(`${name}?v=${version}`,{cache:'no-store'});
@@ -31,13 +31,11 @@
     lesson=lesson.replace(/(<h1\s+class=["']title["'][^>]*>[^<]*<\/h1>)/i,'$1\n    '+byline);
   }
 
-  // Hide the CNN tab, but keep the entire CNN section and code intact.
   lesson=lesson.replace(
     '<button class="btn tab" data-tab="cnn">4. Images & CNNs</button>',
     '<button class="btn tab" data-tab="cnn" style="display:none" aria-hidden="true">4. Images & CNNs</button>'
   );
 
-  // Send the learner from Gradient Descent directly to Neural ODE.
   lesson=lesson.replace(/data-next="cnn"/g,'data-next="neuralode"');
   lesson=lesson.replace(/Continue to Images & CNNs\s*→/g,'Continue to Neural ODEs →');
 
@@ -45,14 +43,10 @@
   lesson=lesson.replace(/\s*<div class="card panel small">\s*<strong>You may change[\s\S]*?fixed during each run\.\s*<\/div>/g,'');
 
   let addonText=addonParts.join('');
-  // CNN remains stored as the hidden section 4; Neural ODE becomes section 4 for the visible lesson.
   addonText=addonText.replace(/Section 5/g,'Section 4');
   addonText=addonText.replace(/5\. Neural ODEs/g,'4. Neural ODEs');
-  // The Neural ODE add-on used to add a Continue button after CNN. Add it after Gradient Descent instead.
   addonText=addonText.replace("const cnn=document.getElementById('panel-cnn');","const cnn=document.getElementById('panel-learn');");
 
-  // Turn the solve-it-yourself activity into a worked example while keeping the hidden
-  // interactive elements in the DOM so the existing training code remains untouched.
   addonText=addonText.replace(
     'Interactive example · Solve an ODE, then compare with the Neural ODE',
     'Worked example · From a known solution to learning from observations'
@@ -63,7 +57,7 @@
   );
   addonText=addonText.replace(
     '<p class="small">\n        Find an explicit formula for\n        \\(z(t)\\).\n        Then enter your answer below using <code>t</code>.\n      </p>',
-    '<p class="small">The exact solution is</p>\n      <div class="card center math-cell" style="font-size:1.2em">\n        \\[z(t)=2e^{-0.5t}.\\]\n      </div>\n      <div class="card panel small" style="margin-top:12px">\n        <strong>Now change perspective:</strong> imagine that the differential equation and exact formula are hidden. We keep only the observed values for \\(0\\le t\\le3\\) shown below. The Neural ODE will learn \\(f_\\theta\\) from those observations and then continue the trajectory beyond \\(t=3\\). Because we know the exact solution in this example, we can reveal it after training as a benchmark for comparison.\n      </div>'
+    '<p class="small">The exact solution is</p>\n      <div class="card center math-cell" style="font-size:1.2em">\n        \\[z(t)=2e^{-0.5t}.\\]\n      </div>\n      <div class="card panel small" style="margin-top:12px">\n        <strong>Now change perspective:</strong> imagine that the differential equation and exact formula are hidden. We will choose how much of the trajectory is observed, train the Neural ODE only on those observations, and then ask it to continue beyond the last observed time. Because the exact solution is known in this example, we can reveal it after training as a benchmark.\n      </div>'
   );
   addonText=addonText.replace(
     '<div class="card" style="margin-top:10px;padding:14px;max-width:760px">',
@@ -80,6 +74,51 @@
   addonText=addonText.replace(
     '<button id="odeResetExampleBtn" class="btn ghost">Reset all</button>',
     '<button id="odeResetExampleBtn" class="btn ghost" style="display:none">Reset all</button>'
+  );
+
+  // Make the training example an investigation: students choose how much data is visible.
+  addonText=addonText.replace(
+    '<div class="node-train-left">',
+    '<div class="node-train-left">\n            <div class="card panel small" style="padding:10px 12px;margin-bottom:9px">\n              <strong>Choose the observation window</strong>\n              <p style="margin:4px 0 7px">How much of the trajectory should the Neural ODE be allowed to see before it predicts the future?</p>\n              <div style="display:flex;gap:7px;flex-wrap:wrap">\n                <button type="button" class="btn ghost ode-obs-window" data-obs-end="1.5">Observe to \\(t=1.5\\)</button>\n                <button type="button" class="btn ghost ode-obs-window" data-obs-end="2">Observe to \\(t=2\\)</button>\n                <button type="button" class="btn ode-obs-window active" data-obs-end="3">Observe to \\(t=3\\)</button>\n              </div>\n              <p class="muted" style="margin:7px 0 0">Before training, predict: will seeing a longer interval make the future prediction more reliable?</p>\n            </div>'
+  );
+
+  addonText=addonText.replace('const obsEnd = 3;','let obsEnd = 3;');
+  addonText=addonText.replace(
+    'for(const t of obsTimes){\n      const x = xMap(t);',
+    'for(const t of obsTimes){\n      if(t > obsEnd + 1e-12) continue;\n      const x = xMap(t);'
+  );
+
+  addonText=addonText.replace(
+    "const oneStepBtn = document.getElementById('odeOneStepBtn');",
+    "const oneStepBtn = document.getElementById('odeOneStepBtn');\n  const obsWindowBtns = [...document.querySelectorAll('.ode-obs-window')];"
+  );
+
+  addonText=addonText.replace(
+    "status.innerHTML =\n      'Training reset. The plot now shows only the observed data points. Start with one training step to reveal the Neural ODE trajectory.';",
+    "status.innerHTML =\n      'Training reset. The model can currently see observations only through t=' + obsEnd + '. Start with one training step, then compare this result with a different observation window.';"
+  );
+
+  addonText=addonText.replace(
+    "oneStepBtn.addEventListener('click',()=>takeTrainingSteps(1));",
+    "oneStepBtn.addEventListener('click',()=>takeTrainingSteps(1));\n\n  obsWindowBtns.forEach(btn=>{\n    btn.addEventListener('click',()=>{\n      obsEnd = Number(btn.dataset.obsEnd);\n      obsWindowBtns.forEach(x=>x.classList.remove('active'));\n      btn.classList.add('active');\n      resetTraining();\n    });\n  });"
+  );
+
+  addonText=addonText.replace(
+    'Train \\(z\'(t)=f_\\theta(t,z(t))\\) using only the observations on\n          \\(0\\le t\\le3\\), then continue the learned dynamics to \\(t=6\\).',
+    'Choose how much of the observed trajectory to reveal, train \\(z\'(t)=f_\\theta(t,z(t))\\) only on those observations, then continue the learned dynamics to \\(t=6\\).'
+  );
+
+  addonText=addonText.replace(
+    '<li>Does the fit on \\(0\\le t\\le3\\) improve as the loss decreases?</li>',
+    '<li>Does the fit on the chosen observation interval improve as the loss decreases?</li>'
+  );
+  addonText=addonText.replace(
+    '<li>How does the prediction for \\(t>3\\) compare with the true solution?</li>',
+    '<li>Reset and choose a different observation window. How does the future prediction change?</li>'
+  );
+  addonText=addonText.replace(
+    '<li>Does a small training loss guarantee a perfect future prediction?</li>',
+    '<li>Does seeing more data always give a noticeably better extrapolation? What do you observe?</li>'
   );
 
   lesson=lesson.replace('</body>',addonText+'\n</body>');
