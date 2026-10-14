@@ -242,3 +242,217 @@ ineWidth = 1.2;
   }
 })();
 </script>
+<script>
+(function(){
+  const plotColumn = document.querySelector('.node-train-plot');
+  const canvas = document.getElementById('odeNeuralCanvas');
+  if(!plotColumn || !canvas) return;
+
+  const codeCard = [...plotColumn.querySelectorAll('.card')].find(card =>
+    card.textContent.includes('Simplified Neural ODE code')
+  );
+  if(!codeCard) return;
+
+  const starterCode = `function runExperiment(){
+  // Change these values and run the code again.
+  const observationEnd = 3.0;
+  const learningRate = 0.05;
+  const timeStep = 0.05;
+  const trainSteps = 150;
+  const hiddenSize = 3;
+
+  const exact = t => 2*Math.exp(-0.5*t);
+  const observedTimes = [0,0.5,1,1.5,2,2.5,3]
+    .filter(t => t <= observationEnd + 1e-12);
+
+  // One-hidden-layer neural network f_theta(t,z).
+  // theta stores: weights from t, weights from z,
+  // hidden biases, output weights, and one output bias.
+  const nParams = 4*hiddenSize + 1;
+  const theta = Array.from({length:nParams}, (_,i) =>
+    0.18*Math.sin((i+1)*1.7)
+  );
+
+  function fTheta(t,z,p){
+    let out = p[4*hiddenSize];
+    for(let j=0;j<hiddenSize;j++){
+      const a = p[j]*t
+              + p[hiddenSize+j]*z
+              + p[2*hiddenSize+j];
+      const h = Math.tanh(a);
+      out += p[3*hiddenSize+j]*h;
+    }
+    return out;
+  }
+
+  // Euler ODE solver.
+  function solve(p, tMax=6){
+    let t=0, z=2;
+    const trajectory=[{t,z}];
+    while(t < tMax-1e-12){
+      const dt=Math.min(timeStep,tMax-t);
+      z = z + dt*fTheta(t,z,p);
+      t = t + dt;
+      trajectory.push({t,z});
+    }
+    return trajectory;
+  }
+
+  function valueAt(trajectory,t){
+    let best=trajectory[0];
+    for(const point of trajectory){
+      if(Math.abs(point.t-t) < Math.abs(best.t-t)) best=point;
+    }
+    return best.z;
+  }
+
+  function loss(p){
+    const trajectory=solve(p,observationEnd);
+    let sum=0;
+    for(const t of observedTimes){
+      const error=valueAt(trajectory,t)-exact(t);
+      sum += error*error;
+    }
+    return sum/observedTimes.length;
+  }
+
+  // Gradient descent. To keep this browser example short,
+  // derivatives are approximated with centered differences.
+  const eps=1e-4;
+  for(let step=0;step<trainSteps;step++){
+    const grad=Array(theta.length).fill(0);
+    for(let i=0;i<theta.length;i++){
+      const old=theta[i];
+      theta[i]=old+eps;
+      const plus=loss(theta);
+      theta[i]=old-eps;
+      const minus=loss(theta);
+      theta[i]=old;
+      grad[i]=(plus-minus)/(2*eps);
+    }
+    for(let i=0;i<theta.length;i++){
+      theta[i] -= learningRate*grad[i];
+    }
+  }
+
+  return {
+    trajectory: solve(theta,6),
+    observationEnd,
+    trainSteps,
+    hiddenSize,
+    loss: loss(theta)
+  };
+}`;
+
+  codeCard.innerHTML = `
+    <strong>Runnable Neural ODE code</strong>
+    <p style="margin:4px 0 7px">Edit the JavaScript below, then click <b>Run code</b>. The result is drawn on the graph above.</p>
+    <textarea id="odeRunnableCode" spellcheck="false" aria-label="Runnable Neural ODE JavaScript" style="width:100%;min-height:520px;resize:vertical;border:1px solid var(--border);border-radius:10px;padding:11px 12px;font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#0f172a;color:#e5e7eb"></textarea>
+    <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:8px">
+      <button type="button" id="odeRunCodeBtn" class="btn">Run code</button>
+      <button type="button" id="odeResetCodeBtn" class="btn ghost">Reset code</button>
+      <span id="odeRunCodeStatus" class="muted">The code runs locally in your browser.</span>
+    </div>
+    <p class="muted" style="margin:7px 0 0">Try changing <code>hiddenSize</code>, <code>learningRate</code>, <code>timeStep</code>, <code>trainSteps</code>, or <code>observationEnd</code>.</p>`;
+
+  const editor=document.getElementById('odeRunnableCode');
+  const runBtn=document.getElementById('odeRunCodeBtn');
+  const resetBtn=document.getElementById('odeResetCodeBtn');
+  const runStatus=document.getElementById('odeRunCodeStatus');
+  editor.value=starterCode;
+
+  function drawResult(result){
+    const ctx=canvas.getContext('2d');
+    const W=canvas.width,H=canvas.height;
+    const pad={l:64,r:24,t:28,b:52};
+    const xMap=t=>pad.l+(t/6)*(W-pad.l-pad.r);
+    const yMin=-0.15,yMax=2.2;
+    const yMap=y=>H-pad.b-(y-yMin)/(yMax-yMin)*(H-pad.t-pad.b);
+    const exact=t=>2*Math.exp(-0.5*t);
+
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='#a0a0a0'; ctx.fillStyle='#555'; ctx.lineWidth=1; ctx.font='15px sans-serif';
+    ctx.beginPath(); ctx.moveTo(xMap(0),yMap(0)); ctx.lineTo(xMap(6),yMap(0)); ctx.moveTo(xMap(0),yMap(yMin)); ctx.lineTo(xMap(0),yMap(yMax)); ctx.stroke();
+    for(let t=0;t<=6;t++){
+      const x=xMap(t); ctx.beginPath(); ctx.moveTo(x,yMap(0)-4); ctx.lineTo(x,yMap(0)+4); ctx.stroke(); ctx.fillText(String(t),x-4,H-pad.b+22);
+    }
+    for(let y=0;y<=2;y+=0.5){
+      const yy=yMap(y); ctx.beginPath(); ctx.moveTo(xMap(0)-4,yy); ctx.lineTo(xMap(0)+4,yy); ctx.stroke(); ctx.fillText(y.toFixed(1),22,yy+5);
+    }
+    ctx.fillText('t',W-18,H-pad.b+5); ctx.fillText('z(t)',15,20);
+
+    const obsTimes=[0,0.5,1,1.5,2,2.5,3].filter(t=>t<=result.observationEnd+1e-12);
+    ctx.save(); ctx.fillStyle='#111'; ctx.strokeStyle='#fff'; ctx.lineWidth=1.5;
+    for(const t of obsTimes){
+      ctx.beginPath(); ctx.arc(xMap(t),yMap(exact(t)),5.5,0,2*Math.PI); ctx.fill(); ctx.stroke();
+    }
+    ctx.restore();
+
+    const xb=xMap(result.observationEnd);
+    ctx.save(); ctx.setLineDash([7,6]); ctx.strokeStyle='#888'; ctx.beginPath(); ctx.moveTo(xb,pad.t); ctx.lineTo(xb,H-pad.b); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle='#666'; ctx.fillText('end of observations',xb+8,pad.t+18); ctx.restore();
+
+    ctx.save(); ctx.strokeStyle='#16a34a'; ctx.lineWidth=2.5; ctx.setLineDash([4,4]); ctx.beginPath();
+    for(let i=0;i<=300;i++){
+      const t=6*i/300, x=xMap(t), y=yMap(exact(t));
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke(); ctx.restore();
+
+    const pts=result.trajectory;
+    ctx.save(); ctx.strokeStyle='#2563eb'; ctx.lineWidth=3.5; ctx.setLineDash([]); ctx.beginPath();
+    let started=false;
+    for(const p of pts){
+      if(p.t>result.observationEnd+1e-12) break;
+      const x=xMap(p.t),y=yMap(p.z); if(!started){ctx.moveTo(x,y);started=true;}else ctx.lineTo(x,y);
+    }
+    ctx.stroke(); ctx.restore();
+
+    ctx.save(); ctx.strokeStyle='#d97706'; ctx.lineWidth=3.5; ctx.setLineDash([10,7]); ctx.beginPath();
+    started=false;
+    for(const p of pts){
+      if(p.t<result.observationEnd-1e-12) continue;
+      const x=xMap(p.t),y=yMap(p.z); if(!started){ctx.moveTo(x,y);started=true;}else ctx.lineTo(x,y);
+    }
+    ctx.stroke(); ctx.restore();
+  }
+
+  function runStudentCode(){
+    runBtn.disabled=true;
+    runStatus.textContent='Running…';
+
+    const source = editor.value + '\n;self.postMessage({ok:true,result:runExperiment()});';
+    const blob = new Blob([
+      'try{\n' + source + '\n}catch(error){self.postMessage({ok:false,error:String(error && error.message || error)});}'
+    ],{type:'application/javascript'});
+    const worker = new Worker(URL.createObjectURL(blob));
+    const timer=setTimeout(()=>{
+      worker.terminate();
+      runBtn.disabled=false;
+      runStatus.textContent='The code took too long. Reduce trainSteps or hiddenSize and try again.';
+    },6000);
+
+    worker.onmessage=(event)=>{
+      clearTimeout(timer); worker.terminate(); runBtn.disabled=false;
+      const msg=event.data||{};
+      if(!msg.ok){ runStatus.textContent='Error: '+msg.error; return; }
+      const r=msg.result;
+      if(!r || !Array.isArray(r.trajectory) || !Number.isFinite(r.loss)){
+        runStatus.textContent='The code must return trajectory, observationEnd, trainSteps, hiddenSize, and loss.';
+        return;
+      }
+      drawResult(r);
+      const stepEl=document.getElementById('odeTrainingStepCount');
+      const lossEl=document.getElementById('odeCurrentLoss');
+      if(stepEl) stepEl.textContent=String(r.trainSteps);
+      if(lossEl) lossEl.textContent=Number(r.loss).toExponential(3);
+      runStatus.innerHTML='<b>Finished.</b> hiddenSize='+r.hiddenSize+', loss='+Number(r.loss).toExponential(2)+'.';
+    };
+  }
+
+  runBtn.addEventListener('click',runStudentCode);
+  resetBtn.addEventListener('click',()=>{
+    editor.value=starterCode;
+    runStatus.textContent='Code reset. Click Run code when you are ready.';
+  });
+})();
+</script>
