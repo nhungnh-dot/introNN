@@ -297,7 +297,6 @@ ineWidth = 1.2;
     }
     return trajectory;
   }
-
   function valueAt(trajectory,t){
     let best=trajectory[0];
     for(const point of trajectory){
@@ -454,5 +453,15 @@ ineWidth = 1.2;
     editor.value=starterCode;
     runStatus.textContent='Code reset. Click Run code when you are ready.';
   });
+})();
+</script>
+<script>
+(function(){
+  const leftColumn=document.querySelector('.node-train-left');
+  if(!leftColumn) return;
+  const chooser=[...leftColumn.querySelectorAll('.card')].find(card=>
+    card.textContent.includes('Choose the observation window')
+  );
+  if(chooser) chooser.remove();
 })();
 </script>
