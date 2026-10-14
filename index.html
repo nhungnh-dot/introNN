@@ -4,7 +4,7 @@
 <body>
 <script>
 (async()=>{
-  const version='20261013-6';
+  const version='20261013-7';
 
   async function loadText(name){
     const r=await fetch(`${name}?v=${version}`,{cache:'no-store'});
@@ -122,8 +122,60 @@
     '<li>Change <code>time_step</code>. Does the numerical trajectory change noticeably? Then compare different observation windows.</li>'
   );
 
+  // Let the runnable code control how far the observed data extend.
+  addonText=addonText.replace('  const observationEnd = 3.0;','  const observationEnd = 4.0;');
+  addonText=addonText.replace(
+    '  const observedTimes = [0,0.5,1,1.5,2,2.5,3]\n    .filter(t => t <= observationEnd + 1e-12);',
+    '  const observedTimes = [];\n  for(let t=0;t<=observationEnd+1e-12;t+=0.5){\n    observedTimes.push(Number(t.toFixed(10)));\n  }'
+  );
+  addonText=addonText.replace(
+    '    const obsTimes=[0,0.5,1,1.5,2,2.5,3].filter(t=>t<=result.observationEnd+1e-12);',
+    '    const obsTimes=[];\n    for(let t=0;t<=result.observationEnd+1e-12;t+=0.5){\n      obsTimes.push(Number(t.toFixed(10)));\n    }'
+  );
+
   // The runnable code now contains the experiment parameters, so remove the older settings panel.
   addonText += '\n<script>(function(){const e=document.getElementById("odeExperimentCode");if(e){const c=e.closest(".card");if(c)c.remove();}})();<\/script>';
+
+  // Keep the visible observation table synchronized with observationEnd in the runnable code.
+  addonText += `
+<script>
+(function(){
+  const editor=document.getElementById('odeRunnableCode');
+  const runBtn=document.getElementById('odeRunCodeBtn');
+  const resetBtn=document.getElementById('odeResetCodeBtn');
+  const left=document.querySelector('.node-train-left');
+  if(!editor || !left) return;
+
+  const dataCard=[...left.querySelectorAll('.card')].find(card =>
+    card.textContent.includes('Observed data')
+  );
+  const tbody=dataCard && dataCard.querySelector('tbody');
+  if(!tbody) return;
+
+  function observationEndFromCode(){
+    const match=editor.value.match(/const\\s+observationEnd\\s*=\\s*([-+]?\\d*\\.?\\d+)/);
+    return match ? Number(match[1]) : NaN;
+  }
+
+  function syncObservationTable(){
+    const end=observationEndFromCode();
+    if(!Number.isFinite(end) || end<0 || end>6) return;
+    let rows='';
+    for(let t=0;t<=end+1e-12;t+=0.5){
+      const tt=Number(t.toFixed(10));
+      const z=2*Math.exp(-0.5*tt);
+      const label=Number.isInteger(tt) ? tt.toFixed(0) : tt.toFixed(1);
+      rows += '<tr><td style="padding:3px 7px;text-align:center">'+label+
+              '</td><td style="padding:3px 7px;text-align:center">'+z.toFixed(4)+'</td></tr>';
+    }
+    tbody.innerHTML=rows;
+  }
+
+  syncObservationTable();
+  if(runBtn) runBtn.addEventListener('click',syncObservationTable);
+  if(resetBtn) resetBtn.addEventListener('click',()=>setTimeout(syncObservationTable,0));
+})();
+<\/script>`;
 
   lesson=lesson.replace('</body>',addonText+'\n</body>');
 
