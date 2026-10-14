@@ -218,3 +218,27 @@ ineWidth = 1.2;
   render();
 })();
 </script>
+<script>
+(function(){
+  const plotColumn = document.querySelector('.node-train-plot');
+  const settingsTextarea = document.getElementById('odeExperimentCode');
+  const leftColumn = document.querySelector('.node-train-left');
+  if(!plotColumn || !settingsTextarea || !leftColumn) return;
+
+  const settingsCard = settingsTextarea.closest('.card');
+  const codeCard = [...leftColumn.querySelectorAll('.card')].find(card =>
+    card.textContent.includes('Simplified Neural ODE code')
+  );
+
+  if(settingsCard){
+    settingsCard.style.marginTop = '12px';
+    settingsCard.style.marginBottom = '0';
+    plotColumn.appendChild(settingsCard);
+  }
+  if(codeCard){
+    codeCard.style.marginTop = '10px';
+    codeCard.style.marginBottom = '0';
+    plotColumn.appendChild(codeCard);
+  }
+})();
+</script>
