@@ -4,7 +4,7 @@
 <body>
 <script>
 (async()=>{
-  const version='20261012-4';
+  const version='20261013-1';
 
   async function loadText(name){
     const r=await fetch(`${name}?v=${version}`,{cache:'no-store'});
@@ -23,7 +23,7 @@
   let lesson=baseParts.join('');
 
   const oldBlock='<div class="grid cards3">\n      <div class="card"><div class="small muted">Prerequisite</div><div><b>Partial derivatives, gradients, chain rule</b></div></div>\n      <div class="card"><div class="small muted">Central question</div><div><b>How does calculus tell neural networks and CNNs how to learn?</b></div></div>\n      <div class="card panel small" style="margin-top:14px"><div class="h3">How to use this app</div><p>Work through the four tabs in order. Read each short explanation, interact with the sliders and diagrams, and pause at the prediction questions and checkpoints before moving on. Try to connect each neural-network idea back to the calculus concepts you already know.</p></div>\n    </div>';
-  const newBlock='<div class="grid cards2">\n      <div class="card"><div class="small muted">Prerequisite</div><div><b>Partial derivatives, gradients, chain rule</b></div></div>\n      <div class="card"><div class="small muted">Central question</div><div><b>How does calculus tell neural networks and CNNs how to learn?</b></div></div>\n    </div>\n    <div class="small" style="margin-top:14px">\n      <div class="h3">How to use this app</div>\n      <p>Work through the five tabs in order. Read each short explanation, interact with the sliders and diagrams, and pause at the prediction questions and checkpoints before moving on. Try to connect each neural-network idea back to the calculus concepts you already know.</p>\n    </div>';
+  const newBlock='<div class="grid cards2">\n      <div class="card"><div class="small muted">Prerequisite</div><div><b>Partial derivatives, gradients, chain rule</b></div></div>\n      <div class="card"><div class="small muted">Central question</div><div><b>How does calculus tell neural networks and CNNs how to learn?</b></div></div>\n    </div>\n    <div class="small" style="margin-top:14px">\n      <div class="h3">How to use this app</div>\n      <p>Work through the four visible tabs in order. Read each short explanation, interact with the sliders and diagrams, and pause at the prediction questions and checkpoints before moving on. Try to connect each neural-network idea back to the calculus concepts you already know.</p>\n    </div>';
   lesson=lesson.replace(oldBlock,newBlock);
 
   const byline='<p class="small" style="margin:6px 0 0"><b>by Andrew Bennett and Nhung Nguyen</b></p>';
@@ -31,10 +31,27 @@
     lesson=lesson.replace(/(<h1\s+class=["']title["'][^>]*>[^<]*<\/h1>)/i,'$1\n    '+byline);
   }
 
+  // Hide the CNN tab, but keep the entire CNN section and code intact.
+  lesson=lesson.replace(
+    '<button class="btn tab" data-tab="cnn">4. Images & CNNs</button>',
+    '<button class="btn tab" data-tab="cnn" style="display:none" aria-hidden="true">4. Images & CNNs</button>'
+  );
+
+  // Send the learner from Gradient Descent directly to Neural ODE.
+  lesson=lesson.replace(/data-next="cnn"/g,'data-next="neuralode"');
+  lesson=lesson.replace(/Continue to Images & CNNs\s*→/g,'Continue to Neural ODEs →');
+
   lesson=lesson.replace(/\s*<div class="card panel small">\s*Try[\s\S]*?severe overshooting\/saturation\.\s*<\/div>/g,'');
   lesson=lesson.replace(/\s*<div class="card panel small">\s*<strong>You may change[\s\S]*?fixed during each run\.\s*<\/div>/g,'');
 
-  lesson=lesson.replace('</body>',addonParts.join('')+'\n</body>');
+  let addonText=addonParts.join('');
+  // CNN remains stored as the hidden section 4; Neural ODE becomes section 4 for the visible lesson.
+  addonText=addonText.replace(/Section 5/g,'Section 4');
+  addonText=addonText.replace(/5\. Neural ODEs/g,'4. Neural ODEs');
+  // The Neural ODE add-on used to add a Continue button after CNN. Add it after Gradient Descent instead.
+  addonText=addonText.replace("const cnn=document.getElementById('panel-cnn');","const cnn=document.getElementById('panel-learn');");
+
+  lesson=lesson.replace('</body>',addonText+'\n</body>');
 
   document.open();
   document.write(lesson);
