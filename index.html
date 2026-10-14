@@ -4,7 +4,7 @@
 <body>
 <script>
 (async()=>{
-  const version='20261013-7';
+  const version='20261013-8';
 
   async function loadText(name){
     const r=await fetch(`${name}?v=${version}`,{cache:'no-store'});
@@ -131,6 +131,28 @@
   addonText=addonText.replace(
     '    const obsTimes=[0,0.5,1,1.5,2,2.5,3].filter(t=>t<=result.observationEnd+1e-12);',
     '    const obsTimes=[];\n    for(let t=0;t<=result.observationEnd+1e-12;t+=0.5){\n      obsTimes.push(Number(t.toFixed(10)));\n    }'
+  );
+
+  // Record the loss at uniform 50-step checkpoints in the runnable experiment.
+  addonText=addonText.replace(
+    '  const eps=1e-4;\n  for(let step=0;step<trainSteps;step++){',
+    '  const eps=1e-4;\n  const lossHistory=[{step:0,loss:loss(theta)}];\n  for(let step=0;step<trainSteps;step++){'
+  );
+  addonText=addonText.replace(
+    '    for(let i=0;i<theta.length;i++){\n      theta[i] -= learningRate*grad[i];\n    }\n  }\n\n  return {',
+    '    for(let i=0;i<theta.length;i++){\n      theta[i] -= learningRate*grad[i];\n    }\n    if((step+1)%50===0 || step+1===trainSteps){\n      lossHistory.push({step:step+1,loss:loss(theta)});\n    }\n  }\n\n  return {'
+  );
+  addonText=addonText.replace(
+    '    loss: loss(theta)\n  };',
+    '    loss: loss(theta),\n    lossHistory\n  };'
+  );
+  addonText=addonText.replace(
+    '    <p class="muted" style="margin:7px 0 0">Try changing <code>hiddenSize</code>, <code>learningRate</code>, <code>timeStep</code>, <code>trainSteps</code>, or <code>observationEnd</code>.</p>`;',
+    '    <div id="odeLossHistory" class="card panel small" style="margin-top:10px;padding:9px 11px"><strong>Loss during training</strong><div class="muted" style="margin-top:4px">Run the code to see the loss every 50 iterations.</div></div>\n    <p class="muted" style="margin:7px 0 0">Try changing <code>hiddenSize</code>, <code>learningRate</code>, <code>timeStep</code>, <code>trainSteps</code>, or <code>observationEnd</code>.</p>`;'
+  );
+  addonText=addonText.replace(
+    '      if(lossEl) lossEl.textContent=Number(r.loss).toExponential(3);\n      runStatus.innerHTML=',
+    '      if(lossEl) lossEl.textContent=Number(r.loss).toExponential(3);\n      const historyEl=document.getElementById(\'odeLossHistory\');\n      if(historyEl && Array.isArray(r.lossHistory)){\n        const rows=r.lossHistory.map(item=>\'<tr><td style="padding:3px 8px;text-align:center">\'+item.step+\'</td><td style="padding:3px 8px;text-align:center">\'+Number(item.loss).toExponential(3)+\'</td></tr>\').join(\'\');\n        historyEl.innerHTML=\'<strong>Loss during training</strong><table style="width:100%;border-collapse:collapse;margin-top:5px"><thead><tr><th style="padding:3px 8px;border-bottom:1px solid var(--border)">Iteration</th><th style="padding:3px 8px;border-bottom:1px solid var(--border)">Loss</th></tr></thead><tbody>\'+rows+\'</tbody></table>\';\n      }\n      runStatus.innerHTML='
   );
 
   // The runnable code now contains the experiment parameters, so remove the older settings panel.
