@@ -89,11 +89,12 @@ utton" class="btn ghost ode-math-key" style="min-height:48px" data-insert="+">+<
             <div class="card panel small" style="margin-top:9px;padding:9px 11px">
               <strong>Experiment questions</strong>
               <ol style="margin:5px 0 0 18px;padding:0">
-                <li>After one training step, how does the model compare with the observations?</li>
-                <li>What happens to the loss after several steps?</li>
-                <li>Does the fit on \(0\le t\le3\) improve as the loss decreases?</li>
-                <li>How does the prediction for \(t>3\) compare with the true solution?</li>
-                <li>Does a small training loss guarantee a perfect future prediction?</li>
+                <li>Run the starter code first. Record the training loss and describe how well the future prediction follows the true solution.</li>
+                <li>Change <code>learningRate</code> while keeping the other parameters fixed. Can you find a value that lowers the loss quickly without making the training unstable?</li>
+                <li>Change <code>trainSteps</code>. About how many steps are needed before additional training gives very little improvement?</li>
+                <li>Try different values of <code>hiddenSize</code> and <code>timeStep</code>. Do larger networks or smaller time steps always give a better prediction?</li>
+                <li>Change <code>observationEnd</code>. How does giving the model a longer observation interval affect its prediction beyond the observed data?</li>
+                <li>Now tune the parameters together. Find a combination that gives both a small training loss and a good future prediction. Report the parameter values you chose and explain which changes helped the most.</li>
               </ol>
             </div>
           </div>
