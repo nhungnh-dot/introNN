@@ -4,7 +4,7 @@
 <body>
 <script>
 (async()=>{
-  const version='20261013-1';
+  const version='20261013-2';
 
   async function loadText(name){
     const r=await fetch(`${name}?v=${version}`,{cache:'no-store'});
@@ -50,6 +50,37 @@
   addonText=addonText.replace(/5\. Neural ODEs/g,'4. Neural ODEs');
   // The Neural ODE add-on used to add a Continue button after CNN. Add it after Gradient Descent instead.
   addonText=addonText.replace("const cnn=document.getElementById('panel-cnn');","const cnn=document.getElementById('panel-learn');");
+
+  // Turn the solve-it-yourself activity into a worked example while keeping the hidden
+  // interactive elements in the DOM so the existing training code remains untouched.
+  addonText=addonText.replace(
+    'Interactive example · Solve an ODE, then compare with the Neural ODE',
+    'Worked example · From a known solution to learning from observations'
+  );
+  addonText=addonText.replace(
+    '<p class="small">\n        First solve this ODE yourself:\n      </p>',
+    '<p class="small">\n        To make the Neural ODE experiment easy to check, start with a simple ODE whose exact solution is known:\n      </p>'
+  );
+  addonText=addonText.replace(
+    '<p class="small">\n        Find an explicit formula for\n        \\(z(t)\\).\n        Then enter your answer below using <code>t</code>.\n      </p>',
+    '<p class="small">The exact solution is</p>\n      <div class="card center math-cell" style="font-size:1.2em">\n        \\[z(t)=2e^{-0.5t}.\\]\n      </div>\n      <div class="card panel small" style="margin-top:12px">\n        <strong>Now change perspective:</strong> imagine that the differential equation and exact formula are hidden. We keep only the observed values for \\(0\\le t\\le3\\) shown below. The Neural ODE will learn \\(f_\\theta\\) from those observations and then continue the trajectory beyond \\(t=3\\). Because we know the exact solution in this example, we can reveal it after training as a benchmark for comparison.\n      </div>'
+  );
+  addonText=addonText.replace(
+    '<div class="card" style="margin-top:10px;padding:14px;max-width:760px">',
+    '<div class="card" style="display:none;margin-top:10px;padding:14px;max-width:760px">'
+  );
+  addonText=addonText.replace(
+    '<div id="odeStudentFeedback" class="card panel small" style="margin-top:12px">',
+    '<div id="odeStudentFeedback" class="card panel small" style="display:none;margin-top:12px">'
+  );
+  addonText=addonText.replace(
+    '<div class="card" style="margin-top:14px">\n        <div class="h3">Your analytic solution</div>',
+    '<div class="card" style="display:none;margin-top:14px">\n        <div class="h3">Your analytic solution</div>'
+  );
+  addonText=addonText.replace(
+    '<button id="odeResetExampleBtn" class="btn ghost">Reset all</button>',
+    '<button id="odeResetExampleBtn" class="btn ghost" style="display:none">Reset all</button>'
+  );
 
   lesson=lesson.replace('</body>',addonText+'\n</body>');
 
