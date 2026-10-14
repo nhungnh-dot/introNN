@@ -89,12 +89,13 @@ utton" class="btn ghost ode-math-key" style="min-height:48px" data-insert="+">+<
             <div class="card panel small" style="margin-top:9px;padding:9px 11px">
               <strong>Experiment questions</strong>
               <ol style="margin:5px 0 0 18px;padding:0">
-                <li>Run the starter code first. Record the training loss and describe how well the future prediction follows the true solution.</li>
-                <li>Change <code>learningRate</code> while keeping the other parameters fixed. Can you find a value that lowers the loss quickly without making the training unstable?</li>
-                <li>Change <code>trainSteps</code>. About how many steps are needed before additional training gives very little improvement?</li>
-                <li>Try different values of <code>hiddenSize</code> and <code>timeStep</code>. Do larger networks or smaller time steps always give a better prediction?</li>
-                <li>Change <code>observationEnd</code>. How does giving the model a longer observation interval affect its prediction beyond the observed data?</li>
-                <li>Now tune the parameters together. Find a combination that gives both a small training loss and a good future prediction. Report the parameter values you chose and explain which changes helped the most.</li>
+                <li>Run the starter code first and record the loss and the future prediction.</li>
+                <li>Keep everything else fixed and try <code>learningRate = 0.01, 0.03, 0.05, 0.10</code>. Which value gives a smooth decrease in the loss and a good prediction?</li>
+                <li>Try <code>trainSteps = 50, 100, 200, 400</code>. Use the loss table to decide when more iterations stop helping very much.</li>
+                <li>Try <code>hiddenSize = 2, 3, 5</code>. Does adding more hidden neurons always improve the result?</li>
+                <li>Try <code>timeStep = 0.10, 0.05, 0.02</code>. What changes in the fitted and predicted trajectories?</li>
+                <li>Try <code>observationEnd = 2, 3, 4, 5</code>. How does extending the observation interval affect the future prediction?</li>
+                <li>Finally, tune the parameters together. Find a combination with a small loss and a future prediction that stays close to the true solution. Report your parameter values and explain which changes mattered most.</li>
               </ol>
             </div>
           </div>
