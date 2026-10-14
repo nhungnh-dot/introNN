@@ -4,7 +4,7 @@
 <body>
 <script>
 (async()=>{
-  const version='20261013-5';
+  const version='20261013-6';
 
   async function loadText(name){
     const r=await fetch(`${name}?v=${version}`,{cache:'no-store'});
@@ -121,6 +121,9 @@
     '<li>Does a small training loss guarantee a perfect future prediction?</li>',
     '<li>Change <code>time_step</code>. Does the numerical trajectory change noticeably? Then compare different observation windows.</li>'
   );
+
+  // The runnable code now contains the experiment parameters, so remove the older settings panel.
+  addonText += '\n<script>(function(){const e=document.getElementById("odeExperimentCode");if(e){const c=e.closest(".card");if(c)c.remove();}})();<\/script>';
 
   lesson=lesson.replace('</body>',addonText+'\n</body>');
 
