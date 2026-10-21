@@ -109,11 +109,41 @@
       <div class="card">
         <div class="h3">2A.2 · Differentiate the sigmoid output with respect to z</div>
         <p class="small">The neuron output is</p>
-        <div class="card center math-cell">\[y=\sigma(z)=\frac{1}{1+e^{-z}}\]</div>
-        <p class="small">Now the variable is \(z\). Differentiating the sigmoid gives</p>
-        <div class="card center math-cell">\[\frac{\partial y}{\partial z}=\sigma(z)(1-\sigma(z))\]</div>
-        <p class="small">Since \(y=\sigma(z)\), we can write the same derivative more conveniently as</p>
-        <div class="card center math-cell">\[\frac{\partial y}{\partial z}=y(1-y)\]</div>
+        <div class="card center math-cell">\[y=\sigma(z)=\frac{1}{1+e^{-z}}=(1+e^{-z})^{-1}\]</div>
+
+        <div class="card panel">
+          <div class="h3">Your turn: derive \(\frac{\partial y}{\partial z}\)</div>
+          <p class="small">Try each step before opening the answer.</p>
+
+          <p class="small"><strong>Step 1.</strong> Treat \(1+e^{-z}\) as the inside function. Differentiate the outside power \((\cdot)^{-1}\).</p>
+          <details class="card">
+            <summary>Reveal Step 1</summary>
+            <div class="center math-cell">\[\frac{dy}{dz}=-(1+e^{-z})^{-2}\frac{d}{dz}(1+e^{-z})\]</div>
+          </details>
+
+          <p class="small"><strong>Step 2.</strong> Now differentiate \(1+e^{-z}\). What is \(\frac{d}{dz}e^{-z}\)?</p>
+          <details class="card">
+            <summary>Reveal Step 2</summary>
+            <div class="center math-cell">\[\frac{d}{dz}(1+e^{-z})=-e^{-z}\]</div>
+          </details>
+
+          <p class="small"><strong>Step 3.</strong> Substitute this result and simplify the two negative signs.</p>
+          <details class="card">
+            <summary>Reveal Step 3</summary>
+            <div class="center math-cell">\[\frac{dy}{dz}=\frac{e^{-z}}{(1+e^{-z})^2}\]</div>
+          </details>
+
+          <p class="small"><strong>Step 4.</strong> Use \(y=\frac{1}{1+e^{-z}}\). Can you rewrite the derivative using only \(y\)?</p>
+          <details class="card">
+            <summary>Reveal final form</summary>
+            <div class="center math-cell">\[
+              \frac{dy}{dz}
+              =\frac{1}{1+e^{-z}}\frac{e^{-z}}{1+e^{-z}}
+              =y(1-y).
+            \]</div>
+          </details>
+        </div>
+
         <p class="small"><strong>Interpretation:</strong> this derivative measures how sensitive the neuron's output is to a small change in the weighted sum \(z\).</p>
         <div class="card panel small">
           Notice that when the sigmoid output is near 0 or near 1, the factor \(y(1-y)\) is small. Around <span class="mono">y=0.5</span>, it is larger.
