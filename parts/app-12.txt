@@ -22,12 +22,11 @@ t=y.toFixed(3);
 
   function vals(w1,w2,b,x1,x2,t){const z=w1*x1+w2*x2+b,y=sig(z),L=(y-t)**2,dLdy=2*(y-t),dydz=y*(1-y),delta=dLdy*dydz;return{z,y,L,dLdy,dydz,delta,g1:delta*x1,g2:delta*x2,gb:delta}}
   function renderBP(){
-    const x1=+$('bp-x1').value,x2=+$('bp-x2').value,w1=+$('bp-w1').value,w2=+$('bp-w2').value,b=+$('bp-b').value,t=+$('bp-t').value,h=+$('bp-h').value,s=vals(w1,w2,b,x1,x2,t);
-    $('bp-x1-v').textContent=x1.toFixed(1);$('bp-x2-v').textContent=x2.toFixed(1);$('bp-w1-v').textContent=w1.toFixed(1);$('bp-w2-v').textContent=w2.toFixed(1);$('bp-b-v').textContent=b.toFixed(1);$('bp-t-v').textContent=t.toFixed(1);$('bp-h-v').textContent=h.toFixed(3);
+    const x1=+$('bp-x1').value,x2=+$('bp-x2').value,w1=+$('bp-w1').value,w2=+$('bp-w2').value,b=+$('bp-b').value,t=+$('bp-t').value,s=vals(w1,w2,b,x1,x2,t);
+    $('bp-x1-v').textContent=x1.toFixed(1);$('bp-x2-v').textContent=x2.toFixed(1);$('bp-w1-v').textContent=w1.toFixed(1);$('bp-w2-v').textContent=w2.toFixed(1);$('bp-b-v').textContent=b.toFixed(1);$('bp-t-v').textContent=t.toFixed(1);
     $('bp-z').textContent=s.z.toFixed(4);$('bp-y').textContent=s.y.toFixed(4);$('bp-L').textContent=s.L.toFixed(5);$('bp-dLdy').textContent=s.dLdy.toFixed(4);$('bp-dydz').textContent=s.dydz.toFixed(4);$('bp-delta').textContent=s.delta.toFixed(4);$('bp-g1').textContent=s.g1.toFixed(4);$('bp-g2').textContent=s.g2.toFixed(4);$('bp-gb').textContent=s.gb.toFixed(4);
-    const fd=(vals(w1+h,w2,b,x1,x2,t).L-s.L)/h;$('bp-exact').textContent=s.g1.toFixed(6);$('bp-fd').textContent=fd.toFixed(6);$('bp-error').textContent=Math.abs(fd-s.g1).toExponential(2);
   }
-  ['bp-x1','bp-x2','bp-w1','bp-w2','bp-b','bp-t','bp-h'].forEach(id=>$(id).addEventListener('input',renderBP));
+  ['bp-x1','bp-x2','bp-w1','bp-w2','bp-b','bp-t'].forEach(id=>$(id).addEventListener('input',renderBP));
 
   let gd={w1:1,w2:.5,b:0}, gdHistory=[];
   function recordGD(alphaUsed=null){
