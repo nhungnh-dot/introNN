@@ -200,18 +200,18 @@ x_2+b\)<br><br>
           Same network as above, now with live values from the sliders.
         </p>
 
-        <div class="grid cards3 small center mono" style="margin-top:10px">
-          <div class="card">
-            <div>\(\frac{\partial L}{\partial w_1}=\delta x_1\)</div>
-            <strong id="bp-g1"></strong>
+        <div class="grid cards3 center mono" style="margin-top:14px">
+          <div class="card" style="padding:22px 16px;min-height:135px;display:flex;flex-direction:column;justify-content:center">
+            <div style="font-size:18px">\(\frac{\partial L}{\partial w_1}=\delta x_1\)</div>
+            <strong id="bp-g1" style="font-size:22px;margin-top:10px"></strong>
           </div>
-          <div class="card">
-            <div>\(\frac{\partial L}{\partial w_2}=\delta x_2\)</div>
-            <strong id="bp-g2"></strong>
+          <div class="card" style="padding:22px 16px;min-height:135px;display:flex;flex-direction:column;justify-content:center">
+            <div style="font-size:18px">\(\frac{\partial L}{\partial w_2}=\delta x_2\)</div>
+            <strong id="bp-g2" style="font-size:22px;margin-top:10px"></strong>
           </div>
-          <div class="card">
-            <div>\(\frac{\partial L}{\partial b}=\delta\)</div>
-            <strong id="bp-gb"></strong>
+          <div class="card" style="padding:22px 16px;min-height:135px;display:flex;flex-direction:column;justify-content:center">
+            <div style="font-size:18px">\(\frac{\partial L}{\partial b}=\delta\)</div>
+            <strong id="bp-gb" style="font-size:22px;margin-top:10px"></strong>
           </div>
         </div>
       </div>
