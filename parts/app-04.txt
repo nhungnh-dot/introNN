@@ -40,13 +40,76 @@ x_2+b\)<br><br>
       <p class="small">Now use the local derivatives from Step 2A to propagate the effect of the loss backward.</p>
       <p class="small">First combine the loss derivative and the activation derivative:</p>
       <div class="card center math-cell">\[\delta=\frac{\partial L}{\partial z}=\frac{\partial L}{\partial y}\frac{\partial y}{\partial z}\]</div>
-      <p class="small">Then continue one more step backward to the trainable parameters:</p>
-      <div class="grid cards3 small center mono">
-        <div class="card">\(\frac{\partial L}{\partial w_1}=\delta x_1\)</div>
-        <div class="card">\(\frac{\partial L}{\partial w_2}=\delta x_2\)</div>
-        <div class="card">\(\frac{\partial L}{\partial b}=\delta\)</div>
+      <p class="small">Then continue backward through the network to the trainable parameters:</p>
+      <div class="card" style="padding:14px;overflow-x:auto">
+        <svg viewBox="0 0 920 350" style="width:100%;min-width:760px" aria-label="Backpropagation network diagram">
+          <defs>
+            <marker id="bpArrowBack" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="var(--accent)"></path>
+            </marker>
+          </defs>
+
+          <g stroke="var(--border)" stroke-width="4" fill="none">
+            <line x1="150" y1="175" x2="330" y2="175"/>
+            <line x1="390" y1="175" x2="570" y2="175"/>
+            <line x1="630" y1="175" x2="800" y2="175"/>
+          </g>
+
+          <g fill="var(--panel)" stroke="var(--border)" stroke-width="3">
+            <circle cx="115" cy="100" r="38"/>
+            <circle cx="115" cy="175" r="38"/>
+            <circle cx="115" cy="250" r="38"/>
+            <circle cx="360" cy="175" r="52" stroke="var(--accent)"/>
+            <circle cx="600" cy="175" r="52" stroke="var(--s2)"/>
+            <circle cx="835" cy="175" r="52" stroke="var(--s3)"/>
+          </g>
+
+          <g fill="var(--text)" text-anchor="middle">
+            <text x="115" y="106" font-size="20" font-family="Times New Roman, serif" font-style="italic">w₁</text>
+            <text x="115" y="181" font-size="20" font-family="Times New Roman, serif" font-style="italic">w₂</text>
+            <text x="115" y="256" font-size="20" font-family="Times New Roman, serif" font-style="italic">b</text>
+            <text x="360" y="169" font-size="17">weighted sum</text>
+            <text x="360" y="193" font-size="20" font-family="Times New Roman, serif" font-style="italic">z</text>
+            <text x="600" y="169" font-size="17">activation</text>
+            <text x="600" y="193" font-size="20" font-family="Times New Roman, serif" font-style="italic">y</text>
+            <text x="835" y="169" font-size="17">loss</text>
+            <text x="835" y="193" font-size="20" font-family="Times New Roman, serif" font-style="italic">L</text>
+          </g>
+
+          <g stroke="var(--border)" stroke-width="4">
+            <line x1="153" y1="100" x2="322" y2="158"/>
+            <line x1="153" y1="175" x2="308" y2="175"/>
+            <line x1="153" y1="250" x2="322" y2="192"/>
+          </g>
+
+          <g stroke="var(--accent)" stroke-width="4" fill="none" marker-end="url(#bpArrowBack)">
+            <path d="M785 150 C730 105,690 105,650 145"/>
+            <path d="M550 145 C500 105,450 105,410 145"/>
+            <path d="M322 205 C260 225,215 235,158 245"/>
+            <path d="M310 175 C245 175,220 175,158 175"/>
+            <path d="M322 145 C260 125,215 115,158 105"/>
+          </g>
+
+          <g fill="var(--accent)" font-size="15" text-anchor="middle">
+            <text x="716" y="92">∂L/∂y = 2(y−t)</text>
+            <text x="480" y="92">∂y/∂z = y(1−y)</text>
+            <text x="240" y="104">∂z/∂w₁ = x₁</text>
+            <text x="230" y="165">∂z/∂w₂ = x₂</text>
+            <text x="236" y="281">∂z/∂b = 1</text>
+          </g>
+
+          <g fill="var(--text)" font-size="15">
+            <text x="690" y="322"><tspan font-weight="700">Backward:</tspan> start at the loss and multiply derivatives along each path.</text>
+          </g>
+        </svg>
+
+        <div class="grid cards3 small center mono" style="margin-top:10px">
+          <div>\(\frac{\partial L}{\partial w_1}=\delta x_1\)</div>
+          <div>\(\frac{\partial L}{\partial w_2}=\delta x_2\)</div>
+          <div>\(\frac{\partial L}{\partial b}=\delta\)</div>
+        </div>
       </div>
-      <p class="small">So Step 2A computes the derivative pieces, and Step 2B assembles those pieces into the gradients the network needs for learning.</p>
+      <p class="small">So Step 2A computes the local derivative pieces, and Step 2B sends those sensitivities backward through the network to produce the gradients used for learning.</p>
     </div>
 
     <div class="grid two">
