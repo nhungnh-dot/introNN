@@ -99,7 +99,7 @@ x_2+b\)<br><br>
           </g>
 
           <g fill="var(--text)" font-size="15">
-            <text x="690" y="322"><tspan font-weight="700">Backward:</tspan> start at the loss and multiply derivatives along each path.</text>
+            <text x="690" y="314" text-anchor="middle"><tspan x="690" dy="0" font-weight="700">Backward pass</tspan><tspan x="690" dy="20">Start at the loss and multiply derivatives along each path.</tspan></text>
           </g>
         </svg>
 
