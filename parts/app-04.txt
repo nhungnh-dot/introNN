@@ -204,7 +204,6 @@ x_2+b\)<br><br>
           Same network as above, now with live values from the sliders.
         </p>
       </div>
-    </div>
 
     <div class="card panel">
       <div class="h3">Verification using an approximation</div>
