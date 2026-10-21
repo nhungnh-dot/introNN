@@ -90,7 +90,7 @@ x_2+b\)<br><br>
             <path d="M322 145 C260 125,215 115,158 105"/>
           </g>
 
-          <g fill="var(--accent)" font-size="15" text-anchor="middle">
+          <g fill="var(--accent)" font-size="21" text-anchor="middle">
             <text x="716" y="92">∂L/∂y = 2(y−t)</text>
             <text x="480" y="92">∂y/∂z = y(1−y)</text>
             <text x="240" y="104">∂z/∂w₁ = x₁</text>
@@ -104,7 +104,7 @@ x_2+b\)<br><br>
           <strong>Backward pass:</strong> start at the loss and multiply derivatives along each path.
         </p>
 
-        <div class="grid cards3 small center mono" style="margin-top:10px">
+        <div class="grid cards3 center mono" style="margin-top:10px;font-size:28px;line-height:1.25">
           <div>\(\frac{\partial L}{\partial w_1}=\delta x_1\)</div>
           <div>\(\frac{\partial L}{\partial w_2}=\delta x_2\)</div>
           <div>\(\frac{\partial L}{\partial b}=\delta\)</div>
