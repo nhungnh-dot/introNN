@@ -108,40 +108,64 @@
 
       <div class="card">
         <div class="h3">2A.2 · Differentiate the sigmoid output with respect to z</div>
-        <p class="small">The neuron output is</p>
+        <p class="small">Start with</p>
         <div class="card center math-cell">\[y=\sigma(z)=\frac{1}{1+e^{-z}}=(1+e^{-z})^{-1}\]</div>
 
         <div class="card panel">
-          <div class="h3">Your turn: derive \(\frac{\partial y}{\partial z}\)</div>
-          <p class="small">Try each step before opening the answer.</p>
+          <div class="h3">Build the derivative yourself</div>
+          <p class="small">Choose an answer at each step, then check it before moving on.</p>
 
-          <p class="small"><strong>Step 1.</strong> Treat \(1+e^{-z}\) as the inside function. Differentiate the outside power \((\cdot)^{-1}\).</p>
-          <details class="card">
-            <summary>Reveal Step 1</summary>
-            <div class="center math-cell">\[\frac{dy}{dz}=-(1+e^{-z})^{-2}\frac{d}{dz}(1+e^{-z})\]</div>
-          </details>
+          <div class="card" style="margin-top:10px">
+            <p><strong>Step 1.</strong> Let \(u=1+e^{-z}\). Since \(y=u^{-1}\), what is \(\frac{dy}{du}\)?</p>
+            <select id="sig-step1" style="width:100%">
+              <option value="">Choose one</option>
+              <option value="a">\(u^{-2}\)</option>
+              <option value="b">\(-u^{-2}\)</option>
+              <option value="c">\(-u^{-1}\)</option>
+            </select>
+            <button type="button" class="btn" id="sig-check1" style="margin-top:8px">Check Step 1</button>
+            <div id="sig-feedback1" class="small" style="margin-top:8px" aria-live="polite"></div>
+          </div>
 
-          <p class="small"><strong>Step 2.</strong> Now differentiate \(1+e^{-z}\). What is \(\frac{d}{dz}e^{-z}\)?</p>
-          <details class="card">
-            <summary>Reveal Step 2</summary>
-            <div class="center math-cell">\[\frac{d}{dz}(1+e^{-z})=-e^{-z}\]</div>
-          </details>
+          <div class="card" style="margin-top:10px">
+            <p><strong>Step 2.</strong> Now differentiate \(u=1+e^{-z}\). What is \(\frac{du}{dz}\)?</p>
+            <select id="sig-step2" style="width:100%">
+              <option value="">Choose one</option>
+              <option value="a">\(e^{-z}\)</option>
+              <option value="b">\(-e^{-z}\)</option>
+              <option value="c">\(-ze^{-z}\)</option>
+            </select>
+            <button type="button" class="btn" id="sig-check2" style="margin-top:8px">Check Step 2</button>
+            <div id="sig-feedback2" class="small" style="margin-top:8px" aria-live="polite"></div>
+          </div>
 
-          <p class="small"><strong>Step 3.</strong> Substitute this result and simplify the two negative signs.</p>
-          <details class="card">
-            <summary>Reveal Step 3</summary>
-            <div class="center math-cell">\[\frac{dy}{dz}=\frac{e^{-z}}{(1+e^{-z})^2}\]</div>
-          </details>
+          <div class="card" style="margin-top:10px">
+            <p><strong>Step 3.</strong> Multiply \(\frac{dy}{du}\frac{du}{dz}\). Which derivative do you get?</p>
+            <select id="sig-step3" style="width:100%">
+              <option value="">Choose one</option>
+              <option value="a">\(\frac{e^{-z}}{(1+e^{-z})^2}\)</option>
+              <option value="b">\(-\frac{e^{-z}}{1+e^{-z}}\)</option>
+              <option value="c">\(\frac{1}{(1+e^{-z})^2}\)</option>
+            </select>
+            <button type="button" class="btn" id="sig-check3" style="margin-top:8px">Check Step 3</button>
+            <div id="sig-feedback3" class="small" style="margin-top:8px" aria-live="polite"></div>
+          </div>
 
-          <p class="small"><strong>Step 4.</strong> Use \(y=\frac{1}{1+e^{-z}}\). Can you rewrite the derivative using only \(y\)?</p>
-          <details class="card">
-            <summary>Reveal final form</summary>
-            <div class="center math-cell">\[
-              \frac{dy}{dz}
-              =\frac{1}{1+e^{-z}}\frac{e^{-z}}{1+e^{-z}}
-              =y(1-y).
-            \]</div>
-          </details>
+          <div class="card" style="margin-top:10px">
+            <p><strong>Step 4.</strong> Since \(y=\frac{1}{1+e^{-z}}\), rewrite the derivative using only \(y\).</p>
+            <select id="sig-step4" style="width:100%">
+              <option value="">Choose one</option>
+              <option value="a">\(y^2\)</option>
+              <option value="b">\(1-y\)</option>
+              <option value="c">\(y(1-y)\)</option>
+            </select>
+            <button type="button" class="btn primary" id="sig-check4" style="margin-top:8px">Check final step</button>
+            <div id="sig-feedback4" class="small" style="margin-top:8px" aria-live="polite"></div>
+          </div>
+
+          <div id="sig-final-derivative" class="card center math-cell hidden" style="margin-top:12px">
+            \[\boxed{\frac{\partial y}{\partial z}=y(1-y)}\]
+          </div>
         </div>
 
         <p class="small"><strong>Interpretation:</strong> this derivative measures how sensitive the neuron's output is to a small change in the weighted sum \(z\).</p>
