@@ -98,10 +98,11 @@ x_2+b\)<br><br>
             <text x="236" y="281">∂z/∂b = 1</text>
           </g>
 
-          <g fill="var(--text)" font-size="15">
-            <text x="690" y="314" text-anchor="middle"><tspan x="690" dy="0" font-weight="700">Backward pass</tspan><tspan x="690" dy="20">Start at the loss and multiply derivatives along each path.</tspan></text>
-          </g>
         </svg>
+
+        <p class="small center" style="margin:8px 0 10px">
+          <strong>Backward pass:</strong> start at the loss and multiply derivatives along each path.
+        </p>
 
         <div class="grid cards3 small center mono" style="margin-top:10px">
           <div>\(\frac{\partial L}{\partial w_1}=\delta x_1\)</div>
