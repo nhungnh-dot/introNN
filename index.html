@@ -4,7 +4,7 @@
 <body>
 <script>
 (async()=>{
-  const version='20261021-1';
+  const version='20261021-2';
 
   async function loadText(name){
     const r=await fetch(`${name}?v=${version}`,{cache:'no-store'});
@@ -32,8 +32,8 @@
   }
 
   lesson=lesson.replace(
-    '<button class="btn tab" data-tab="cnn" style="display:none" aria-hidden="true">5. Images & CNNs</button>',
-    '<button class="btn tab" data-tab="cnn" style="display:none" aria-hidden="true">4. Images & CNNs</button>'
+    '<button class="btn tab" data-tab="cnn">5. Images & CNNs</button>',
+    '<button class="btn tab" data-tab="cnn" style="display:none" aria-hidden="true">5. Images & CNNs</button>'
   );
 
   lesson=lesson.replace(/data-next="cnn"/g,'data-next="neuralode"');
