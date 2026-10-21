@@ -162,6 +162,125 @@ t=y.toFixed(3);
     gd={w1:1,w2:.5,b:0}; gdHistory=[]; recordGD(); renderGD();
   });
 
+
+
+  // Section 4: initialization and data experiment
+  const initStarts=[
+    {name:'A',w1:-3,w2:3,path:'bp-path-a'},
+    {name:'B',w1:3,w2:3,path:'bp-path-b'},
+    {name:'C',w1:3,w2:-3,path:'bp-path-c'}
+  ];
+  const initTeacher={w1:2,w2:-1};
+  const initData={
+    one:[[1,1]],
+    many:[[1,1],[1,0],[0,1],[-1,1],[1,-1],[2,1],[-1,-2]]
+  };
+  let initMode='one';
+
+  function initTarget(x1,x2){
+    return sig(initTeacher.w1*x1+initTeacher.w2*x2);
+  }
+  function initLossGrad(w1,w2,data){
+    let loss=0,g1=0,g2=0;
+    data.forEach(([x1,x2])=>{
+      const t=initTarget(x1,x2), y=sig(w1*x1+w2*x2), e=y-t;
+      loss+=e*e;
+      const d=2*e*y*(1-y);
+      g1+=d*x1; g2+=d*x2;
+    });
+    return {loss:loss/data.length,g1:g1/data.length,g2:g2/data.length};
+  }
+  function initTrain(start,data){
+    let w1=start.w1,w2=start.w2;
+    const history=[{w1,w2}];
+    const steps=600,alpha=1;
+    for(let k=0;k<steps;k++){
+      const s=initLossGrad(w1,w2,data);
+      w1-=alpha*s.g1; w2-=alpha*s.g2;
+      if((k+1)%5===0) history.push({w1,w2});
+    }
+    return {w1,w2,loss:initLossGrad(w1,w2,data).loss,history};
+  }
+
+  const initW=620,initH=430,initPad=55;
+  const initMin=-4.2,initMax=4.2;
+  const initX=w=>initPad+(w-initMin)/(initMax-initMin)*(initW-2*initPad);
+  const initY=w=>initH-initPad-(w-initMin)/(initMax-initMin)*(initH-2*initPad);
+  function initSvgEl(type,attrs,textValue=''){
+    const e=document.createElementNS('http://www.w3.org/2000/svg',type);
+    Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));
+    if(textValue)e.textContent=textValue;
+    return e;
+  }
+  function drawInitBase(){
+    const grid=$('bp-init-grid'),axes=$('bp-init-axes'),ref=$('bp-init-reference'),pts=$('bp-init-points');
+    if(!grid||!axes||!ref||!pts) return;
+    grid.innerHTML='';axes.innerHTML='';ref.innerHTML='';pts.innerHTML='';
+    [-4,-2,0,2,4].forEach(v=>{
+      grid.appendChild(initSvgEl('line',{x1:initX(v),y1:initY(initMin),x2:initX(v),y2:initY(initMax),stroke:'var(--border)','stroke-width':'1'}));
+      grid.appendChild(initSvgEl('line',{x1:initX(initMin),y1:initY(v),x2:initX(initMax),y2:initY(v),stroke:'var(--border)','stroke-width':'1'}));
+      axes.appendChild(initSvgEl('text',{x:initX(v),y:initH-initPad+22,'text-anchor':'middle',fill:'var(--muted)','font-size':'12'},String(v)));
+      axes.appendChild(initSvgEl('text',{x:initPad-12,y:initY(v)+4,'text-anchor':'end',fill:'var(--muted)','font-size':'12'},String(v)));
+    });
+    axes.appendChild(initSvgEl('line',{x1:initX(initMin),y1:initY(0),x2:initX(initMax),y2:initY(0),stroke:'var(--text)','stroke-width':'1.5'}));
+    axes.appendChild(initSvgEl('line',{x1:initX(0),y1:initY(initMin),x2:initX(0),y2:initY(initMax),stroke:'var(--text)','stroke-width':'1.5'}));
+    axes.appendChild(initSvgEl('text',{x:initW-22,y:initY(0)-10,'text-anchor':'end',fill:'var(--text)','font-size':'13'},'w₁'));
+    axes.appendChild(initSvgEl('text',{x:initX(0)+12,y:18,fill:'var(--text)','font-size':'13'},'w₂'));
+
+    if(initMode==='one'){
+      const p1={w1:initMin,w2:1-initMin},p2={w1:initMax,w2:1-initMax};
+      ref.appendChild(initSvgEl('line',{x1:initX(p1.w1),y1:initY(p1.w2),x2:initX(p2.w1),y2:initY(p2.w2),stroke:'var(--muted)','stroke-width':'2','stroke-dasharray':'7 6'}));
+      ref.appendChild(initSvgEl('text',{x:initX(-2.5),y:initY(3.5)-10,fill:'var(--muted)','font-size':'12'},'many exact fits: w₁ + w₂ = 1'));
+    }else{
+      ref.appendChild(initSvgEl('circle',{cx:initX(initTeacher.w1),cy:initY(initTeacher.w2),r:'7',fill:'var(--text)'}));
+      ref.appendChild(initSvgEl('text',{x:initX(initTeacher.w1)+10,y:initY(initTeacher.w2)-10,fill:'var(--text)','font-size':'12'},'data-generating weights'));
+    }
+
+    initStarts.forEach((s,i)=>{
+      const colors=['var(--accent)','var(--s2)','var(--s3)'];
+      pts.appendChild(initSvgEl('circle',{cx:initX(s.w1),cy:initY(s.w2),r:'6',fill:colors[i],stroke:'var(--text)','stroke-width':'1'}));
+      pts.appendChild(initSvgEl('text',{x:initX(s.w1)+9,y:initY(s.w2)-9,fill:colors[i],'font-size':'12'},'Start '+s.name));
+    });
+  }
+  function setInitMode(mode){
+    initMode=mode;
+    const one=$('bp-data-one'),many=$('bp-data-many'),note=$('bp-data-note'),tbody=$('bp-init-results');
+    if(!one||!many||!note||!tbody) return;
+    one.classList.toggle('primary',mode==='one');
+    many.classList.toggle('primary',mode==='many');
+    note.innerHTML=mode==='one'
+      ? '<strong>One point:</strong> the model sees only (x₁,x₂)=(1,1). One observation cannot uniquely determine two weights, so there is a whole line of equally good fits.'
+      : '<strong>Seven varied points:</strong> the model sees inputs pointing in different directions. These extra constraints make the weights much more identifiable.';
+    ['bp-path-a','bp-path-b','bp-path-c'].forEach(id=>{const p=$(id);if(p)p.setAttribute('d','');});
+    tbody.innerHTML='';
+    drawInitBase();
+  }
+  function runInitExperiment(){
+    const data=initData[initMode],tbody=$('bp-init-results'),pts=$('bp-init-points');
+    if(!tbody||!pts) return;
+    tbody.innerHTML='';
+    const colors=['var(--accent)','var(--s2)','var(--s3)'];
+    initStarts.forEach((s,i)=>{
+      const r=initTrain(s,data);
+      const path=$(s.path);
+      let d='';
+      r.history.forEach((p,j)=>{d+=(j?'L':'M')+initX(p.w1)+' '+initY(p.w2)+' ';});
+      if(path)path.setAttribute('d',d);
+      pts.appendChild(initSvgEl('circle',{cx:initX(r.w1),cy:initY(r.w2),r:'7',fill:colors[i],stroke:'var(--text)','stroke-width':'1.5'}));
+      pts.appendChild(initSvgEl('text',{x:initX(r.w1)+10,y:initY(r.w2)+15,fill:colors[i],'font-size':'12'},'End '+s.name));
+      const tr=document.createElement('tr');
+      tr.innerHTML='<td>'+s.name+'</td><td>('+s.w1.toFixed(1)+', '+s.w2.toFixed(1)+')</td><td>('+r.w1.toFixed(3)+', '+r.w2.toFixed(3)+')</td><td>'+r.loss.toExponential(2)+'</td>';
+      tbody.appendChild(tr);
+    });
+  }
+  if($('bp-data-one')){
+    $('bp-data-one').addEventListener('click',()=>setInitMode('one'));
+    $('bp-data-many').addEventListener('click',()=>setInitMode('many'));
+    $('bp-run-all').addEventListener('click',runInitExperiment);
+    $('bp-reset-all').addEventListener('click',()=>setInitMode(initMode));
+    setInitMode('one');
+  }
+
   renderSig(); renderSim(); renderBP(); gdHistory=[]; recordGD(); renderGD();
 })();
 </script>
