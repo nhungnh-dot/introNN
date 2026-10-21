@@ -123,76 +123,80 @@ x_2+b\)<br><br>
         <label>b <span id="bp-b-v" style="float:right">0.0</span><input id="bp-b" type="range" min="-2" max="2" step="0.1" value="0"></label>
         <label>target t <span id="bp-t-v" style="float:right">1.0</span><input id="bp-t" type="range" min="0" max="1" step="1" value="1"></label>
       </div>
-      <div class="card" style="padding:14px">
+      <div class="card" style="padding:14px;overflow-x:auto">
         <div class="h3" style="margin-bottom:8px">Live backpropagation network</div>
-        <div style="overflow-x:auto">
-          <div style="min-width:0;padding:8px 4px 4px">
-            <div style="display:grid;grid-template-columns:minmax(105px,1fr) 70px minmax(120px,1.1fr) 78px minmax(120px,1fr);align-items:center;gap:8px">
-              <div style="display:grid;gap:14px">
-                <div class="card center small" style="padding:10px">
-                  <div><b>\(w_1\)</b></div>
-                  <div class="muted">gradient</div>
-                  <strong id="bp-g1"></strong>
-                </div>
-                <div class="card center small" style="padding:10px">
-                  <div><b>\(w_2\)</b></div>
-                  <div class="muted">gradient</div>
-                  <strong id="bp-g2"></strong>
-                </div>
-                <div class="card center small" style="padding:10px">
-                  <div><b>\(b\)</b></div>
-                  <div class="muted">gradient</div>
-                  <strong id="bp-gb"></strong>
-                </div>
-              </div>
+        <svg viewBox="0 0 900 360" style="width:100%;min-width:0;display:block" aria-label="Interactive backpropagation network with live values">
+          <defs>
+            <marker id="bpLiveArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="var(--accent)"></path>
+            </marker>
+          </defs>
 
-              <div class="center small">
-                <div style="font-size:24px">←</div>
-                <div class="muted">backprop</div>
-              </div>
+          <g stroke="var(--border)" stroke-width="4" fill="none">
+            <line x1="150" y1="92" x2="330" y2="150"/>
+            <line x1="150" y1="180" x2="320" y2="180"/>
+            <line x1="150" y1="268" x2="330" y2="210"/>
+            <line x1="420" y1="180" x2="570" y2="180"/>
+            <line x1="660" y1="180" x2="805" y2="180"/>
+          </g>
 
-              <div class="card center" style="padding:14px;border:2px solid var(--accent)">
-                <div class="small muted">weighted sum</div>
-                <div style="font-size:20px"><b>\(z\)</b></div>
-                <strong id="bp-z" style="font-size:18px"></strong>
-                <hr style="margin:10px 0">
-                <div class="small">\(\delta=\frac{\partial L}{\partial z}\)</div>
-                <strong id="bp-delta"></strong>
-              </div>
+          <g fill="var(--panel)" stroke="var(--border)" stroke-width="3">
+            <circle cx="110" cy="92" r="42"/>
+            <circle cx="110" cy="180" r="42"/>
+            <circle cx="110" cy="268" r="42"/>
+            <circle cx="375" cy="180" r="58" stroke="var(--accent)"/>
+            <circle cx="615" cy="180" r="58" stroke="var(--s2)"/>
+            <circle cx="850" cy="180" r="58" stroke="var(--s3)"/>
+          </g>
 
-              <div class="center small">
-                <div style="font-size:24px">←</div>
-                <div>\(\frac{\partial y}{\partial z}\)</div>
-                <strong id="bp-dydz"></strong>
-              </div>
+          <g fill="var(--text)" text-anchor="middle">
+            <text x="110" y="84" font-size="19" font-family="Times New Roman, serif" font-style="italic">w₁</text>
+            <text x="110" y="105" font-size="13">∂L/∂w₁</text>
+            <text id="bp-g1" x="110" y="125" font-size="16" font-weight="700"></text>
 
-              <div class="card center" style="padding:14px;border:2px solid var(--s2)">
-                <div class="small muted">prediction</div>
-                <div style="font-size:20px"><b>\(y\)</b></div>
-                <strong id="bp-y" style="font-size:18px"></strong>
-              </div>
-            </div>
+            <text x="110" y="172" font-size="19" font-family="Times New Roman, serif" font-style="italic">w₂</text>
+            <text x="110" y="193" font-size="13">∂L/∂w₂</text>
+            <text id="bp-g2" x="110" y="213" font-size="16" font-weight="700"></text>
 
-            <div style="display:grid;grid-template-columns:minmax(105px,1fr) 70px minmax(120px,1.1fr) 78px minmax(120px,1fr) 78px minmax(120px,1fr);align-items:center;gap:8px;margin-top:12px">
-              <div></div><div></div><div></div><div></div>
-              <div></div>
-              <div class="center small">
-                <div style="font-size:24px">←</div>
-                <div>\(\frac{\partial L}{\partial y}\)</div>
-                <strong id="bp-dLdy"></strong>
-              </div>
-              <div class="card center" style="padding:14px;border:2px solid var(--s3)">
-                <div class="small muted">loss</div>
-                <div style="font-size:20px"><b>\(L\)</b></div>
-                <strong id="bp-L" style="font-size:18px"></strong>
-              </div>
-            </div>
+            <text x="110" y="260" font-size="19" font-family="Times New Roman, serif" font-style="italic">b</text>
+            <text x="110" y="281" font-size="13">∂L/∂b</text>
+            <text id="bp-gb" x="110" y="301" font-size="16" font-weight="700"></text>
 
-            <div class="small muted center" style="margin-top:12px">
-              Forward pass goes from parameters to \(z\), then \(y\), then \(L\). Backpropagation reads this path in reverse.
-            </div>
-          </div>
-        </div>
+            <text x="375" y="162" font-size="15">weighted sum</text>
+            <text x="375" y="187" font-size="21" font-family="Times New Roman, serif" font-style="italic">z</text>
+            <text id="bp-z" x="375" y="213" font-size="17" font-weight="700"></text>
+
+            <text x="615" y="162" font-size="15">prediction</text>
+            <text x="615" y="187" font-size="21" font-family="Times New Roman, serif" font-style="italic">y</text>
+            <text id="bp-y" x="615" y="213" font-size="17" font-weight="700"></text>
+
+            <text x="850" y="162" font-size="15">loss</text>
+            <text x="850" y="187" font-size="21" font-family="Times New Roman, serif" font-style="italic">L</text>
+            <text id="bp-L" x="850" y="213" font-size="17" font-weight="700"></text>
+          </g>
+
+          <g stroke="var(--accent)" stroke-width="4" fill="none" marker-end="url(#bpLiveArrow)">
+            <path d="M798 146 C748 105,710 105,665 145"/>
+            <path d="M566 145 C515 105,468 105,423 145"/>
+            <path d="M327 218 C270 235,215 250,157 263"/>
+            <path d="M318 180 C250 180,210 180,157 180"/>
+            <path d="M327 142 C270 125,215 108,157 97"/>
+          </g>
+
+          <g fill="var(--accent)" text-anchor="middle">
+            <text x="728" y="93" font-size="13">∂L/∂y</text>
+            <text id="bp-dLdy" x="728" y="114" font-size="15" font-weight="700"></text>
+
+            <text x="492" y="93" font-size="13">∂y/∂z</text>
+            <text id="bp-dydz" x="492" y="114" font-size="15" font-weight="700"></text>
+
+            <text x="375" y="284" font-size="13">δ = ∂L/∂z</text>
+            <text id="bp-delta" x="375" y="306" font-size="16" font-weight="700"></text>
+          </g>
+        </svg>
+        <p class="small center" style="margin:8px 0 0">
+          Forward pass: parameters → \(z\) → \(y\) → \(L\). Backpropagation follows the same network in reverse.
+        </p>
       </div>
     </div>
 
