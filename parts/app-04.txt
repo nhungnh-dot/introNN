@@ -68,8 +68,8 @@ x_2+b\)<br><br>
             <text x="115" y="106" font-size="20" font-family="Times New Roman, serif" font-style="italic">w₁</text>
             <text x="115" y="181" font-size="20" font-family="Times New Roman, serif" font-style="italic">w₂</text>
             <text x="115" y="256" font-size="20" font-family="Times New Roman, serif" font-style="italic">b</text>
-            <text x="360" y="169" font-size="17">weighted sum</text>
-            <text x="360" y="193" font-size="20" font-family="Times New Roman, serif" font-style="italic">z</text>
+            <text x="360" y="160" font-size="15">weighted sum</text>
+            <text x="360" y="188" font-size="21" font-family="Times New Roman, serif" font-style="italic">z</text>
             <text x="600" y="169" font-size="17">activation</text>
             <text x="600" y="193" font-size="20" font-family="Times New Roman, serif" font-style="italic">y</text>
             <text x="835" y="169" font-size="17">loss</text>
@@ -159,8 +159,8 @@ x_2+b\)<br><br>
             <text x="115" y="181" font-size="21" font-family="Times New Roman, serif" font-style="italic">w₂</text>
             <text x="115" y="256" font-size="21" font-family="Times New Roman, serif" font-style="italic">b</text>
 
-            <text x="360" y="158" font-size="15">weighted sum</text>
-            <text x="360" y="181" font-size="20" font-family="Times New Roman, serif" font-style="italic">z</text>
+            <text x="360" y="160" font-size="15">weighted sum</text>
+            <text x="360" y="188" font-size="21" font-family="Times New Roman, serif" font-style="italic">z</text>
             <text id="bp-z" x="360" y="204" font-size="16" font-weight="700"></text>
 
             <text x="600" y="158" font-size="15">activation</text>
