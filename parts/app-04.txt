@@ -113,17 +113,22 @@ x_2+b\)<br><br>
       <p class="small">So Step 2A computes the local derivative pieces, and Step 2B sends those sensitivities backward through the network to produce the gradients used for learning.</p>
     </div>
 
-    <div class="grid" style="grid-template-columns:230px minmax(0,1fr);gap:14px;align-items:start">
-      <div class="card space">
-        <div class="h3">Interactive backpropagation calculator</div>
-        <label>\(x_1\) <span id="bp-x1-v" style="float:right">1.0</span><input id="bp-x1" type="range" min="-3" max="3" step="0.1" value="1"></label>
-        <label>\(x_2\) <span id="bp-x2-v" style="float:right">2.0</span><input id="bp-x2" type="range" min="-3" max="3" step="0.1" value="2"></label>
-        <label>\(w_1\) <span id="bp-w1-v" style="float:right">0.2</span><input id="bp-w1" type="range" min="-3" max="3" step="0.1" value="0.2"></label>
-        <label>\(w_2\) <span id="bp-w2-v" style="float:right">−0.1</span><input id="bp-w2" type="range" min="-3" max="3" step="0.1" value="-0.1"></label>
-        <label>b <span id="bp-b-v" style="float:right">0.0</span><input id="bp-b" type="range" min="-2" max="2" step="0.1" value="0"></label>
-        <label>target t <span id="bp-t-v" style="float:right">1.0</span><input id="bp-t" type="range" min="0" max="1" step="1" value="1"></label>
+    <div class="card">
+      <div class="h3">Interactive backpropagation calculator</div>
+      <div class="grid cards2" style="margin-top:10px">
+        <div class="space">
+          <label>\(x_1\) <span id="bp-x1-v" style="float:right">1.0</span><input id="bp-x1" type="range" min="-3" max="3" step="0.1" value="1"></label>
+          <label>\(w_1\) <span id="bp-w1-v" style="float:right">0.2</span><input id="bp-w1" type="range" min="-3" max="3" step="0.1" value="0.2"></label>
+          <label>b <span id="bp-b-v" style="float:right">0.0</span><input id="bp-b" type="range" min="-2" max="2" step="0.1" value="0"></label>
+        </div>
+        <div class="space">
+          <label>\(x_2\) <span id="bp-x2-v" style="float:right">2.0</span><input id="bp-x2" type="range" min="-3" max="3" step="0.1" value="2"></label>
+          <label>\(w_2\) <span id="bp-w2-v" style="float:right">−0.1</span><input id="bp-w2" type="range" min="-3" max="3" step="0.1" value="-0.1"></label>
+          <label>target t <span id="bp-t-v" style="float:right">1.0</span><input id="bp-t" type="range" min="0" max="1" step="1" value="1"></label>
+        </div>
       </div>
-      <div class="card" style="padding:14px;overflow-x:auto">
+    </div>
+    <div class="card" style="padding:14px;overflow-x:auto">
         <div class="h3" style="margin-bottom:8px">Live backpropagation network</div>
         <svg viewBox="20 0 920 350" style="width:100%;display:block" aria-label="Live backpropagation network matching the diagram above">
           <defs>
