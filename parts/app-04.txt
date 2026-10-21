@@ -122,83 +122,76 @@ x_2+b\)<br><br>
         <label>b <span id="bp-b-v" style="float:right">0.0</span><input id="bp-b" type="range" min="-2" max="2" step="0.1" value="0"></label>
         <label>target t <span id="bp-t-v" style="float:right">1.0</span><input id="bp-t" type="range" min="0" max="1" step="1" value="1"></label>
       </div>
-      <div class="card" style="padding:12px;overflow-x:auto">
-        <div class="h3" style="margin-bottom:6px">Live forward and backward values</div>
-        <svg viewBox="0 0 900 430" style="width:100%;min-width:720px" aria-label="Interactive backpropagation diagram with live values">
-          <defs>
-            <marker id="bpCalcBackArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-              <path d="M0,0 L0,6 L9,3 z" fill="var(--accent)"></path>
-            </marker>
-          </defs>
+      <div class="card" style="padding:14px">
+        <div class="h3" style="margin-bottom:8px">Live backpropagation network</div>
+        <div style="overflow-x:auto">
+          <div style="min-width:700px;padding:8px 4px 4px">
+            <div style="display:grid;grid-template-columns:150px 110px 150px 110px 150px;align-items:center;gap:8px">
+              <div style="display:grid;gap:14px">
+                <div class="card center small" style="padding:10px">
+                  <div><b>\(w_1\)</b></div>
+                  <div class="muted">gradient</div>
+                  <strong id="bp-g1"></strong>
+                </div>
+                <div class="card center small" style="padding:10px">
+                  <div><b>\(w_2\)</b></div>
+                  <div class="muted">gradient</div>
+                  <strong id="bp-g2"></strong>
+                </div>
+                <div class="card center small" style="padding:10px">
+                  <div><b>\(b\)</b></div>
+                  <div class="muted">gradient</div>
+                  <strong id="bp-gb"></strong>
+                </div>
+              </div>
 
-          <g stroke="var(--border)" stroke-width="4" fill="none">
-            <line x1="150" y1="95" x2="315" y2="170"/>
-            <line x1="150" y1="210" x2="315" y2="195"/>
-            <line x1="150" y1="325" x2="315" y2="220"/>
-            <line x1="415" y1="195" x2="555" y2="195"/>
-            <line x1="655" y1="195" x2="785" y2="195"/>
-          </g>
+              <div class="center small">
+                <div style="font-size:24px">←</div>
+                <div class="muted">backprop</div>
+              </div>
 
-          <g fill="var(--panel)" stroke="var(--border)" stroke-width="3">
-            <circle cx="110" cy="95" r="42"/>
-            <circle cx="110" cy="210" r="42"/>
-            <circle cx="110" cy="325" r="42"/>
-            <circle cx="365" cy="195" r="55" stroke="var(--accent)"/>
-            <circle cx="605" cy="195" r="55" stroke="var(--s2)"/>
-            <circle cx="835" cy="195" r="55" stroke="var(--s3)"/>
-          </g>
+              <div class="card center" style="padding:14px;border:2px solid var(--accent)">
+                <div class="small muted">weighted sum</div>
+                <div style="font-size:20px"><b>\(z\)</b></div>
+                <strong id="bp-z" style="font-size:18px"></strong>
+                <hr style="margin:10px 0">
+                <div class="small">\(\delta=\frac{\partial L}{\partial z}\)</div>
+                <strong id="bp-delta"></strong>
+              </div>
 
-          <g fill="var(--text)" text-anchor="middle">
-            <text x="110" y="88" font-size="18">w₁</text>
-            <text x="110" y="111" font-size="15" class="muted">gradient</text>
-            <text id="bp-g1" x="110" y="134" font-size="17" font-weight="700"></text>
+              <div class="center small">
+                <div style="font-size:24px">←</div>
+                <div>\(\frac{\partial y}{\partial z}\)</div>
+                <strong id="bp-dydz"></strong>
+              </div>
 
-            <text x="110" y="203" font-size="18">w₂</text>
-            <text x="110" y="226" font-size="15">gradient</text>
-            <text id="bp-g2" x="110" y="249" font-size="17" font-weight="700"></text>
+              <div class="card center" style="padding:14px;border:2px solid var(--s2)">
+                <div class="small muted">prediction</div>
+                <div style="font-size:20px"><b>\(y\)</b></div>
+                <strong id="bp-y" style="font-size:18px"></strong>
+              </div>
+            </div>
 
-            <text x="110" y="318" font-size="18">b</text>
-            <text x="110" y="341" font-size="15">gradient</text>
-            <text id="bp-gb" x="110" y="364" font-size="17" font-weight="700"></text>
+            <div style="display:grid;grid-template-columns:150px 110px 150px 110px 150px 110px 150px;align-items:center;gap:8px;margin-top:12px">
+              <div></div><div></div><div></div><div></div>
+              <div></div>
+              <div class="center small">
+                <div style="font-size:24px">←</div>
+                <div>\(\frac{\partial L}{\partial y}\)</div>
+                <strong id="bp-dLdy"></strong>
+              </div>
+              <div class="card center" style="padding:14px;border:2px solid var(--s3)">
+                <div class="small muted">loss</div>
+                <div style="font-size:20px"><b>\(L\)</b></div>
+                <strong id="bp-L" style="font-size:18px"></strong>
+              </div>
+            </div>
 
-            <text x="365" y="178" font-size="16">weighted sum</text>
-            <text x="365" y="202" font-size="20" font-style="italic">z</text>
-            <text id="bp-z" x="365" y="228" font-size="18" font-weight="700"></text>
-
-            <text x="605" y="178" font-size="16">prediction</text>
-            <text x="605" y="202" font-size="20" font-style="italic">y</text>
-            <text id="bp-y" x="605" y="228" font-size="18" font-weight="700"></text>
-
-            <text x="835" y="178" font-size="16">loss</text>
-            <text x="835" y="202" font-size="20" font-style="italic">L</text>
-            <text id="bp-L" x="835" y="228" font-size="18" font-weight="700"></text>
-          </g>
-
-          <g stroke="var(--accent)" stroke-width="4" fill="none" marker-end="url(#bpCalcBackArrow)">
-            <path d="M787 165 C735 118,700 118,654 158"/>
-            <path d="M557 158 C510 118,470 118,415 160"/>
-            <path d="M318 232 C250 260,205 300,154 318"/>
-            <path d="M310 195 C245 200,205 205,154 208"/>
-            <path d="M318 158 C250 130,205 105,154 98"/>
-          </g>
-
-          <g fill="var(--accent)" text-anchor="middle">
-            <text x="718" y="106" font-size="14">∂L/∂y</text>
-            <text id="bp-dLdy" x="718" y="127" font-size="16" font-weight="700"></text>
-
-            <text x="486" y="106" font-size="14">∂y/∂z</text>
-            <text id="bp-dydz" x="486" y="127" font-size="16" font-weight="700"></text>
-
-            <text x="365" y="292" font-size="14">δ = ∂L/∂z</text>
-            <text id="bp-delta" x="365" y="316" font-size="17" font-weight="700"></text>
-          </g>
-
-          <g fill="var(--muted)" font-size="14">
-            <text x="270" y="82">forward computation →</text>
-            <text x="610" y="382">← backward sensitivities and parameter gradients</text>
-          </g>
-        </svg>
-        <p class="small muted" style="margin:6px 4px 0">Move any slider on the left. The forward values update inside the nodes, while the backward derivatives and gradients update along the reverse path.</p>
+            <div class="small muted center" style="margin-top:12px">
+              Forward pass goes from parameters to \(z\), then \(y\), then \(L\). Backpropagation reads this path in reverse.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
