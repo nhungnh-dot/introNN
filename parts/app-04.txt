@@ -125,77 +125,78 @@ x_2+b\)<br><br>
       </div>
       <div class="card" style="padding:14px;overflow-x:auto">
         <div class="h3" style="margin-bottom:8px">Live backpropagation network</div>
-        <svg viewBox="0 0 900 360" style="width:100%;min-width:0;display:block" aria-label="Interactive backpropagation network with live values">
+        <svg viewBox="0 0 920 350" style="width:100%;display:block" aria-label="Live backpropagation network matching the diagram above">
           <defs>
-            <marker id="bpLiveArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+            <marker id="bpLiveArrowExact" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
               <path d="M0,0 L0,6 L9,3 z" fill="var(--accent)"></path>
             </marker>
           </defs>
 
           <g stroke="var(--border)" stroke-width="4" fill="none">
-            <line x1="150" y1="92" x2="330" y2="150"/>
-            <line x1="150" y1="180" x2="320" y2="180"/>
-            <line x1="150" y1="268" x2="330" y2="210"/>
-            <line x1="420" y1="180" x2="570" y2="180"/>
-            <line x1="660" y1="180" x2="805" y2="180"/>
+            <line x1="153" y1="100" x2="322" y2="158"/>
+            <line x1="153" y1="175" x2="308" y2="175"/>
+            <line x1="153" y1="250" x2="322" y2="192"/>
+            <line x1="412" y1="175" x2="548" y2="175"/>
+            <line x1="652" y1="175" x2="783" y2="175"/>
           </g>
 
           <g fill="var(--panel)" stroke="var(--border)" stroke-width="3">
-            <circle cx="110" cy="92" r="42"/>
-            <circle cx="110" cy="180" r="42"/>
-            <circle cx="110" cy="268" r="42"/>
-            <circle cx="375" cy="180" r="58" stroke="var(--accent)"/>
-            <circle cx="615" cy="180" r="58" stroke="var(--s2)"/>
-            <circle cx="850" cy="180" r="58" stroke="var(--s3)"/>
+            <circle cx="115" cy="100" r="38"/>
+            <circle cx="115" cy="175" r="38"/>
+            <circle cx="115" cy="250" r="38"/>
+            <circle cx="360" cy="175" r="52" stroke="var(--accent)"/>
+            <circle cx="600" cy="175" r="52" stroke="var(--s2)"/>
+            <circle cx="835" cy="175" r="52" stroke="var(--s3)"/>
           </g>
 
           <g fill="var(--text)" text-anchor="middle">
-            <text x="110" y="84" font-size="19" font-family="Times New Roman, serif" font-style="italic">w₁</text>
-            <text x="110" y="105" font-size="13">∂L/∂w₁</text>
-            <text id="bp-g1" x="110" y="125" font-size="16" font-weight="700"></text>
+            <text x="115" y="92" font-size="19" font-family="Times New Roman, serif" font-style="italic">w₁</text>
+            <text x="115" y="111" font-size="12">∂L/∂w₁</text>
+            <text id="bp-g1" x="115" y="130" font-size="15" font-weight="700"></text>
 
-            <text x="110" y="172" font-size="19" font-family="Times New Roman, serif" font-style="italic">w₂</text>
-            <text x="110" y="193" font-size="13">∂L/∂w₂</text>
-            <text id="bp-g2" x="110" y="213" font-size="16" font-weight="700"></text>
+            <text x="115" y="167" font-size="19" font-family="Times New Roman, serif" font-style="italic">w₂</text>
+            <text x="115" y="186" font-size="12">∂L/∂w₂</text>
+            <text id="bp-g2" x="115" y="205" font-size="15" font-weight="700"></text>
 
-            <text x="110" y="260" font-size="19" font-family="Times New Roman, serif" font-style="italic">b</text>
-            <text x="110" y="281" font-size="13">∂L/∂b</text>
-            <text id="bp-gb" x="110" y="301" font-size="16" font-weight="700"></text>
+            <text x="115" y="242" font-size="19" font-family="Times New Roman, serif" font-style="italic">b</text>
+            <text x="115" y="261" font-size="12">∂L/∂b</text>
+            <text id="bp-gb" x="115" y="280" font-size="15" font-weight="700"></text>
 
-            <text x="375" y="162" font-size="15">weighted sum</text>
-            <text x="375" y="187" font-size="21" font-family="Times New Roman, serif" font-style="italic">z</text>
-            <text id="bp-z" x="375" y="213" font-size="17" font-weight="700"></text>
+            <text x="360" y="158" font-size="15">weighted sum</text>
+            <text x="360" y="181" font-size="20" font-family="Times New Roman, serif" font-style="italic">z</text>
+            <text id="bp-z" x="360" y="204" font-size="16" font-weight="700"></text>
 
-            <text x="615" y="162" font-size="15">prediction</text>
-            <text x="615" y="187" font-size="21" font-family="Times New Roman, serif" font-style="italic">y</text>
-            <text id="bp-y" x="615" y="213" font-size="17" font-weight="700"></text>
+            <text x="600" y="158" font-size="15">activation</text>
+            <text x="600" y="181" font-size="20" font-family="Times New Roman, serif" font-style="italic">y</text>
+            <text id="bp-y" x="600" y="204" font-size="16" font-weight="700"></text>
 
-            <text x="850" y="162" font-size="15">loss</text>
-            <text x="850" y="187" font-size="21" font-family="Times New Roman, serif" font-style="italic">L</text>
-            <text id="bp-L" x="850" y="213" font-size="17" font-weight="700"></text>
+            <text x="835" y="158" font-size="15">loss</text>
+            <text x="835" y="181" font-size="20" font-family="Times New Roman, serif" font-style="italic">L</text>
+            <text id="bp-L" x="835" y="204" font-size="16" font-weight="700"></text>
           </g>
 
-          <g stroke="var(--accent)" stroke-width="4" fill="none" marker-end="url(#bpLiveArrow)">
-            <path d="M798 146 C748 105,710 105,665 145"/>
-            <path d="M566 145 C515 105,468 105,423 145"/>
-            <path d="M327 218 C270 235,215 250,157 263"/>
-            <path d="M318 180 C250 180,210 180,157 180"/>
-            <path d="M327 142 C270 125,215 108,157 97"/>
+          <g stroke="var(--accent)" stroke-width="4" fill="none" marker-end="url(#bpLiveArrowExact)">
+            <path d="M785 150 C730 105,690 105,650 145"/>
+            <path d="M550 145 C500 105,450 105,410 145"/>
+            <path d="M322 205 C260 225,215 235,158 245"/>
+            <path d="M310 175 C245 175,220 175,158 175"/>
+            <path d="M322 145 C260 125,215 115,158 105"/>
           </g>
 
-          <g fill="var(--accent)" text-anchor="middle">
-            <text x="728" y="93" font-size="13">∂L/∂y</text>
-            <text id="bp-dLdy" x="728" y="114" font-size="15" font-weight="700"></text>
+          <g fill="var(--accent)" font-size="14" text-anchor="middle">
+            <text x="716" y="92">∂L/∂y</text>
+            <text id="bp-dLdy" x="716" y="111" font-weight="700"></text>
 
-            <text x="492" y="93" font-size="13">∂y/∂z</text>
-            <text id="bp-dydz" x="492" y="114" font-size="15" font-weight="700"></text>
+            <text x="480" y="92">∂y/∂z</text>
+            <text id="bp-dydz" x="480" y="111" font-weight="700"></text>
 
-            <text x="375" y="284" font-size="13">δ = ∂L/∂z</text>
-            <text id="bp-delta" x="375" y="306" font-size="16" font-weight="700"></text>
+            <text x="360" y="287">δ = ∂L/∂z</text>
+            <text id="bp-delta" x="360" y="308" font-size="15" font-weight="700"></text>
           </g>
         </svg>
+
         <p class="small center" style="margin:8px 0 0">
-          Forward pass: parameters → \(z\) → \(y\) → \(L\). Backpropagation follows the same network in reverse.
+          Same network as above, now with live values from the sliders.
         </p>
       </div>
     </div>
