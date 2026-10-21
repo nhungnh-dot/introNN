@@ -113,7 +113,7 @@ x_2+b\)<br><br>
       <p class="small">So Step 2A computes the local derivative pieces, and Step 2B sends those sensitivities backward through the network to produce the gradients used for learning.</p>
     </div>
 
-    <div class="grid" style="grid-template-columns:minmax(220px,.65fr) minmax(0,1.65fr);gap:14px;align-items:start">
+    <div class="grid" style="grid-template-columns:230px minmax(0,1fr);gap:14px;align-items:start">
       <div class="card space">
         <div class="h3">Interactive backpropagation calculator</div>
         <label>\(x_1\) <span id="bp-x1-v" style="float:right">1.0</span><input id="bp-x1" type="range" min="-3" max="3" step="0.1" value="1"></label>
@@ -126,8 +126,8 @@ x_2+b\)<br><br>
       <div class="card" style="padding:14px">
         <div class="h3" style="margin-bottom:8px">Live backpropagation network</div>
         <div style="overflow-x:auto">
-          <div style="min-width:700px;padding:8px 4px 4px">
-            <div style="display:grid;grid-template-columns:150px 110px 150px 110px 150px;align-items:center;gap:8px">
+          <div style="min-width:0;padding:8px 4px 4px">
+            <div style="display:grid;grid-template-columns:minmax(105px,1fr) 70px minmax(120px,1.1fr) 78px minmax(120px,1fr);align-items:center;gap:8px">
               <div style="display:grid;gap:14px">
                 <div class="card center small" style="padding:10px">
                   <div><b>\(w_1\)</b></div>
@@ -173,7 +173,7 @@ x_2+b\)<br><br>
               </div>
             </div>
 
-            <div style="display:grid;grid-template-columns:150px 110px 150px 110px 150px 110px 150px;align-items:center;gap:8px;margin-top:12px">
+            <div style="display:grid;grid-template-columns:minmax(105px,1fr) 70px minmax(120px,1.1fr) 78px minmax(120px,1fr) 78px minmax(120px,1fr);align-items:center;gap:8px;margin-top:12px">
               <div></div><div></div><div></div><div></div>
               <div></div>
               <div class="center small">
