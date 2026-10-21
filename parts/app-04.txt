@@ -181,29 +181,39 @@ x_2+b\)<br><br>
           </g>
 
           <g fill="var(--accent)" font-size="14" text-anchor="middle">
-            <text x="235" y="111">∂L/∂w₁</text>
-            <text id="bp-g1" x="235" y="130" font-weight="700"></text>
+            <text x="245" y="92">∂z/∂w₁ = x₁</text>
+            <text x="245" y="165">∂z/∂w₂ = x₂</text>
+            <text x="245" y="286">∂z/∂b = 1</text>
 
-            <text x="230" y="169">∂L/∂w₂</text>
-            <text id="bp-g2" x="230" y="188" font-weight="700"></text>
+            <text x="716" y="82">∂L/∂y</text>
+            <text id="bp-dLdy" x="716" y="101" font-weight="700"></text>
 
-            <text x="235" y="263">∂L/∂b</text>
-            <text id="bp-gb" x="235" y="282" font-weight="700"></text>
+            <text x="480" y="82">∂y/∂z</text>
+            <text id="bp-dydz" x="480" y="101" font-weight="700"></text>
 
-            <text x="716" y="92">∂L/∂y</text>
-            <text id="bp-dLdy" x="716" y="111" font-weight="700"></text>
-
-            <text x="480" y="92">∂y/∂z</text>
-            <text id="bp-dydz" x="480" y="111" font-weight="700"></text>
-
-            <text x="360" y="287">δ = ∂L/∂z</text>
-            <text id="bp-delta" x="360" y="308" font-size="15" font-weight="700"></text>
+            <text x="360" y="300">δ = ∂L/∂z</text>
+            <text id="bp-delta" x="360" y="321" font-size="15" font-weight="700"></text>
           </g>
         </svg>
 
-        <p class="small center" style="margin:8px 0 0">
+        <p class="small center" style="margin:8px 0 10px">
           Same network as above, now with live values from the sliders.
         </p>
+
+        <div class="grid cards3 small center mono" style="margin-top:10px">
+          <div class="card">
+            <div>\(\frac{\partial L}{\partial w_1}=\delta x_1\)</div>
+            <strong id="bp-g1"></strong>
+          </div>
+          <div class="card">
+            <div>\(\frac{\partial L}{\partial w_2}=\delta x_2\)</div>
+            <strong id="bp-g2"></strong>
+          </div>
+          <div class="card">
+            <div>\(\frac{\partial L}{\partial b}=\delta\)</div>
+            <strong id="bp-gb"></strong>
+          </div>
+        </div>
       </div>
 
     <div class="card panel">
