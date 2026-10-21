@@ -14,9 +14,6 @@ the trainable parameters.</div>
             <line x1="130" y1="75" x2="330" y2="135" stroke="var(--border)" stroke-width="5"/>
             <line x1="130" y1="245" x2="330" y2="175" stroke="var(--border)" stroke-width="5"/>
             <line x1="440" y1="155" x2="650" y2="155" stroke="var(--border)" stroke-width="5"/>
-            <circle class="signal" cx="230" cy="105" r="9" fill="var(--s2)"/>
-            <circle class="signal" cx="230" cy="210" r="9" fill="var(--s3)"/>
-            <circle class="signal" cx="545" cy="155" r="9" fill="var(--accent)"/>
 
             <circle cx="90" cy="70" r="48" fill="var(--panel)" stroke="var(--border)" stroke-width="3"/>
             <circle cx="90" cy="250" r="48" fill="var(--panel)" stroke="var(--border)" stroke-width="3"/>
