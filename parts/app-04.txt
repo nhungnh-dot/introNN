@@ -50,9 +50,11 @@ x_2+b\)<br><br>
           </defs>
 
           <g stroke="var(--border)" stroke-width="4" fill="none">
-            <line x1="150" y1="175" x2="330" y2="175"/>
-            <line x1="390" y1="175" x2="570" y2="175"/>
-            <line x1="630" y1="175" x2="800" y2="175"/>
+            <line x1="153" y1="100" x2="320" y2="155"/>
+            <line x1="153" y1="175" x2="308" y2="175"/>
+            <line x1="153" y1="250" x2="320" y2="195"/>
+            <line x1="412" y1="175" x2="548" y2="175"/>
+            <line x1="652" y1="175" x2="783" y2="175"/>
           </g>
 
           <g fill="var(--panel)" stroke="var(--border)" stroke-width="3">
@@ -68,34 +70,33 @@ x_2+b\)<br><br>
             <text x="115" y="106" font-size="20" font-family="Times New Roman, serif" font-style="italic">w₁</text>
             <text x="115" y="181" font-size="20" font-family="Times New Roman, serif" font-style="italic">w₂</text>
             <text x="115" y="256" font-size="20" font-family="Times New Roman, serif" font-style="italic">b</text>
-            <text x="360" y="160" font-size="15">weighted sum</text>
-            <text x="360" y="188" font-size="21" font-family="Times New Roman, serif" font-style="italic">z</text>
-            <text x="600" y="169" font-size="17">activation</text>
-            <text x="600" y="193" font-size="20" font-family="Times New Roman, serif" font-style="italic">y</text>
-            <text x="835" y="169" font-size="17">loss</text>
-            <text x="835" y="193" font-size="20" font-family="Times New Roman, serif" font-style="italic">L</text>
-          </g>
 
-          <g stroke="var(--border)" stroke-width="4">
-            <line x1="153" y1="100" x2="322" y2="158"/>
-            <line x1="153" y1="175" x2="308" y2="175"/>
-            <line x1="153" y1="250" x2="322" y2="192"/>
+            <text x="360" y="158" font-size="12">weighted sum</text>
+            <text x="360" y="188" font-size="20" font-family="Times New Roman, serif" font-style="italic">z</text>
+
+            <text x="600" y="158" font-size="13">activation</text>
+            <text x="600" y="188" font-size="20" font-family="Times New Roman, serif" font-style="italic">y</text>
+
+            <text x="835" y="158" font-size="13">loss</text>
+            <text x="835" y="188" font-size="20" font-family="Times New Roman, serif" font-style="italic">L</text>
           </g>
 
           <g stroke="var(--accent)" stroke-width="4" fill="none" marker-end="url(#bpArrowBack)">
-            <path d="M785 150 C730 105,690 105,650 145"/>
-            <path d="M550 145 C500 105,450 105,410 145"/>
-            <path d="M322 205 C260 225,215 235,158 245"/>
-            <path d="M310 175 C245 175,220 175,158 175"/>
-            <path d="M322 145 C260 125,215 115,158 105"/>
+            <path d="M785 145 C735 105,695 105,650 145"/>
+            <path d="M548 145 C500 105,450 105,405 145"/>
+
+            <path d="M318 146 C270 118,220 102,158 96"/>
+            <path d="M308 165 C255 154,210 154,158 166"/>
+            <path d="M318 204 C270 232,220 248,158 254"/>
           </g>
 
-          <g fill="var(--accent)" font-size="21" text-anchor="middle">
-            <text x="716" y="92">∂L/∂y = 2(y−t)</text>
-            <text x="480" y="92">∂y/∂z = y(1−y)</text>
-            <text x="255" y="112" font-size="18">∂z/∂w₁ = x₁</text>
-            <text x="245" y="157" font-size="18">∂z/∂w₂ = x₂</text>
-            <text x="255" y="252" font-size="18">∂z/∂b = 1</text>
+          <g fill="var(--accent)" text-anchor="middle">
+            <text x="716" y="76" font-size="15">∂L/∂y = 2(y−t)</text>
+            <text x="480" y="76" font-size="15">∂y/∂z = y(1−y)</text>
+
+            <text x="238" y="88" font-size="14">∂z/∂w₁ = x₁</text>
+            <text x="236" y="145" font-size="14">∂z/∂w₂ = x₂</text>
+            <text x="238" y="284" font-size="14">∂z/∂b = 1</text>
           </g>
 
         </svg>
