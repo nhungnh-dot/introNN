@@ -125,7 +125,7 @@ x_2+b\)<br><br>
       </div>
       <div class="card" style="padding:14px;overflow-x:auto">
         <div class="h3" style="margin-bottom:8px">Live backpropagation network</div>
-        <svg viewBox="0 0 920 350" style="width:100%;display:block" aria-label="Live backpropagation network matching the diagram above">
+        <svg viewBox="20 0 920 350" style="width:100%;display:block" aria-label="Live backpropagation network matching the diagram above">
           <defs>
             <marker id="bpLiveArrowExact" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
               <path d="M0,0 L0,6 L9,3 z" fill="var(--accent)"></path>
