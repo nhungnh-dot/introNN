@@ -81,7 +81,99 @@
       </div>
     </details>
 
-    <button class="btn primary goto" data-next="cnn">Continue to CNNs →</button>
+    <button class="btn primary goto" data-next="bigpicture">Continue to the big picture →</button>
+  </section>
+
+  <section id="panel-bigpicture" class="section hidden space">
+    <div class="card">
+      <div class="small muted">Section 4</div>
+      <div class="h2">The big picture: why initialization and data matter</div>
+      <p>Gradient descent tells us how to update the weights, but it does not tell us that every run must end at exactly the same place.</p>
+      <p class="small">The path depends on where the weights start, and the data determine how strongly the model is constrained. With too little data, several different parameter choices may fit the observations equally well.</p>
+    </div>
+
+    <div class="card panel">
+      <div class="h3">Before you run the experiment</div>
+      <p class="small">We use the same two-weight neuron throughout:</p>
+      <div class="card center math-cell">\[
+        y=\sigma(w_1x_1+w_2x_2).
+      \]</div>
+      <p class="small">We will train it from three different initial weight choices using the same gradient-descent rule.</p>
+      <div class="grid cards3 small center">
+        <div class="card"><strong>Start A</strong><br>\((w_1,w_2)=(-3,3)\)</div>
+        <div class="card"><strong>Start B</strong><br>\((w_1,w_2)=(3,3)\)</div>
+        <div class="card"><strong>Start C</strong><br>\((w_1,w_2)=(3,-3)\)</div>
+      </div>
+      <p class="small"><strong>Prediction:</strong> if the model sees only one training point, do you expect the three runs to end at the same weights?</p>
+    </div>
+
+    <div class="card">
+      <div class="h3">Experiment · Same model, different starting weights</div>
+      <div class="grid cards2">
+        <div class="card space">
+          <div class="small muted">Choose the amount of training data</div>
+          <button id="bp-data-one" class="btn primary" type="button">1 training point</button>
+          <button id="bp-data-many" class="btn" type="button">7 varied training points</button>
+          <button id="bp-run-all" class="btn primary" type="button">Train from all 3 starts</button>
+          <button id="bp-reset-all" class="btn" type="button">Reset experiment</button>
+          <div id="bp-data-note" class="card panel small"></div>
+        </div>
+
+        <div class="card">
+          <div class="h3">Where do the weights end up?</div>
+          <svg id="bp-init-plot" viewBox="0 0 620 430" style="width:100%" aria-label="Gradient descent paths in the w1 w2 plane">
+            <g id="bp-init-grid"></g>
+            <g id="bp-init-axes"></g>
+            <g id="bp-init-reference"></g>
+            <path id="bp-path-a" fill="none" stroke="var(--accent)" stroke-width="4"></path>
+            <path id="bp-path-b" fill="none" stroke="var(--s2)" stroke-width="4"></path>
+            <path id="bp-path-c" fill="none" stroke="var(--s3)" stroke-width="4"></path>
+            <g id="bp-init-points"></g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="h3">Results</div>
+        <div style="overflow-x:auto">
+          <table class="small">
+            <thead>
+              <tr><th>Run</th><th>Initial weights</th><th>Final weights</th><th>Final loss</th></tr>
+            </thead>
+            <tbody id="bp-init-results"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card panel">
+      <div class="h3">What should you notice?</div>
+      <div class="grid cards2 small">
+        <div class="card">
+          <strong>With one point</strong>
+          <p>One observation gives only one constraint. Many different pairs \((w_1,w_2)\) can reproduce that same output, so different initial weights can lead to different final weights even when the training loss is nearly zero.</p>
+        </div>
+        <div class="card">
+          <strong>With more varied data</strong>
+          <p>Each new observation adds another constraint. The possible solutions become much more restricted, so the three runs are pulled toward nearly the same parameter values.</p>
+        </div>
+      </div>
+      <div class="card panel small" style="margin-top:12px">
+        <strong>Big idea:</strong> more data does not magically guarantee a unique answer, but <strong>enough informative and varied data</strong> can greatly reduce ambiguity. Initialization still matters because it determines where optimization starts and which path it follows.
+      </div>
+    </div>
+
+    <details class="card">
+      <summary>Section 4 checkpoint</summary>
+      <div class="small">
+        <p>1. Why can one training point be insufficient to determine two weights?</p>
+        <p>2. Why can two runs with different initial weights fit the same small dataset but end at different parameter values?</p>
+        <p>3. What changes when we add several varied training points?</p>
+        <p>4. In a larger neural network, why might initialization still matter even when we have much more data?</p>
+      </div>
+    </details>
+
+    <button class="btn primary goto" data-next="neuralode">Continue to Neural ODEs →</button>
   </section>
 
   <section id="panel-cnn" class="section hidden space">
