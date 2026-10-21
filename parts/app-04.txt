@@ -113,7 +113,7 @@ x_2+b\)<br><br>
       <p class="small">So Step 2A computes the local derivative pieces, and Step 2B sends those sensitivities backward through the network to produce the gradients used for learning.</p>
     </div>
 
-    <div class="grid two">
+    <div class="grid" style="grid-template-columns:minmax(220px,.65fr) minmax(0,1.65fr);gap:14px;align-items:start">
       <div class="card space">
         <div class="h3">Interactive backpropagation calculator</div>
         <label>\(x_1\) <span id="bp-x1-v" style="float:right">1.0</span><input id="bp-x1" type="range" min="-3" max="3" step="0.1" value="1"></label>
