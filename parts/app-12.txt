@@ -28,6 +28,34 @@ t=y.toFixed(3);
   }
   ['bp-x1','bp-x2','bp-w1','bp-w2','bp-b','bp-t'].forEach(id=>$(id).addEventListener('input',renderBP));
 
+  const sigAnswers={1:'b',2:'b',3:'a',4:'c'};
+  [1,2,3,4].forEach(n=>{
+    const btn=$('sig-check'+n), sel=$('sig-step'+n), fb=$('sig-feedback'+n);
+    if(!btn||!sel||!fb) return;
+    btn.addEventListener('click',()=>{
+      if(!sel.value){
+        fb.textContent='Choose an answer first.';
+        return;
+      }
+      if(sel.value===sigAnswers[n]){
+        fb.textContent=n===4?'Correct — you derived the sigmoid derivative.':'Correct. Move to the next step.';
+        if(n===4){
+          const finalBox=$('sig-final-derivative');
+          if(finalBox) finalBox.classList.remove('hidden');
+          if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise();
+        }
+      } else {
+        const hints={
+          1:'Try the power rule on u^{-1}.',
+          2:'Remember the derivative of -z is -1.',
+          3:'Multiply the two derivatives and simplify the two negative signs.',
+          4:'Factor the expression into y times one remaining factor.'
+        };
+        fb.textContent='Not quite. '+hints[n];
+      }
+    });
+  });
+
   let gd={w1:1,w2:.5,b:0}, gdHistory=[];
   function recordGD(alphaUsed=null){
     const s=vals(gd.w1,gd.w2,gd.b,1,2,.5);
