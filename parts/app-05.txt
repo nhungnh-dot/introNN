@@ -315,43 +315,102 @@
     </div>
 
     <div class="card panel">
-      <div class="h3">Part 4 · Why do more data help?</div>
-      <p class="small">With only one point, the network only learns</p>
+      <div class="h3">Part 4 · Why is having more information helpful?</div>
+
+      <p class="small">With only one training point, the network does not have enough information to determine both weights separately.</p>
+
+      <p class="small">For the point \((x_1,x_2)=(1,1)\), a perfect fit only tells us</p>
       <div class="card center math-cell">\[
         w_1+w_2=1.
       \]</div>
 
-      <p class="small">That is not enough to determine \(w_1\) and \(w_2\) separately.</p>
+      <p class="small">This is one equation for two unknowns, so there are infinitely many possible weight pairs.</p>
 
-      <p class="small">Now imagine adding a point with</p>
+      <div class="card panel small">
+        <strong>Think of it this way:</strong> one data point asks the network only one question about the weights. It learns the combination \(w_1+w_2\), but it cannot tell how much of that value came from \(w_1\) and how much came from \(w_2\).
+      </div>
+
+      <p class="small">Now add a second training point with</p>
       <div class="card center math-cell">\[
         (x_1,x_2)=(1,0).
       \]</div>
-      <p class="small">For this point, the prediction depends on \(w_1\) but not on \(w_2\). This gives us new information about \(w_1\).</p>
 
-      <p class="small">Another point such as</p>
+      <p class="small">For this point, the prediction becomes</p>
       <div class="card center math-cell">\[
-        (x_1,x_2)=(0,1)
+        y=\sigma(w_1).
       \]</div>
-      <p class="small">gives new information about \(w_2\).</p>
+
+      <p class="small">So this observation gives information about \(w_1\) by itself. It is asking a different question than the first point.</p>
+
+      <p class="small">Next add another point,</p>
+      <div class="card center math-cell">\[
+        (x_1,x_2)=(0,1).
+      \]</div>
+
+      <p class="small">Now the prediction is</p>
+      <div class="card center math-cell">\[
+        y=\sigma(w_2),
+      \]</div>
+      <p class="small">so this point gives information about \(w_2\) by itself.</p>
 
       <div class="grid cards3 small">
         <div class="card">
-          <strong>One point</strong>
-          <p>Only constrains one combination, such as \(w_1+w_2\).</p>
+          <strong>Point 1: \((1,1)\)</strong>
+          <p>Gives information about the combination \(w_1+w_2\).</p>
         </div>
         <div class="card">
-          <strong>Different points</strong>
-          <p>Probe the weights in different ways.</p>
+          <strong>Point 2: \((1,0)\)</strong>
+          <p>Gives direct information about \(w_1\).</p>
         </div>
         <div class="card">
-          <strong>More information</strong>
-          <p>Makes it harder for many very different weight pairs to fit all the data.</p>
+          <strong>Point 3: \((0,1)\)</strong>
+          <p>Gives direct information about \(w_2\).</p>
         </div>
       </div>
 
-      <div class="card panel small">
-        <strong>So the lesson is not just “use more data.”</strong> We want enough <strong>varied and informative data</strong> to constrain the model.
+      <div class="card" style="margin-top:12px">
+        <div class="h3">Each new point adds another constraint</div>
+        <p class="small">A weight pair must now fit <strong>all</strong> of the training points at the same time.</p>
+
+        <div class="grid cards3 small center">
+          <div class="card">
+            <strong>1 point</strong><br><br>
+            many possible<br>weight pairs
+          </div>
+          <div class="card">
+            <strong>More varied points</strong><br><br>
+            fewer weight pairs<br>fit everything
+          </div>
+          <div class="card">
+            <strong>Enough information</strong><br><br>
+            the possible weights<br>can become tightly constrained
+          </div>
+        </div>
+      </div>
+
+      <div class="card panel small" style="margin-top:12px">
+        <strong>Geometric picture:</strong> each informative data point adds a new condition on \((w_1,w_2)\). With one condition, we had an entire line of possible solutions. Additional independent conditions can intersect that line and shrink the set of possible solutions dramatically.
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="h3">Why varied data matter more than repeated data</div>
+        <p class="small">Suppose we repeat the same point \((1,1)\) many times. We are still learning essentially the same condition,</p>
+        <div class="card center math-cell">\[
+          w_1+w_2\approx1.
+        \]</div>
+        <p class="small">Repeating that observation can reinforce the same information, but it does not tell us how to separate \(w_1\) from \(w_2\).</p>
+
+        <p class="small">By contrast, using different input combinations such as \((1,0)\), \((0,1)\), \((1,-1)\), or \((2,1)\) makes the network observe the weights from different directions.</p>
+
+        <div class="card panel small">
+          <strong>This is why “more data” really means more useful information.</strong> A large dataset is most helpful when the examples are varied enough to constrain different aspects of the model.
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="h3">What should happen in our experiment?</div>
+        <p class="small">With only one point, the three initializations can reach different final weights while still achieving very small loss.</p>
+        <p class="small">With seven varied points, the weights must satisfy several conditions at once. That gives gradient descent much less freedom, so the three runs should end much closer together.</p>
       </div>
     </div>
 
