@@ -87,145 +87,158 @@
   <section id="panel-bigpicture" class="section hidden space">
     <div class="card">
       <div class="small muted">Section 4</div>
-      <div class="h2">The big picture: why initialization and data matter</div>
-      <p>We now know how a neural network trains: make a prediction, compute gradients, and update the weights.</p>
-      <p>But there is one more important question:</p>
-      <div class="card center" style="font-size:1.05em"><strong>If we start with different weights, do we always end with the same trained network?</strong></div>
-      <p class="small">Not always. This section shows why.</p>
+      <div class="h2">Why can training end at different weights?</div>
+      <p>Gradient descent starts from the initial weights and keeps updating them to reduce the loss.</p>
+      <div class="card center" style="font-size:1.08em">
+        <strong>Different starting weights can follow different paths and finish at different solutions.</strong>
+      </div>
     </div>
 
     <div class="card panel">
-      <div class="h3">Part 1 · One data point does not determine both weights</div>
-      <p class="small">Use the same neuron:</p>
+      <div class="h3">Step 1 · What does the single data point tell us?</div>
+      <p class="small">Use the neuron</p>
       <div class="card center math-cell">\[
         y=\sigma(w_1x_1+w_2x_2).
       \]</div>
-
-      <p class="small">Suppose our only training example is</p>
-      <div class="card center math-cell">\[
-        (x_1,x_2)=(1,1),
-        \qquad
-        t=\sigma(1).
-      \]</div>
-
-      <p class="small">Then the network prediction is</p>
+      <p class="small">For the one training point \((x_1,x_2)=(1,1)\), the prediction becomes</p>
       <div class="card center math-cell">\[
         y=\sigma(w_1+w_2).
       \]</div>
-
-      <p class="small">To match the target exactly, we need</p>
-      <div class="card center math-cell">\[
-        \sigma(w_1+w_2)=\sigma(1).
-      \]</div>
-
-      <p class="small">Since the sigmoid is one-to-one, this means</p>
-      <div class="card center math-cell">\[
+      <p class="small">The target is chosen to be \(t=\sigma(1)\). Therefore, a perfect fit only requires</p>
+      <div class="card center math-cell" style="font-size:1.15em">\[
         \boxed{w_1+w_2=1}.
       \]</div>
 
       <div class="card panel small">
-        <strong>This is the first important idea:</strong> the data tell us the <em>sum</em> of the two weights, but they do not tell us how that total should be split between \(w_1\) and \(w_2\).
+        The data tell us the <strong>sum</strong> of the weights, but not the individual values of \(w_1\) and \(w_2\).
       </div>
 
       <div class="grid cards3 small center">
-        <div class="card">\((w_1,w_2)=(1,0)\)</div>
-        <div class="card">\((w_1,w_2)=(0.5,0.5)\)</div>
-        <div class="card">\((w_1,w_2)=(2,-1)\)</div>
+        <div class="card">\((1,0)\)<br><span class="muted">sum = 1</span></div>
+        <div class="card">\((0.5,0.5)\)<br><span class="muted">sum = 1</span></div>
+        <div class="card">\((2,-1)\)<br><span class="muted">sum = 1</span></div>
       </div>
-      <p class="small center">All three satisfy \(w_1+w_2=1\), so all three fit this one training point perfectly.</p>
+      <p class="small center"><strong>All of these are valid final solutions.</strong></p>
     </div>
 
     <div class="card">
-      <div class="h3">Part 2 · Different starting points can lead to different final weights</div>
-      <p class="small">Now suppose we start training from one of these points:</p>
+      <div class="h3">Step 2 · The starting points are not solutions</div>
+      <p class="small">Now start gradient descent from three different places:</p>
+
+      <div class="grid cards3 small center">
+        <div class="card"><strong>Start A</strong><br>\((-3,3)\)<br><span class="muted">sum = 0</span></div>
+        <div class="card"><strong>Start B</strong><br>\((3,3)\)<br><span class="muted">sum = 6</span></div>
+        <div class="card"><strong>Start C</strong><br>\((3,-3)\)<br><span class="muted">sum = 0</span></div>
+      </div>
+
+      <div class="card panel small" style="margin-top:12px">
+        <strong>These are only initial weights.</strong> None of them satisfies \(w_1+w_2=1\), so gradient descent must move them.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="h3">Step 3 · Start → train → finish</div>
+      <p class="small">Each run moves until it reaches a point that fits the data.</p>
 
       <div class="grid cards3 small center">
         <div class="card">
-          <strong>Start A</strong><br>
+          <strong>Run A</strong><br><br>
           \((-3,3)\)<br>
-          <span class="muted">sum = 0</span>
+          <span class="muted">start</span><br><br>
+          ↓ gradient descent ↓<br><br>
+          \((-2.5,3.5)\)<br>
+          <strong>finish</strong><br>
+          <span class="muted">sum = 1</span>
         </div>
+
         <div class="card">
-          <strong>Start B</strong><br>
+          <strong>Run B</strong><br><br>
           \((3,3)\)<br>
-          <span class="muted">sum = 6</span>
+          <span class="muted">start</span><br><br>
+          ↓ gradient descent ↓<br><br>
+          \((0.5,0.5)\)<br>
+          <strong>finish</strong><br>
+          <span class="muted">sum = 1</span>
         </div>
+
         <div class="card">
-          <strong>Start C</strong><br>
+          <strong>Run C</strong><br><br>
           \((3,-3)\)<br>
-          <span class="muted">sum = 0</span>
-        </div>
-      </div>
-
-      <div class="card panel small">
-        <strong>Notice:</strong> these are only <em>starting points</em>. They are not solutions yet because their sums are not equal to 1.
-      </div>
-
-      <p class="small">Gradient descent changes the weights so that the sum moves toward 1.</p>
-
-      <p class="small">For this one-point problem, the loss depends only on \(w_1+w_2\), so</p>
-      <div class="card center math-cell">\[
-        \frac{\partial L}{\partial w_1}
-        =
-        \frac{\partial L}{\partial w_2}.
-      \]</div>
-
-      <p class="small">That means each gradient-descent step changes the two weights by the same amount:</p>
-      <div class="grid cards2 small">
-        <div class="card center math-cell">\[
-          w_1^{\text{new}}=w_1-\alpha g
-        \]</div>
-        <div class="card center math-cell">\[
-          w_2^{\text{new}}=w_2-\alpha g.
-        \]</div>
-      </div>
-
-      <p class="small">So their difference does not change:</p>
-      <div class="card center math-cell">\[
-        w_1^{\text{new}}-w_2^{\text{new}}
-        =
-        w_1-w_2.
-      \]</div>
-
-      <p class="small">Now we can predict where each run will finish. At the end, two things must be true:</p>
-      <div class="grid cards2 small center">
-        <div class="card"><strong>Fit the data</strong><br>\(w_1+w_2=1\)</div>
-        <div class="card"><strong>Keep the starting difference</strong><br>\(w_1-w_2=\text{constant}\)</div>
-      </div>
-
-      <div class="grid cards3 small center" style="margin-top:12px">
-        <div class="card">
-          <strong>Start A</strong><br>
-          \((-3,3)\)<br>
-          \(w_1-w_2=-6\)<br><br>
-          <strong>↓ training ↓</strong><br><br>
-          <strong>Final</strong><br>
-          \((-2.5,3.5)\)
-        </div>
-        <div class="card">
-          <strong>Start B</strong><br>
-          \((3,3)\)<br>
-          \(w_1-w_2=0\)<br><br>
-          <strong>↓ training ↓</strong><br><br>
-          <strong>Final</strong><br>
-          \((0.5,0.5)\)
-        </div>
-        <div class="card">
-          <strong>Start C</strong><br>
-          \((3,-3)\)<br>
-          \(w_1-w_2=6\)<br><br>
-          <strong>↓ training ↓</strong><br><br>
-          <strong>Final</strong><br>
-          \((3.5,-2.5)\)
+          <span class="muted">start</span><br><br>
+          ↓ gradient descent ↓<br><br>
+          \((3.5,-2.5)\)<br>
+          <strong>finish</strong><br>
+          <span class="muted">sum = 1</span>
         </div>
       </div>
 
       <div class="card panel small" style="margin-top:12px">
-        <strong>Key idea:</strong> the three runs start at different points, move during training, and finally reach <strong>different points on the same solution line</strong> \(w_1+w_2=1\).
+        <strong>Main observation:</strong> all three final points fit the same training point perfectly, but the final weights are different.
       </div>
     </div>
 
     <div class="card">
+      <div class="h3">A picture of what is happening</div>
+      <p class="small">The dashed line represents every perfect solution \(w_1+w_2=1\). The three initial points begin away from the line and training moves them toward different places on it.</p>
+
+      <svg viewBox="0 0 760 420" style="width:100%;max-width:850px;display:block;margin:auto" aria-label="Initial weights moving to different points on the solution line">
+        <defs>
+          <marker id="bpSimpleArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="var(--accent)"></path>
+          </marker>
+        </defs>
+
+        <line x1="80" y1="335" x2="690" y2="335" stroke="var(--text)" stroke-width="2"/>
+        <line x1="375" y1="365" x2="375" y2="40" stroke="var(--text)" stroke-width="2"/>
+        <text x="700" y="340" fill="var(--text)" font-size="15">w₁</text>
+        <text x="385" y="50" fill="var(--text)" font-size="15">w₂</text>
+
+        <line x1="135" y1="75" x2="650" y2="315" stroke="var(--muted)" stroke-width="3" stroke-dasharray="9 7"/>
+        <text x="575" y="270" fill="var(--muted)" font-size="14">w₁ + w₂ = 1</text>
+
+        <circle cx="190" cy="165" r="7" fill="var(--accent)"/>
+        <text x="152" y="145" fill="var(--accent)" font-size="14">Start A</text>
+        <line x1="195" y1="170" x2="230" y2="125" stroke="var(--accent)" stroke-width="3" marker-end="url(#bpSimpleArrow)"/>
+
+        <circle cx="555" cy="155" r="7" fill="var(--s2)"/>
+        <text x="565" y="145" fill="var(--s2)" font-size="14">Start B</text>
+        <line x1="548" y1="160" x2="410" y2="225" stroke="var(--s2)" stroke-width="3"/>
+
+        <circle cx="555" cy="300" r="7" fill="var(--s3)"/>
+        <text x="565" y="318" fill="var(--s3)" font-size="14">Start C</text>
+        <line x1="548" y1="295" x2="520" y2="280" stroke="var(--s3)" stroke-width="3"/>
+
+        <circle cx="235" cy="120" r="7" fill="var(--accent)"/>
+        <circle cx="405" cy="227" r="7" fill="var(--s2)"/>
+        <circle cx="515" cy="278" r="7" fill="var(--s3)"/>
+
+        <text x="210" y="102" fill="var(--accent)" font-size="13">Final A</text>
+        <text x="380" y="252" fill="var(--s2)" font-size="13">Final B</text>
+        <text x="490" y="300" fill="var(--s3)" font-size="13">Final C</text>
+      </svg>
+    </div>
+
+    <details class="card">
+      <summary>Why do the three runs land at different places?</summary>
+      <div class="small">
+        <p>For this one-point problem, the loss depends only on \(w_1+w_2\). Therefore,</p>
+        <div class="card center math-cell">\[
+          \frac{\partial L}{\partial w_1}
+          =
+          \frac{\partial L}{\partial w_2}.
+        \]</div>
+
+        <p>Both weights change by exactly the same amount at every update. Therefore,</p>
+        <div class="card center math-cell">\[
+          w_1-w_2
+          \quad\text{stays constant during training.}
+        \]</div>
+
+        <p>So each starting point keeps its original difference \(w_1-w_2\), while gradient descent changes the sum until \(w_1+w_2=1\). That selects a different final point for each initialization.</p>
+      </div>
+    </details>
+
+<div class="card">
       <div class="h3">Part 3 · See it happen</div>
       <p class="small">First train using only the one point above. Then switch to seven varied training points and compare the paths.</p>
 
