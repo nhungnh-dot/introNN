@@ -88,26 +88,27 @@
     <div class="card">
       <div class="small muted">Section 4</div>
       <div class="h2">The big picture: why initialization and data matter</div>
-      <p>So far, we have focused on <strong>how</strong> a neural network learns: forward pass, backpropagation, then gradient descent. Now we zoom out and ask a different question:</p>
-      <div class="card center" style="font-size:1.05em"><strong>If two networks use the same training rule, will they always learn the same weights?</strong></div>
-      <p class="small">Not necessarily. The answer depends on both <strong>where the weights start</strong> and <strong>how much useful information the data provide</strong>.</p>
+      <p>We now know how a neural network trains: make a prediction, compute gradients, and update the weights.</p>
+      <p>But there is one more important question:</p>
+      <div class="card center" style="font-size:1.05em"><strong>If we start with different weights, do we always end with the same trained network?</strong></div>
+      <p class="small">Not always. This section shows why.</p>
     </div>
 
     <div class="card panel">
-      <div class="h3">Part 1 · Why can the starting weights matter?</div>
-      <p class="small">Consider the same two-weight neuron:</p>
+      <div class="h3">Part 1 · One data point does not determine both weights</div>
+      <p class="small">Use the same neuron:</p>
       <div class="card center math-cell">\[
         y=\sigma(w_1x_1+w_2x_2).
       \]</div>
 
-      <p class="small">Suppose we have only one training example,</p>
+      <p class="small">Suppose our only training example is</p>
       <div class="card center math-cell">\[
         (x_1,x_2)=(1,1),
         \qquad
         t=\sigma(1).
       \]</div>
 
-      <p class="small">For this single point, the neuron predicts</p>
+      <p class="small">Then the network prediction is</p>
       <div class="card center math-cell">\[
         y=\sigma(w_1+w_2).
       \]</div>
@@ -117,35 +118,59 @@
         \sigma(w_1+w_2)=\sigma(1).
       \]</div>
 
-      <p class="small">Because the sigmoid is one-to-one, this means</p>
+      <p class="small">Since the sigmoid is one-to-one, this means</p>
       <div class="card center math-cell">\[
         \boxed{w_1+w_2=1}.
       \]</div>
 
       <div class="card panel small">
-        <strong>Important:</strong> this is not one solution. It is an entire line of solutions in the \((w_1,w_2)\)-plane. For example,
-        \[
-          (1,0),\quad (0,1),\quad (2,-1)
-        \]
-        all give the same prediction for this one training point.
+        <strong>This is the first important idea:</strong> the data tell us the <em>sum</em> of the two weights, but they do not tell us how that total should be split between \(w_1\) and \(w_2\).
       </div>
+
+      <div class="grid cards3 small center">
+        <div class="card">\((w_1,w_2)=(1,0)\)</div>
+        <div class="card">\((w_1,w_2)=(0.5,0.5)\)</div>
+        <div class="card">\((w_1,w_2)=(2,-1)\)</div>
+      </div>
+      <p class="small center">All three satisfy \(w_1+w_2=1\), so all three fit this one training point perfectly.</p>
     </div>
 
     <div class="card">
-      <div class="h3">Part 2 · What does gradient descent do on this one-point problem?</div>
-      <p class="small">For this dataset, the loss is</p>
-      <div class="card center math-cell">\[
-        L(w_1,w_2)=\bigl(\sigma(w_1+w_2)-\sigma(1)\bigr)^2.
-      \]</div>
+      <div class="h3">Part 2 · Different starting points can lead to different final weights</div>
+      <p class="small">Now suppose we start training from one of these points:</p>
 
-      <p class="small">Notice that \(L\) depends on the weights only through the combination \(w_1+w_2\). Therefore,</p>
+      <div class="grid cards3 small center">
+        <div class="card">
+          <strong>Start A</strong><br>
+          \((-3,3)\)<br>
+          <span class="muted">sum = 0</span>
+        </div>
+        <div class="card">
+          <strong>Start B</strong><br>
+          \((3,3)\)<br>
+          <span class="muted">sum = 6</span>
+        </div>
+        <div class="card">
+          <strong>Start C</strong><br>
+          \((3,-3)\)<br>
+          <span class="muted">sum = 0</span>
+        </div>
+      </div>
+
+      <div class="card panel small">
+        <strong>Notice:</strong> these are only <em>starting points</em>. They are not solutions yet because their sums are not equal to 1.
+      </div>
+
+      <p class="small">Gradient descent changes the weights so that the sum moves toward 1.</p>
+
+      <p class="small">For this one-point problem, the loss depends only on \(w_1+w_2\), so</p>
       <div class="card center math-cell">\[
         \frac{\partial L}{\partial w_1}
         =
         \frac{\partial L}{\partial w_2}.
       \]</div>
 
-      <p class="small">Call this common derivative \(g\). One gradient-descent step gives</p>
+      <p class="small">That means each gradient-descent step changes the two weights by the same amount:</p>
       <div class="grid cards2 small">
         <div class="card center math-cell">\[
           w_1^{\text{new}}=w_1-\alpha g
@@ -155,29 +180,54 @@
         \]</div>
       </div>
 
-      <p class="small">Now subtract the two updated weights:</p>
+      <p class="small">So their difference does not change:</p>
       <div class="card center math-cell">\[
         w_1^{\text{new}}-w_2^{\text{new}}
         =
         w_1-w_2.
       \]</div>
 
-      <div class="card panel small">
-        <strong>This is the key.</strong> The difference \(w_1-w_2\) stays unchanged during training. So the initialization determines which point on the line \(w_1+w_2=1\) the algorithm approaches.
+      <p class="small">Now we can predict where each run will finish. At the end, two things must be true:</p>
+      <div class="grid cards2 small center">
+        <div class="card"><strong>Fit the data</strong><br>\(w_1+w_2=1\)</div>
+        <div class="card"><strong>Keep the starting difference</strong><br>\(w_1-w_2=\text{constant}\)</div>
       </div>
 
-      <div class="grid cards3 small center">
-        <div class="card"><strong>Start A</strong><br>\((w_1,w_2)=(-3,3)\)<br><span class="muted">difference = -6</span></div>
-        <div class="card"><strong>Start B</strong><br>\((w_1,w_2)=(3,3)\)<br><span class="muted">difference = 0</span></div>
-        <div class="card"><strong>Start C</strong><br>\((w_1,w_2)=(3,-3)\)<br><span class="muted">difference = 6</span></div>
+      <div class="grid cards3 small center" style="margin-top:12px">
+        <div class="card">
+          <strong>Start A</strong><br>
+          \((-3,3)\)<br>
+          \(w_1-w_2=-6\)<br><br>
+          <strong>↓ training ↓</strong><br><br>
+          <strong>Final</strong><br>
+          \((-2.5,3.5)\)
+        </div>
+        <div class="card">
+          <strong>Start B</strong><br>
+          \((3,3)\)<br>
+          \(w_1-w_2=0\)<br><br>
+          <strong>↓ training ↓</strong><br><br>
+          <strong>Final</strong><br>
+          \((0.5,0.5)\)
+        </div>
+        <div class="card">
+          <strong>Start C</strong><br>
+          \((3,-3)\)<br>
+          \(w_1-w_2=6\)<br><br>
+          <strong>↓ training ↓</strong><br><br>
+          <strong>Final</strong><br>
+          \((3.5,-2.5)\)
+        </div>
       </div>
 
-      <p class="small"><strong>Before running the experiment:</strong> do you expect these three runs to reach the same final weights, or three different points on the same solution line?</p>
+      <div class="card panel small" style="margin-top:12px">
+        <strong>Key idea:</strong> the three runs start at different points, move during training, and finally reach <strong>different points on the same solution line</strong> \(w_1+w_2=1\).
+      </div>
     </div>
 
     <div class="card">
-      <div class="h3">Part 3 · Experiment: same model, different starting weights</div>
-      <p class="small">Run the experiment twice. First use only one training point. Then switch to seven varied points and compare what changes.</p>
+      <div class="h3">Part 3 · See it happen</div>
+      <p class="small">First train using only the one point above. Then switch to seven varied training points and compare the paths.</p>
 
       <div class="grid cards2">
         <div class="card space">
@@ -189,17 +239,17 @@
           <div id="bp-data-note" class="card panel small"></div>
 
           <div class="card small">
-            <strong>While you watch the paths, ask:</strong>
+            <strong>Watch for these three things:</strong>
             <ol>
-              <li>Do the three runs follow the same path?</li>
-              <li>Do they end at the same weights?</li>
-              <li>Can the final losses all be small even if the final weights are different?</li>
+              <li>Where does each run start?</li>
+              <li>What path does it follow?</li>
+              <li>Where does it finish?</li>
             </ol>
           </div>
         </div>
 
         <div class="card">
-          <div class="h3">Where do the weights end up?</div>
+          <div class="h3">Weight space</div>
           <svg id="bp-init-plot" viewBox="0 0 620 430" style="width:100%" aria-label="Gradient descent paths in the w1 w2 plane">
             <g id="bp-init-grid"></g>
             <g id="bp-init-axes"></g>
@@ -226,76 +276,84 @@
     </div>
 
     <div class="card panel">
-      <div class="h3">Part 4 · Why does adding more data help?</div>
-      <p class="small">One training point gave us only one condition:</p>
+      <div class="h3">Part 4 · Why do more data help?</div>
+      <p class="small">With only one point, the network only learns</p>
       <div class="card center math-cell">\[
         w_1+w_2=1.
       \]</div>
 
-      <p class="small">Now suppose we also observe a point such as \((x_1,x_2)=(1,0)\). Its prediction depends mostly on \(w_1\). A point such as \((0,1)\) gives direct information about \(w_2\). Other input directions add still more independent information.</p>
+      <p class="small">That is not enough to determine \(w_1\) and \(w_2\) separately.</p>
+
+      <p class="small">Now imagine adding a point with</p>
+      <div class="card center math-cell">\[
+        (x_1,x_2)=(1,0).
+      \]</div>
+      <p class="small">For this point, the prediction depends on \(w_1\) but not on \(w_2\). This gives us new information about \(w_1\).</p>
+
+      <p class="small">Another point such as</p>
+      <div class="card center math-cell">\[
+        (x_1,x_2)=(0,1)
+      \]</div>
+      <p class="small">gives new information about \(w_2\).</p>
 
       <div class="grid cards3 small">
         <div class="card">
           <strong>One point</strong>
-          <p>Many weight pairs can behave identically on that one observation.</p>
+          <p>Only constrains one combination, such as \(w_1+w_2\).</p>
         </div>
         <div class="card">
-          <strong>More varied points</strong>
-          <p>Different inputs probe the weights in different directions.</p>
+          <strong>Different points</strong>
+          <p>Probe the weights in different ways.</p>
         </div>
         <div class="card">
-          <strong>Result</strong>
-          <p>The set of weight pairs that fit all observations becomes much smaller.</p>
+          <strong>More information</strong>
+          <p>Makes it harder for many very different weight pairs to fit all the data.</p>
         </div>
       </div>
 
       <div class="card panel small">
-        <strong>Geometric picture:</strong> with one data point, the loss has a long flat valley of equally good solutions. Different starts can settle at different places along that valley. With sufficiently informative data, that flat direction is reduced and the loss looks more like a well-defined basin.
+        <strong>So the lesson is not just “use more data.”</strong> We want enough <strong>varied and informative data</strong> to constrain the model.
       </div>
     </div>
 
     <div class="card">
-      <div class="h3">Part 5 · More data is useful only if it adds information</div>
-      <p class="small">Saying “we need lots of data” is useful, but there is an important refinement:</p>
-      <div class="card center"><strong>We need enough <em>informative and varied</em> data.</strong></div>
+      <div class="h3">Part 5 · What changes in the second experiment?</div>
+      <p class="small">When you switch from 1 point to 7 varied points, compare the three runs again.</p>
 
       <div class="grid cards2 small">
         <div class="card">
-          <strong>Not very helpful</strong>
-          <p>Repeating the same training point 100 times gives essentially the same constraint 100 times.</p>
+          <strong>With 1 point</strong>
+          <p>There is a whole line of equally good solutions. Different initializations can end at different places on that line.</p>
         </div>
         <div class="card">
-          <strong>Much more helpful</strong>
-          <p>Observations with different input combinations can constrain different directions in parameter space.</p>
+          <strong>With 7 varied points</strong>
+          <p>The extra observations provide more independent constraints, so the runs are pulled toward nearly the same weights.</p>
         </div>
       </div>
 
-      <p class="small">In large neural networks, the situation is more complicated because there can be many parameters, many local minima or flat directions, and many different parameter choices that produce similar predictions. This is one reason modern neural networks are usually trained with large, diverse datasets.</p>
+      <div class="card panel small">
+        <strong>Big picture:</strong> initialization decides where training begins. The data determine which solutions are compatible with what we observed. More informative data reduce the number of plausible solutions.
+      </div>
     </div>
 
     <div class="card panel">
       <div class="h3">Connect the whole lesson</div>
       <div class="grid cards4 small center">
-        <div class="card"><strong>Forward pass</strong><br><span class="muted">make a prediction</span></div>
-        <div class="card"><strong>Backpropagation</strong><br><span class="muted">compute gradients</span></div>
-        <div class="card"><strong>Gradient descent</strong><br><span class="muted">update parameters</span></div>
-        <div class="card"><strong>Data + initialization</strong><br><span class="muted">shape where learning can go</span></div>
-      </div>
-
-      <div class="card panel small" style="margin-top:12px">
-        <strong>Big idea:</strong> training is not determined by the optimization rule alone. The learned model depends on the <strong>initial parameters</strong>, the <strong>training data</strong>, and the <strong>loss landscape</strong>. More informative data can reduce ambiguity, but it does not automatically guarantee a unique solution.
+        <div class="card"><strong>1. Forward pass</strong><br><span class="muted">make a prediction</span></div>
+        <div class="card"><strong>2. Backpropagation</strong><br><span class="muted">compute gradients</span></div>
+        <div class="card"><strong>3. Gradient descent</strong><br><span class="muted">update the weights</span></div>
+        <div class="card"><strong>4. Data + initialization</strong><br><span class="muted">influence the final model</span></div>
       </div>
     </div>
 
     <details class="card">
       <summary>Section 4 checkpoint</summary>
       <div class="small">
-        <p>1. For the one-point experiment, why does every pair satisfying \(w_1+w_2=1\) fit the observation?</p>
-        <p>2. Why are \(\frac{\partial L}{\partial w_1}\) and \(\frac{\partial L}{\partial w_2}\) equal in that case?</p>
-        <p>3. What quantity stays unchanged during gradient descent in the one-point experiment?</p>
-        <p>4. How does that explain why different initial weights can lead to different final weights?</p>
-        <p>5. Why are seven varied training points more informative than seven copies of the same point?</p>
-        <p>6. Does more data guarantee a unique solution? Why or why not?</p>
+        <p>1. Why does the one-point example only tell us that \(w_1+w_2=1\)?</p>
+        <p>2. Are Start A, B, and C already on the line \(w_1+w_2=1\)?</p>
+        <p>3. What happens to those starting points during gradient descent?</p>
+        <p>4. Why can the three runs end at different final weights even though they fit the same training point?</p>
+        <p>5. Why do varied training points reduce this ambiguity?</p>
       </div>
     </details>
 
