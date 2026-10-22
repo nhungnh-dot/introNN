@@ -202,19 +202,19 @@
 
         <circle cx="555" cy="155" r="7" fill="var(--s2)"/>
         <text x="565" y="145" fill="var(--s2)" font-size="14">Start B</text>
-        <line x1="548" y1="160" x2="410" y2="225" stroke="var(--s2)" stroke-width="3"/>
+        <line x1="548" y1="160" x2="410" y2="203" stroke="var(--s2)" stroke-width="3"/>
 
         <circle cx="555" cy="300" r="7" fill="var(--s3)"/>
         <text x="565" y="318" fill="var(--s3)" font-size="14">Start C</text>
-        <line x1="548" y1="295" x2="520" y2="280" stroke="var(--s3)" stroke-width="3"/>
+        <line x1="548" y1="295" x2="520" y2="254" stroke="var(--s3)" stroke-width="3"/>
 
         <circle cx="235" cy="120" r="7" fill="var(--accent)"/>
-        <circle cx="405" cy="227" r="7" fill="var(--s2)"/>
-        <circle cx="515" cy="278" r="7" fill="var(--s3)"/>
+        <circle cx="405" cy="201" r="7" fill="var(--s2)"/>
+        <circle cx="515" cy="252" r="7" fill="var(--s3)"/>
 
         <text x="210" y="102" fill="var(--accent)" font-size="13">Final A</text>
-        <text x="380" y="252" fill="var(--s2)" font-size="13">Final B</text>
-        <text x="490" y="300" fill="var(--s3)" font-size="13">Final C</text>
+        <text x="380" y="188" fill="var(--s2)" font-size="13">Final B</text>
+        <text x="490" y="276" fill="var(--s3)" font-size="13">Final C</text>
       </svg>
     </div>
 
