@@ -275,6 +275,32 @@
         </div>
       </div>
 
+      <div class="card panel" style="margin-top:12px">
+        <div class="h3">Before reading the table: what does the loss mean?</div>
+        <p class="small">For each training point, the network makes a prediction \(y\) and compares it with the target \(t\) using the squared-error loss</p>
+        <div class="card center math-cell">\[
+          L=(y-t)^2.
+        \]</div>
+
+        <p class="small">If we use only one training point, this is the loss shown for that point.</p>
+
+        <p class="small">If we use several training points, we compute the squared error for each one and average them:</p>
+        <div class="card center math-cell">\[
+          L_{\text{avg}}
+          =
+          \frac{1}{N}\sum_{i=1}^{N}\bigl(y_i-t_i\bigr)^2.
+        \]</div>
+
+        <div class="card small">
+          <strong>When you read the results table, compare two things:</strong>
+          <ol>
+            <li>Did the three runs end with the same or different weights?</li>
+            <li>Are their final losses all small?</li>
+          </ol>
+          If different final weights give similarly small losses, then the training data do not uniquely determine the parameters.
+        </div>
+      </div>
+
       <div class="card" style="margin-top:12px">
         <div class="h3">Results</div>
         <div style="overflow-x:auto">
