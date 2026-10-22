@@ -88,35 +88,114 @@
     <div class="card">
       <div class="small muted">Section 4</div>
       <div class="h2">The big picture: why initialization and data matter</div>
-      <p>Gradient descent tells us how to update the weights, but it does not tell us that every run must end at exactly the same place.</p>
-      <p class="small">The path depends on where the weights start, and the data determine how strongly the model is constrained. With too little data, several different parameter choices may fit the observations equally well.</p>
+      <p>So far, we have focused on <strong>how</strong> a neural network learns: forward pass, backpropagation, then gradient descent. Now we zoom out and ask a different question:</p>
+      <div class="card center" style="font-size:1.05em"><strong>If two networks use the same training rule, will they always learn the same weights?</strong></div>
+      <p class="small">Not necessarily. The answer depends on both <strong>where the weights start</strong> and <strong>how much useful information the data provide</strong>.</p>
     </div>
 
     <div class="card panel">
-      <div class="h3">Before you run the experiment</div>
-      <p class="small">We use the same two-weight neuron throughout:</p>
+      <div class="h3">Part 1 · Why can the starting weights matter?</div>
+      <p class="small">Consider the same two-weight neuron:</p>
       <div class="card center math-cell">\[
         y=\sigma(w_1x_1+w_2x_2).
       \]</div>
-      <p class="small">We will train it from three different initial weight choices using the same gradient-descent rule.</p>
-      <div class="grid cards3 small center">
-        <div class="card"><strong>Start A</strong><br>\((w_1,w_2)=(-3,3)\)</div>
-        <div class="card"><strong>Start B</strong><br>\((w_1,w_2)=(3,3)\)</div>
-        <div class="card"><strong>Start C</strong><br>\((w_1,w_2)=(3,-3)\)</div>
+
+      <p class="small">Suppose we have only one training example,</p>
+      <div class="card center math-cell">\[
+        (x_1,x_2)=(1,1),
+        \qquad
+        t=\sigma(1).
+      \]</div>
+
+      <p class="small">For this single point, the neuron predicts</p>
+      <div class="card center math-cell">\[
+        y=\sigma(w_1+w_2).
+      \]</div>
+
+      <p class="small">To match the target exactly, we need</p>
+      <div class="card center math-cell">\[
+        \sigma(w_1+w_2)=\sigma(1).
+      \]</div>
+
+      <p class="small">Because the sigmoid is one-to-one, this means</p>
+      <div class="card center math-cell">\[
+        \boxed{w_1+w_2=1}.
+      \]</div>
+
+      <div class="card panel small">
+        <strong>Important:</strong> this is not one solution. It is an entire line of solutions in the \((w_1,w_2)\)-plane. For example,
+        \[
+          (1,0),\quad (0,1),\quad (2,-1)
+        \]
+        all give the same prediction for this one training point.
       </div>
-      <p class="small"><strong>Prediction:</strong> if the model sees only one training point, do you expect the three runs to end at the same weights?</p>
     </div>
 
     <div class="card">
-      <div class="h3">Experiment · Same model, different starting weights</div>
+      <div class="h3">Part 2 · What does gradient descent do on this one-point problem?</div>
+      <p class="small">For this dataset, the loss is</p>
+      <div class="card center math-cell">\[
+        L(w_1,w_2)=\bigl(\sigma(w_1+w_2)-\sigma(1)\bigr)^2.
+      \]</div>
+
+      <p class="small">Notice that \(L\) depends on the weights only through the combination \(w_1+w_2\). Therefore,</p>
+      <div class="card center math-cell">\[
+        \frac{\partial L}{\partial w_1}
+        =
+        \frac{\partial L}{\partial w_2}.
+      \]</div>
+
+      <p class="small">Call this common derivative \(g\). One gradient-descent step gives</p>
+      <div class="grid cards2 small">
+        <div class="card center math-cell">\[
+          w_1^{\text{new}}=w_1-\alpha g
+        \]</div>
+        <div class="card center math-cell">\[
+          w_2^{\text{new}}=w_2-\alpha g.
+        \]</div>
+      </div>
+
+      <p class="small">Now subtract the two updated weights:</p>
+      <div class="card center math-cell">\[
+        w_1^{\text{new}}-w_2^{\text{new}}
+        =
+        w_1-w_2.
+      \]</div>
+
+      <div class="card panel small">
+        <strong>This is the key.</strong> The difference \(w_1-w_2\) stays unchanged during training. So the initialization determines which point on the line \(w_1+w_2=1\) the algorithm approaches.
+      </div>
+
+      <div class="grid cards3 small center">
+        <div class="card"><strong>Start A</strong><br>\((w_1,w_2)=(-3,3)\)<br><span class="muted">difference = -6</span></div>
+        <div class="card"><strong>Start B</strong><br>\((w_1,w_2)=(3,3)\)<br><span class="muted">difference = 0</span></div>
+        <div class="card"><strong>Start C</strong><br>\((w_1,w_2)=(3,-3)\)<br><span class="muted">difference = 6</span></div>
+      </div>
+
+      <p class="small"><strong>Before running the experiment:</strong> do you expect these three runs to reach the same final weights, or three different points on the same solution line?</p>
+    </div>
+
+    <div class="card">
+      <div class="h3">Part 3 · Experiment: same model, different starting weights</div>
+      <p class="small">Run the experiment twice. First use only one training point. Then switch to seven varied points and compare what changes.</p>
+
       <div class="grid cards2">
         <div class="card space">
-          <div class="small muted">Choose the amount of training data</div>
+          <div class="small muted">Choose the training data</div>
           <button id="bp-data-one" class="btn primary" type="button">1 training point</button>
           <button id="bp-data-many" class="btn" type="button">7 varied training points</button>
           <button id="bp-run-all" class="btn primary" type="button">Train from all 3 starts</button>
           <button id="bp-reset-all" class="btn" type="button">Reset experiment</button>
           <div id="bp-data-note" class="card panel small"></div>
+
+          <div class="card small">
+            <strong>While you watch the paths, ask:</strong>
+            <ol>
+              <li>Do the three runs follow the same path?</li>
+              <li>Do they end at the same weights?</li>
+              <li>Can the final losses all be small even if the final weights are different?</li>
+            </ol>
+          </div>
         </div>
 
         <div class="card">
@@ -147,29 +226,76 @@
     </div>
 
     <div class="card panel">
-      <div class="h3">What should you notice?</div>
-      <div class="grid cards2 small">
+      <div class="h3">Part 4 · Why does adding more data help?</div>
+      <p class="small">One training point gave us only one condition:</p>
+      <div class="card center math-cell">\[
+        w_1+w_2=1.
+      \]</div>
+
+      <p class="small">Now suppose we also observe a point such as \((x_1,x_2)=(1,0)\). Its prediction depends mostly on \(w_1\). A point such as \((0,1)\) gives direct information about \(w_2\). Other input directions add still more independent information.</p>
+
+      <div class="grid cards3 small">
         <div class="card">
-          <strong>With one point</strong>
-          <p>One observation gives only one constraint. Many different pairs \((w_1,w_2)\) can reproduce that same output, so different initial weights can lead to different final weights even when the training loss is nearly zero.</p>
+          <strong>One point</strong>
+          <p>Many weight pairs can behave identically on that one observation.</p>
         </div>
         <div class="card">
-          <strong>With more varied data</strong>
-          <p>Each new observation adds another constraint. The possible solutions become much more restricted, so the three runs are pulled toward nearly the same parameter values.</p>
+          <strong>More varied points</strong>
+          <p>Different inputs probe the weights in different directions.</p>
+        </div>
+        <div class="card">
+          <strong>Result</strong>
+          <p>The set of weight pairs that fit all observations becomes much smaller.</p>
         </div>
       </div>
+
+      <div class="card panel small">
+        <strong>Geometric picture:</strong> with one data point, the loss has a long flat valley of equally good solutions. Different starts can settle at different places along that valley. With sufficiently informative data, that flat direction is reduced and the loss looks more like a well-defined basin.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="h3">Part 5 · More data is useful only if it adds information</div>
+      <p class="small">Saying “we need lots of data” is useful, but there is an important refinement:</p>
+      <div class="card center"><strong>We need enough <em>informative and varied</em> data.</strong></div>
+
+      <div class="grid cards2 small">
+        <div class="card">
+          <strong>Not very helpful</strong>
+          <p>Repeating the same training point 100 times gives essentially the same constraint 100 times.</p>
+        </div>
+        <div class="card">
+          <strong>Much more helpful</strong>
+          <p>Observations with different input combinations can constrain different directions in parameter space.</p>
+        </div>
+      </div>
+
+      <p class="small">In large neural networks, the situation is more complicated because there can be many parameters, many local minima or flat directions, and many different parameter choices that produce similar predictions. This is one reason modern neural networks are usually trained with large, diverse datasets.</p>
+    </div>
+
+    <div class="card panel">
+      <div class="h3">Connect the whole lesson</div>
+      <div class="grid cards4 small center">
+        <div class="card"><strong>Forward pass</strong><br><span class="muted">make a prediction</span></div>
+        <div class="card"><strong>Backpropagation</strong><br><span class="muted">compute gradients</span></div>
+        <div class="card"><strong>Gradient descent</strong><br><span class="muted">update parameters</span></div>
+        <div class="card"><strong>Data + initialization</strong><br><span class="muted">shape where learning can go</span></div>
+      </div>
+
       <div class="card panel small" style="margin-top:12px">
-        <strong>Big idea:</strong> more data does not magically guarantee a unique answer, but <strong>enough informative and varied data</strong> can greatly reduce ambiguity. Initialization still matters because it determines where optimization starts and which path it follows.
+        <strong>Big idea:</strong> training is not determined by the optimization rule alone. The learned model depends on the <strong>initial parameters</strong>, the <strong>training data</strong>, and the <strong>loss landscape</strong>. More informative data can reduce ambiguity, but it does not automatically guarantee a unique solution.
       </div>
     </div>
 
     <details class="card">
       <summary>Section 4 checkpoint</summary>
       <div class="small">
-        <p>1. Why can one training point be insufficient to determine two weights?</p>
-        <p>2. Why can two runs with different initial weights fit the same small dataset but end at different parameter values?</p>
-        <p>3. What changes when we add several varied training points?</p>
-        <p>4. In a larger neural network, why might initialization still matter even when we have much more data?</p>
+        <p>1. For the one-point experiment, why does every pair satisfying \(w_1+w_2=1\) fit the observation?</p>
+        <p>2. Why are \(\frac{\partial L}{\partial w_1}\) and \(\frac{\partial L}{\partial w_2}\) equal in that case?</p>
+        <p>3. What quantity stays unchanged during gradient descent in the one-point experiment?</p>
+        <p>4. How does that explain why different initial weights can lead to different final weights?</p>
+        <p>5. Why are seven varied training points more informative than seven copies of the same point?</p>
+        <p>6. Does more data guarantee a unique solution? Why or why not?</p>
       </div>
     </details>
 
