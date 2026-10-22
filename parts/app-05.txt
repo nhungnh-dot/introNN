@@ -434,6 +434,44 @@
       </div>
     </div>
 
+    <div class="card">
+      <div class="h3">Part 6 · Small training loss is not the whole goal</div>
+      <p class="small">At this point, you might ask: <strong>if several different weight pairs all give very small loss, why do we care which one gradient descent finds?</strong></p>
+
+      <p class="small">If we only care about the training point, we may not care. For the one-point example, every pair satisfying</p>
+      <div class="card center math-cell">\[
+        w_1+w_2=1
+      \]</div>
+      <p class="small">gives the same prediction on \((x_1,x_2)=(1,1)\), so all of them can have essentially zero training loss.</p>
+
+      <p class="small">But now test the trained network on a new input, for example</p>
+      <div class="card center math-cell">\[
+        (x_1,x_2)=(1,0).
+      \]</div>
+
+      <p class="small">The prediction becomes</p>
+      <div class="card center math-cell">\[
+        y=\sigma(w_1).
+      \]</div>
+
+      <p class="small">So different zero-loss solutions from the original training point can now make very different predictions:</p>
+      <div class="grid cards3 small center">
+        <div class="card">\((1,0)\)<br>\(y=\sigma(1)\)</div>
+        <div class="card">\((0.5,0.5)\)<br>\(y=\sigma(0.5)\)</div>
+        <div class="card">\((3,-2)\)<br>\(y=\sigma(3)\)</div>
+      </div>
+
+      <div class="card panel small" style="margin-top:12px">
+        <strong>This is the real reason more informative data matter:</strong> the goal is not necessarily to recover one unique set of weights. The goal is to learn a model that fits the training data <strong>and makes sensible predictions on new inputs</strong>.
+      </div>
+
+      <p class="small">More varied data help because they test the model in more situations. That makes it harder for very different weight choices to fit the training data while behaving very differently elsewhere.</p>
+
+      <div class="card center" style="margin-top:12px">
+        <strong>Small training loss + useful predictions on new data = the bigger goal.</strong>
+      </div>
+    </div>
+
     <div class="card panel">
       <div class="h3">Connect the whole lesson</div>
       <div class="grid cards4 small center">
