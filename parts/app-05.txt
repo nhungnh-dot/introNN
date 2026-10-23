@@ -175,6 +175,53 @@
       <div class="card panel small" style="margin-top:12px">
         <strong>Main observation:</strong> all three final points fit the same training point perfectly, but the final weights are different.
       </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="h3">Now evaluate the three trained networks on a new input</div>
+        <p class="small">So far, all three runs have been judged only on the training point \((x_1,x_2)=(1,1)\). On that point, all three final weight pairs satisfy \(w_1+w_2=1\), so they make the same prediction and have essentially zero training loss.</p>
+
+        <p class="small">Now give the trained networks a new input:</p>
+        <div class="card center math-cell">\[
+          (x_1,x_2)=(1,0).
+        \]</div>
+
+        <p class="small">For this new input,</p>
+        <div class="card center math-cell">\[
+          y=\sigma(w_1\cdot1+w_2\cdot0)=\sigma(w_1).
+        \]</div>
+
+        <p class="small">Therefore, the three trained networks now make very different predictions:</p>
+
+        <div class="grid cards3 small center">
+          <div class="card">
+            <strong>Run A</strong><br>
+            final weights \((-2.5,3.5)\)<br><br>
+            \[
+              y=\sigma(-2.5)\approx0.076
+            \]
+          </div>
+          <div class="card">
+            <strong>Run B</strong><br>
+            final weights \((0.5,0.5)\)<br><br>
+            \[
+              y=\sigma(0.5)\approx0.622
+            \]
+          </div>
+          <div class="card">
+            <strong>Run C</strong><br>
+            final weights \((3.5,-2.5)\)<br><br>
+            \[
+              y=\sigma(3.5)\approx0.971
+            \]
+          </div>
+        </div>
+
+        <div class="card panel small" style="margin-top:12px">
+          <strong>This is the important lesson:</strong> the three models fit the original training point equally well, but they behave very differently on a new input. So achieving a very small training loss does not by itself tell us that the model has learned the underlying relationship well.
+        </div>
+
+        <p class="small">This is why more varied training data are useful: they test the model at more input combinations and reduce the freedom for very different networks to fit the training data while making very different predictions elsewhere.</p>
+      </div>
     </div>
 
     <div class="card">
@@ -431,44 +478,6 @@
 
       <div class="card panel small">
         <strong>Big picture:</strong> initialization decides where training begins. The data determine which solutions are compatible with what we observed. More informative data reduce the number of plausible solutions.
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="h3">Part 6 · Small training loss is not the whole goal</div>
-      <p class="small">At this point, you might ask: <strong>if several different weight pairs all give very small loss, why do we care which one gradient descent finds?</strong></p>
-
-      <p class="small">If we only care about the training point, we may not care. For the one-point example, every pair satisfying</p>
-      <div class="card center math-cell">\[
-        w_1+w_2=1
-      \]</div>
-      <p class="small">gives the same prediction on \((x_1,x_2)=(1,1)\), so all of them can have essentially zero training loss.</p>
-
-      <p class="small">But now test the trained network on a new input, for example</p>
-      <div class="card center math-cell">\[
-        (x_1,x_2)=(1,0).
-      \]</div>
-
-      <p class="small">The prediction becomes</p>
-      <div class="card center math-cell">\[
-        y=\sigma(w_1).
-      \]</div>
-
-      <p class="small">So different zero-loss solutions from the original training point can now make very different predictions:</p>
-      <div class="grid cards3 small center">
-        <div class="card">\((1,0)\)<br>\(y=\sigma(1)\)</div>
-        <div class="card">\((0.5,0.5)\)<br>\(y=\sigma(0.5)\)</div>
-        <div class="card">\((3,-2)\)<br>\(y=\sigma(3)\)</div>
-      </div>
-
-      <div class="card panel small" style="margin-top:12px">
-        <strong>This is the real reason more informative data matter:</strong> the goal is not necessarily to recover one unique set of weights. The goal is to learn a model that fits the training data <strong>and makes sensible predictions on new inputs</strong>.
-      </div>
-
-      <p class="small">More varied data help because they test the model in more situations. That makes it harder for very different weight choices to fit the training data while behaving very differently elsewhere.</p>
-
-      <div class="card center" style="margin-top:12px">
-        <strong>Small training loss + useful predictions on new data = the bigger goal.</strong>
       </div>
     </div>
 
