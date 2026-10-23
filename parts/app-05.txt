@@ -201,12 +201,50 @@
             \]
           </div>
           <div class="card">
-            <strong>Fact 2: keep the starting difference</strong><br><br>
-            Because both weights receive the same gradient update,
+            <strong>Fact 2: gradient descent keeps the starting difference</strong><br><br>
+            Gradient descent updates the weights by
             \[
-              w_1-w_2
+              w_1^{\text{new}}
+              =
+              w_1^{\text{old}}
+              -\alpha\frac{\partial L}{\partial w_1},
             \]
-            stays constant.
+            \[
+              w_2^{\text{new}}
+              =
+              w_2^{\text{old}}
+              -\alpha\frac{\partial L}{\partial w_2}.
+            \]
+
+            For our single training point \((x_1,x_2)=(1,1)\), the loss depends on the weights only through \(w_1+w_2\). Therefore,
+            \[
+              \frac{\partial L}{\partial w_1}
+              =
+              \frac{\partial L}{\partial w_2}.
+            \]
+
+            Call this common gradient value \(g\). Then both weights subtract exactly the same amount:
+            \[
+              w_1^{\text{new}}=w_1^{\text{old}}-\alpha g,
+              \qquad
+              w_2^{\text{new}}=w_2^{\text{old}}-\alpha g.
+            \]
+
+            Now subtract the two updated weights:
+            \[
+              w_1^{\text{new}}-w_2^{\text{new}}
+              =
+              \bigl(w_1^{\text{old}}-\alpha g\bigr)
+              -
+              \bigl(w_2^{\text{old}}-\alpha g\bigr)
+              =
+              w_1^{\text{old}}-w_2^{\text{old}}.
+            \]
+
+            So gradient descent changes the sum \(w_1+w_2\), but it does <strong>not</strong> change the difference
+            \[
+              \boxed{w_1-w_2}.
+            \]
           </div>
         </div>
 
