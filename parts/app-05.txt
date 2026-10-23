@@ -98,11 +98,11 @@
       <div class="h3">Step 1 · What does the single training example tell us?</div>
       <p class="small">In supervised learning, each training example contains both the <strong>input</strong> and the <strong>desired output</strong>. Here we use</p>
       <div class="card center math-cell" style="font-size:1.08em">\[
-        \boxed{(x_1,x_2,t)=(1,1,0.731)}.
+        \boxed{(x_1,x_2,t)=(1,1,\sigma(1))}.
       \]</div>
 
       <div class="card panel small">
-        Here, \((x_1,x_2)=(1,1)\) is the input and \(t=0.731\) is the target value that the network should learn to predict for this input.
+        Here, \((x_1,x_2)=(1,1)\) is the input and \(t=\sigma(1)\) is the target value that the network should learn to predict for this input. Numerically, \(\sigma(1)\approx0.731\).
       </div>
 
       <p class="small">The neuron is</p>
@@ -115,12 +115,7 @@
         y=\sigma(w_1+w_2).
       \]</div>
 
-      <p class="small">The target value \(0.731\) was chosen because</p>
-      <div class="card center math-cell">\[
-        0.731\approx\sigma(1).
-      \]</div>
-
-      <p class="small">So a perfect fit means</p>
+      <p class="small">So a perfect fit means the prediction must equal the target:</p>
       <div class="card center math-cell">\[
         \sigma(w_1+w_2)=\sigma(1).
       \]</div>
