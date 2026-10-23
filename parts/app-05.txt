@@ -188,6 +188,124 @@
         </div>
       </div>
 
+      <div class="card" style="margin-top:12px">
+        <div class="h3">Step 4 · Why do we get these particular finished weights?</div>
+        <p class="small">For the one-point problem, two facts determine the final weights.</p>
+
+        <div class="grid cards2 small center">
+          <div class="card">
+            <strong>Fact 1: fit the training data</strong><br><br>
+            At the end of training,
+            \[
+              w_1+w_2=1.
+            \]
+          </div>
+          <div class="card">
+            <strong>Fact 2: keep the starting difference</strong><br><br>
+            Because both weights receive the same gradient update,
+            \[
+              w_1-w_2
+            \]
+            stays constant.
+          </div>
+        </div>
+
+        <p class="small">So for each run, we solve two equations: one for the final sum and one for the preserved difference.</p>
+
+        <div class="grid cards3 small">
+          <div class="card">
+            <strong>Run A</strong><br>
+            Start: \((-3,3)\), so
+            \[
+              w_1-w_2=-6.
+            \]
+            At the finish,
+            \[
+              \begin{cases}
+              w_1+w_2=1,\\
+              w_1-w_2=-6.
+              \end{cases}
+            \]
+            Adding the equations gives
+            \[
+              2w_1=-5
+              \quad\Rightarrow\quad
+              w_1=-2.5.
+            \]
+            Then
+            \[
+              w_2=3.5.
+            \]
+            Therefore,
+            \[
+              \boxed{(-2.5,3.5)}.
+            \]
+          </div>
+
+          <div class="card">
+            <strong>Run B</strong><br>
+            Start: \((3,3)\), so
+            \[
+              w_1-w_2=0.
+            \]
+            At the finish,
+            \[
+              \begin{cases}
+              w_1+w_2=1,\\
+              w_1-w_2=0.
+              \end{cases}
+            \]
+            Adding gives
+            \[
+              2w_1=1
+              \quad\Rightarrow\quad
+              w_1=0.5.
+            \]
+            Then
+            \[
+              w_2=0.5.
+            \]
+            Therefore,
+            \[
+              \boxed{(0.5,0.5)}.
+            \]
+          </div>
+
+          <div class="card">
+            <strong>Run C</strong><br>
+            Start: \((3,-3)\), so
+            \[
+              w_1-w_2=6.
+            \]
+            At the finish,
+            \[
+              \begin{cases}
+              w_1+w_2=1,\\
+              w_1-w_2=6.
+              \end{cases}
+            \]
+            Adding gives
+            \[
+              2w_1=7
+              \quad\Rightarrow\quad
+              w_1=3.5.
+            \]
+            Then
+            \[
+              w_2=-2.5.
+            \]
+            Therefore,
+            \[
+              \boxed{(3.5,-2.5)}.
+            \]
+          </div>
+        </div>
+
+        <div class="card panel small" style="margin-top:12px">
+          <strong>So the final point is not arbitrary.</strong> Gradient descent moves each run until it fits the data, while preserving the difference between the two weights that came from the initialization.
+        </div>
+      </div>
+
       <div class="card panel small" style="margin-top:12px">
         <strong>Main observation:</strong> all three final points fit the same training point perfectly, but the final weights are different.
       </div>
