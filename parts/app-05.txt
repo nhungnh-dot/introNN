@@ -95,16 +95,37 @@
     </div>
 
     <div class="card panel">
-      <div class="h3">Step 1 · What does the single data point tell us?</div>
-      <p class="small">Use the neuron</p>
+      <div class="h3">Step 1 · What does the single training example tell us?</div>
+      <p class="small">In supervised learning, each training example contains both the <strong>input</strong> and the <strong>desired output</strong>. Here we use</p>
+      <div class="card center math-cell" style="font-size:1.08em">\[
+        \boxed{(x_1,x_2,t)=(1,1,0.731)}.
+      \]</div>
+
+      <div class="card panel small">
+        Here, \((x_1,x_2)=(1,1)\) is the input and \(t=0.731\) is the target value that the network should learn to predict for this input.
+      </div>
+
+      <p class="small">The neuron is</p>
       <div class="card center math-cell">\[
         y=\sigma(w_1x_1+w_2x_2).
       \]</div>
-      <p class="small">For the one training point \((x_1,x_2)=(1,1)\), the prediction becomes</p>
+
+      <p class="small">For this training input, the prediction becomes</p>
       <div class="card center math-cell">\[
         y=\sigma(w_1+w_2).
       \]</div>
-      <p class="small">The target is chosen to be \(t=\sigma(1)\). Therefore, a perfect fit only requires</p>
+
+      <p class="small">The target value \(0.731\) was chosen because</p>
+      <div class="card center math-cell">\[
+        0.731\approx\sigma(1).
+      \]</div>
+
+      <p class="small">So a perfect fit means</p>
+      <div class="card center math-cell">\[
+        \sigma(w_1+w_2)=\sigma(1).
+      \]</div>
+
+      <p class="small">Since the sigmoid is one-to-one, this gives</p>
       <div class="card center math-cell" style="font-size:1.15em">\[
         \boxed{w_1+w_2=1}.
       \]</div>
