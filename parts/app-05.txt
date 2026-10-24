@@ -263,89 +263,57 @@
 
         <p class="small">So for each run, we solve two equations: one for the final sum and one for the preserved difference.</p>
 
-        <div class="grid cards3 small">
-          <div class="card">
-            <strong>Run A</strong><br>
-            Start: \((-3,3)\), so
-            \[
-              w_1-w_2=-6.
-            \]
-            At the finish,
-            \[
-              \begin{cases}
-              w_1+w_2=1,\\
-              w_1-w_2=-6.
-              \end{cases}
-            \]
-            Adding the equations gives
-            \[
-              2w_1=-5
-              \quad\Rightarrow\quad
-              w_1=-2.5.
-            \]
-            Then
-            \[
-              w_2=3.5.
-            \]
-            Therefore,
-            \[
-              \boxed{(-2.5,3.5)}.
-            \]
-          </div>
+        <div class="card small">
+          <strong>Work through Run A</strong><br><br>
+          Start: \((-3,3)\), so the preserved difference is
+          \[
+            w_1-w_2=-6.
+          \]
+          At the finish, we also need
+          \[
+            w_1+w_2=1.
+          \]
+          Therefore,
+          \[
+            \begin{cases}
+            w_1+w_2=1,\\
+            w_1-w_2=-6.
+            \end{cases}
+          \]
+          Adding the equations gives
+          \[
+            2w_1=-5
+            \quad\Rightarrow\quad
+            w_1=-2.5.
+          \]
+          Then
+          \[
+            w_2=3.5.
+          \]
+          So Run A finishes at
+          \[
+            \boxed{(-2.5,3.5)}.
+          \]
+        </div>
 
+        <div class="card panel small" style="margin-top:12px">
+          <strong>Your turn:</strong> Repeat the same two-equation idea for Runs B and C. First compute the starting value of \(w_1-w_2\), then combine it with \(w_1+w_2=1\). Check that you obtain the final weights below.
+        </div>
+
+        <div class="grid cards2 small center" style="margin-top:12px">
           <div class="card">
-            <strong>Run B</strong><br>
-            Start: \((3,3)\), so
-            \[
-              w_1-w_2=0.
-            \]
-            At the finish,
-            \[
-              \begin{cases}
-              w_1+w_2=1,\\
-              w_1-w_2=0.
-              \end{cases}
-            \]
-            Adding gives
-            \[
-              2w_1=1
-              \quad\Rightarrow\quad
-              w_1=0.5.
-            \]
-            Then
-            \[
-              w_2=0.5.
-            \]
-            Therefore,
+            <strong>Run B</strong><br><br>
+            Start: \((3,3)\)<br><br>
+            Verify that the finish is
             \[
               \boxed{(0.5,0.5)}.
             \]
           </div>
 
           <div class="card">
-            <strong>Run C</strong><br>
-            Start: \((3,-3)\), so
-            \[
-              w_1-w_2=6.
-            \]
-            At the finish,
-            \[
-              \begin{cases}
-              w_1+w_2=1,\\
-              w_1-w_2=6.
-              \end{cases}
-            \]
-            Adding gives
-            \[
-              2w_1=7
-              \quad\Rightarrow\quad
-              w_1=3.5.
-            \]
-            Then
-            \[
-              w_2=-2.5.
-            \]
-            Therefore,
+            <strong>Run C</strong><br><br>
+            Start: \((3,-3)\)<br><br>
+            Verify that the finish is
             \[
               \boxed{(3.5,-2.5)}.
             \]
