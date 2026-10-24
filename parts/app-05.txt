@@ -418,25 +418,7 @@
       </svg>
     </div>
 
-    <details class="card">
-      <summary>Why do the three runs land at different places?</summary>
-      <div class="small">
-        <p>For this one-point problem, the loss depends only on \(w_1+w_2\). Therefore,</p>
-        <div class="card center math-cell">\[
-          \frac{\partial L}{\partial w_1}
-          =
-          \frac{\partial L}{\partial w_2}.
-        \]</div>
-
-        <p>Both weights change by exactly the same amount at every update. Therefore,</p>
-        <div class="card center math-cell">\[
-          w_1-w_2
-          \quad\text{stays constant during training.}
-        \]</div>
-
-        <p>So each starting point keeps its original difference \(w_1-w_2\), while gradient descent changes the sum until \(w_1+w_2=1\). That selects a different final point for each initialization.</p>
-      </div>
-    </details>
+    
 
 <div class="card">
       <div class="h3">Part 3 · See it happen</div>
