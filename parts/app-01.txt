@@ -49,10 +49,13 @@ window.MathJax = {
   <section class="space">
     <h1 class="title">Introduction to Neural Networks</h1>
     <p class="small muted">A self-guided introduction to neural networks, connecting the chain rule, backpropagation, gradient descent, training data, generalization, and Neural ODEs.</p>
-    <div class="grid cards3">
+    <div class="grid cards2">
       <div class="card"><div class="small muted">Prerequisite</div><div><b>Partial derivatives, gradients, chain rule</b></div></div>
       <div class="card"><div class="small muted">Central question</div><div><b>How does calculus help a neural network learn from data?</b></div></div>
-      <div class="card panel small" style="margin-top:14px"><div class="h3">How to use this app</div><p>Work through the four tabs in order. Read each short explanation, interact with the sliders and diagrams, and pause at the prediction questions and checkpoints before moving on. Try to connect each neural-network idea back to the calculus concepts you already know.</p></div>
+    </div>
+
+    <div class="small" style="margin-top:14px">
+      <strong>How to use this app:</strong> Work through the five tabs in order. Read each short explanation, interact with the sliders and diagrams, and pause at the prediction questions and checkpoints before moving on. Try to connect each neural-network idea back to the calculus concepts you already know.
     </div>
   </section>
 
