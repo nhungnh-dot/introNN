@@ -60,7 +60,7 @@ window.MathJax = {
     <button class="btn tab active" data-tab="neuron">1. One neuron</button>
     <button class="btn tab" data-tab="backprop">2. Chain rule & backpropagation</button>
     <button class="btn tab" data-tab="learn">3. Gradient descent</button>
-    <button class="btn tab" data-tab="bigpicture">4. Big picture</button>
+    <button class="btn tab" data-tab="bigpicture">4. Training & Generalization</button>
     <button class="btn tab" data-tab="cnn">5. Images & CNNs</button>
   </div>
 
