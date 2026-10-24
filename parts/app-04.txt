@@ -227,7 +227,7 @@ x_2+b\)<br><br>
 
   <section id="panel-learn" class="section hidden space">
     <div class="card">
-      <div class="small muted">Section 3</div>
+      <div class="small muted">Section 3 · Learning with gradient descent</div>
       <div class="h2">Gradient descent uses the gradients from backpropagation</div>
       <p>Backpropagation tells us how the loss changes when each parameter changes. Gradient descent uses that information to decide how to update the parameters so that the loss becomes smaller.</p>
       <div class="card center math-cell">\[w_{\mathrm{new}}=w_{\mathrm{old}}-\alpha\frac{\partial L}{\partial w}\]</div>
