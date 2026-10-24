@@ -192,56 +192,69 @@
         <div class="h3">Step 4 · Why do we get these particular finished weights?</div>
         <p class="small">For the one-point problem, two facts determine the final weights.</p>
 
-        <div class="grid cards2 small center">
-          <div class="card">
-            <strong>Fact 1: fit the training data</strong><br><br>
-            At the end of training,
-            \[
-              w_1+w_2=1.
-            \]
-          </div>
-          <div class="card">
-            <strong>Fact 2: gradient descent keeps the starting difference</strong><br><br>
-            Gradient descent updates the weights by
-            \[
-              w_1^{\text{new}}
-              =
-              w_1^{\text{old}}
-              -\alpha\frac{\partial L}{\partial w_1},
-            \]
-            \[
-              w_2^{\text{new}}
-              =
-              w_2^{\text{old}}
-              -\alpha\frac{\partial L}{\partial w_2}.
-            \]
+        <div class="card small center">
+          <strong>Fact 1: the final weights must fit the training data</strong><br><br>
+          For the training example \((x_1,x_2,t)=(1,1,\sigma(1))\), a perfect fit requires
+          \[
+            \boxed{w_1+w_2=1}.
+          \]
+        </div>
 
-            For our single training point \((x_1,x_2)=(1,1)\), the loss depends on the weights only through \(w_1+w_2\). Therefore,
-            \[
-              \frac{\partial L}{\partial w_1}
-              =
-              \frac{\partial L}{\partial w_2}.
-            \]
+        <div class="card panel" style="margin-top:12px">
+          <div class="h3">Fact 2 · Why does gradient descent keep \(w_1-w_2\) unchanged?</div>
 
-            Call this common gradient value \(g\). Then both weights subtract exactly the same amount:
-            \[
-              w_1^{\text{new}}=w_1^{\text{old}}-\alpha g,
-              \qquad
-              w_2^{\text{new}}=w_2^{\text{old}}-\alpha g.
-            \]
+          <p class="small">Recall the gradient descent rule from Section 3:</p>
+          <div class="card center math-cell">\[
+            w_1^{\text{new}}
+            =
+            w_1^{\text{old}}
+            -\alpha\frac{\partial L}{\partial w_1},
+            \qquad
+            w_2^{\text{new}}
+            =
+            w_2^{\text{old}}
+            -\alpha\frac{\partial L}{\partial w_2}.
+          \]</div>
 
-            Now subtract the two updated weights:
-            \[
-              w_1^{\text{new}}-w_2^{\text{new}}
-              =
-              \bigl(w_1^{\text{old}}-\alpha g\bigr)
-              -
-              \bigl(w_2^{\text{old}}-\alpha g\bigr)
-              =
-              w_1^{\text{old}}-w_2^{\text{old}}.
-            \]
+          <p class="small">For our training input \((x_1,x_2)=(1,1)\), both weights enter the neuron in exactly the same way:</p>
+          <div class="card center math-cell">\[
+            y=\sigma(w_1+w_2).
+          \]</div>
 
-            So gradient descent changes the sum \(w_1+w_2\), but it does <strong>not</strong> change the difference
+          <p class="small">Therefore the loss changes by the same amount when we change \(w_1\) or \(w_2\):</p>
+          <div class="card center math-cell">\[
+            \frac{\partial L}{\partial w_1}
+            =
+            \frac{\partial L}{\partial w_2}.
+          \]</div>
+
+          <p class="small">Call this common gradient \(g\). One gradient descent step is then</p>
+          <div class="card center math-cell">\[
+            w_1^{\text{new}}=w_1^{\text{old}}-\alpha g,
+            \qquad
+            w_2^{\text{new}}=w_2^{\text{old}}-\alpha g.
+          \]</div>
+
+          <p class="small"><strong>Both weights move by exactly the same amount.</strong> For example, if gradient descent subtracts \(0.2\), then</p>
+          <div class="card center math-cell">\[
+            (w_1,w_2)
+            \longrightarrow
+            (w_1-0.2,\;w_2-0.2).
+          \]</div>
+
+          <p class="small">Subtract the two new weights:</p>
+          <div class="card center math-cell">\[
+            \begin{aligned}
+            w_1^{\text{new}}-w_2^{\text{new}}
+            &=(w_1^{\text{old}}-\alpha g)
+              -(w_2^{\text{old}}-\alpha g)\\
+            &=w_1^{\text{old}}-w_2^{\text{old}}.
+            \end{aligned}
+          \]</div>
+
+          <div class="card center small" style="margin-top:10px">
+            <strong>The \(-\alpha g\) terms cancel.</strong><br>
+            Therefore every gradient descent step preserves
             \[
               \boxed{w_1-w_2}.
             \]
