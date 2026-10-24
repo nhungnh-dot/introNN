@@ -86,7 +86,7 @@
 
   <section id="panel-bigpicture" class="section hidden space">
     <div class="card">
-      <div class="small muted">Section 4</div>
+      <div class="small muted">Section 4 · Training and generalization</div>
       <div class="h2">Why can training end at different weights?</div>
       <p>Gradient descent starts from the initial weights and keeps updating them to reduce the loss.</p>
       <div class="card center" style="font-size:1.08em">
