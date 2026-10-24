@@ -249,8 +249,8 @@ t=y.toFixed(3);
     one.classList.toggle('primary',mode==='one');
     many.classList.toggle('primary',mode==='many');
     note.innerHTML=mode==='one'
-      ? '<strong>One point:</strong> the model sees only (x₁,x₂)=(1,1). One observation cannot uniquely determine two weights, so there is a whole line of equally good fits.'
-      : '<strong>Seven varied points:</strong> the model sees inputs pointing in different directions. These extra constraints make the weights much more identifiable.';
+      ? '<strong>One point:</strong> the model sees only (x₁,x₂)=(1,1). It only learns one condition, w₁+w₂=1, so many different weight pairs fit equally well.'
+      : '<strong>Seven varied points:</strong> now the network must fit several different input combinations at once. Some points mainly probe w₁, some probe w₂, and others probe combinations of the two. Because one pair of weights must explain all seven points, there is much less freedom for the three runs to finish at very different places.';
     ['bp-path-a','bp-path-b','bp-path-c'].forEach(id=>{const p=$(id);if(p)p.setAttribute('d','');});
     tbody.innerHTML='';
     drawInitBase();
