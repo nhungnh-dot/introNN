@@ -331,7 +331,7 @@
 
       <div class="card" style="margin-top:12px">
         <div class="h3">Now evaluate the three trained networks on a new input</div>
-        <p class="small">So far, all three runs have been judged only on the training point \((x_1,x_2)=(1,1)\). On that point, all three final weight pairs satisfy \(w_1+w_2=1\), so they make the same prediction and have essentially zero training loss.</p>
+        <p class="small">So far, all three runs have been judged only on the original training input \((x_1,x_2)=(1,1)\). For this input, the neuron computes \(y=\sigma(w_1+w_2)\). Since all three final weight pairs satisfy \(w_1+w_2=1\), they all give the same prediction \(y=\sigma(1)\) <strong>for this training input</strong>, and therefore have essentially zero training loss. On a different input, however, their predictions can be different.</p>
 
         <p class="small">Now give the trained networks a new input:</p>
         <div class="card center math-cell">\[
