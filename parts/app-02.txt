@@ -103,7 +103,7 @@ the trainable parameters.</div>
   <!-- SECTIONS 2–4 KEPT SAME -->
   <section id="panel-backprop" class="section hidden space">
     <div class="card">
-      <div class="small muted">Section 2</div>
+      <div class="small muted">Section 2 · Chain rule and backpropagation</div>
       <div class="h2">Before backpropagation: how do we measure error?</div>
       <p>In Section 1, the neuron produced an output \(y\). But during training, the network also needs to know whether that output is good or bad.</p>
       <p class="small">For each training example, we compare the prediction \(y\) with the desired value \(t\). We summarize that mismatch using a <strong>loss function</strong>.</p>
