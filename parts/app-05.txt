@@ -511,7 +511,7 @@
 
       <div class="grid cards2" style="margin-top:12px">
         <div class="card space">
-          <div class="small muted">Now test the prediction</div>
+          <div class="small muted">Compare the final weights</div>
           <button id="bp-data-one" class="btn primary" type="button">1 training point</button>
           <button id="bp-data-many" class="btn" type="button">3 varied training points</button>
 
@@ -521,7 +521,7 @@
           <button id="bp-reset-all" class="btn" type="button">Reset experiment</button>
 
           <div class="card small">
-            <strong>After training, compare the plot with your prediction:</strong>
+            <strong>Compare the final weights:</strong>
             <ol>
               <li>With one point, do the runs finish at different places?</li>
               <li>With three points, do they move toward \((2,-1)\)?</li>
