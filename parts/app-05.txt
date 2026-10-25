@@ -649,6 +649,7 @@
               <li>Where does each run start?</li>
               <li>What path does each run follow?</li>
               <li>Where does each run finish?</li>
+              <li>For the one-point case, why are the gradient-descent paths straight lines? <span class="muted">Hint: what happens to \(w_1-w_2\) at each step?</span></li>
               <li>How does the picture change when you switch from one training point to three varied points?</li>
             </ol>
           </div>
