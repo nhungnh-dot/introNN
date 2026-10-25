@@ -378,19 +378,24 @@
     </div>
 
 <div class="card">
-      <div class="h3">Part 3 · See it happen</div>
-      <p class="small">First train using only the one point above. Then switch to seven varied training points and compare the paths.</p>
+      <div class="h3">Part 3 · Compare training with one point and with varied data</div>
+      <p class="small">In this experiment, we will use the <strong>same three starting weights</strong> but change the amount of training information. The goal is to see how the training data affect where gradient descent can finish.</p>
+
+      <div class="card panel small">
+        <strong>What are we testing?</strong><br>
+        With one training point, many different weight pairs can fit the data. With several varied training points, the network must satisfy more conditions at the same time. We want to see whether that causes the three runs to finish closer together.
+      </div>
 
       <div class="grid cards2">
         <div class="card space">
-          <div class="small muted">Choose the training data</div>
+          <div class="small muted">Step 1 · Choose the training data</div>
           <button id="bp-data-one" class="btn primary" type="button">1 training point</button>
           <button id="bp-data-many" class="btn" type="button">7 varied training points</button>
 
           <div id="bp-data-note" class="card panel small"></div>
 
           <div id="bp-many-guide" class="card small">
-            <strong>Before you train with 7 points, make a prediction.</strong>
+            <strong>Step 2 · Before training with 7 points, make a prediction.</strong>
             <p>With one point, the network only learns one condition: \(w_1+w_2=1\).</p>
             <p>With varied inputs, the network sees the weights in different combinations. For example:</p>
             <div class="grid cards3 center">
@@ -401,11 +406,11 @@
             <p><strong>Prediction:</strong> when the three runs must fit all of these conditions at once, do you expect them to finish far apart or much closer together?</p>
           </div>
 
-          <button id="bp-run-all" class="btn primary" type="button">Train from all 3 starts</button>
+          <button id="bp-run-all" class="btn primary" type="button">Step 3 · Train from all 3 starts</button>
           <button id="bp-reset-all" class="btn" type="button">Reset experiment</button>
 
           <div class="card small">
-            <strong>After training, check:</strong>
+            <strong>Step 4 · After training, compare:</strong>
             <ol>
               <li>Did the three runs still finish at very different weights?</li>
               <li>Did they move toward the same region?</li>
@@ -429,7 +434,7 @@
       </div>
 
       <div class="card panel" style="margin-top:12px">
-        <div class="h3">Before reading the table: what does the loss mean?</div>
+        <div class="h3">How to interpret the results</div>
         <p class="small">For each training point, the network makes a prediction \(y\) and compares it with the target \(t\) using the squared-error loss</p>
         <div class="card center math-cell">\[
           L=(y-t)^2.
@@ -455,7 +460,7 @@
       </div>
 
       <div class="card" style="margin-top:12px">
-        <div class="h3">Results</div>
+        <div class="h3">Compare the final results</div>
         <div style="overflow-x:auto">
           <table class="small">
             <thead>
