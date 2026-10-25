@@ -607,24 +607,21 @@
             \((-3,3)\)<br>
             <span class="muted">start</span><br><br>
             ↓ gradient descent ↓<br><br>
-            \((2,-1)\)<br>
-            <strong>finish</strong>
+            \((2,-1)\)
           </div>
           <div class="card">
             <strong>Run B</strong><br><br>
             \((3,3)\)<br>
             <span class="muted">start</span><br><br>
             ↓ gradient descent ↓<br><br>
-            \((2,-1)\)<br>
-            <strong>finish</strong>
+            \((2,-1)\)
           </div>
           <div class="card">
             <strong>Run C</strong><br><br>
             \((3,-3)\)<br>
             <span class="muted">start</span><br><br>
             ↓ gradient descent ↓<br><br>
-            \((2,-1)\)<br>
-            <strong>finish</strong>
+            \((2,-1)\)
           </div>
         </div>
 
