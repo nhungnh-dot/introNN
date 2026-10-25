@@ -475,6 +475,68 @@
           <strong>What should gradient descent do?</strong> The three runs still begin from different starting weights, but now they are all trying to reach the same unique perfect-fit pair. So, unlike the one-point case, we expect all three runs to finish near \((2,-1)\).
         </div>
 
+        <div class="card" style="margin-top:12px">
+          <div class="h3">Work through a few gradient descent iterations</div>
+          <p class="small">Let us use <strong>Run B</strong>, which starts from</p>
+          <div class="card center math-cell">\[
+            (w_1,w_2)=(3,3).
+          \]</div>
+
+          <p class="small">For the three-point loss</p>
+          <div class="card center math-cell">\[
+            L=
+            \frac13\sum_{i=1}^{3}(y_i-t_i)^2,
+          \]</div>
+          <p class="small">the gradients are</p>
+          <div class="card center math-cell">\[
+            \frac{\partial L}{\partial w_j}
+            =
+            \frac13\sum_{i=1}^{3}
+            2(y_i-t_i)y_i(1-y_i)x_{j,i},
+            \qquad j=1,2.
+          \]</div>
+
+          <p class="small">At \((w_1,w_2)=(3,3)\), the numerical values are approximately</p>
+          <div class="card center math-cell">\[
+            L\approx0.18117,
+            \qquad
+            \frac{\partial L}{\partial w_1}\approx0.00260,
+            \qquad
+            \frac{\partial L}{\partial w_2}\approx0.02103.
+          \]</div>
+
+          <p class="small">Using the same learning rate as the visualization, \(\alpha=1\), one gradient descent step gives</p>
+          <div class="card center math-cell">\[
+            \begin{aligned}
+            w_1^{(1)}
+            &=3-1(0.00260)
+            \approx2.9974,\\
+            w_2^{(1)}
+            &=3-1(0.02103)
+            \approx2.9790.
+            \end{aligned}
+          \]</div>
+
+          <p class="small">Repeating the same calculation gives:</p>
+          <div style="overflow-x:auto">
+            <table class="small">
+              <thead>
+                <tr><th>Iteration</th><th>\(w_1\)</th><th>\(w_2\)</th><th>Loss \(L\)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>0</td><td>3</td><td>3</td><td>0.18117</td></tr>
+                <tr><td>1</td><td>2.9974</td><td>2.9790</td><td>0.18072</td></tr>
+                <tr><td>2</td><td>2.9948</td><td>2.9576</td><td>0.18025</td></tr>
+                <tr><td>3</td><td>2.9922</td><td>2.9358</td><td>0.17976</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card panel small" style="margin-top:12px">
+            <strong>What should you notice?</strong> Each step changes the weights in the direction that lowers the loss. The first few steps are small, but repeating the update many times moves the weights toward the perfect-fit pair \((2,-1)\).
+          </div>
+        </div>
+
         <div class="grid cards3 small center" style="margin-top:12px">
           <div class="card">
             <strong>Run A</strong><br><br>
