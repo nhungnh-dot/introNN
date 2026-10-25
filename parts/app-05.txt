@@ -378,43 +378,90 @@
     </div>
 
 <div class="card">
-      <div class="h3">Part 3 · Compare training with one point and with varied data</div>
-      <p class="small">In this experiment, we will use the <strong>same three starting weights</strong> but change the amount of training information. The goal is to see how the training data affect where gradient descent can finish.</p>
+      <div class="h3">Part 3 · Compare one training point with three informative points</div>
+      <p class="small">Before looking at the gradient-descent paths, let us work out what the training data are telling the network.</p>
 
       <div class="card panel small">
-        <strong>What are we testing?</strong><br>
-        With one training point, many different weight pairs can fit the data. With several varied training points, the network must satisfy more conditions at the same time. We want to see whether that causes the three runs to finish closer together.
+        <strong>Case A · One training example</strong>
+        <p>With</p>
+        <div class="card center math-cell">\[
+          (x_1,x_2,t)=(1,1,\sigma(1)),
+        \]</div>
+        <p>a perfect fit requires</p>
+        <div class="card center math-cell">\[
+          \sigma(w_1+w_2)=\sigma(1)
+          \quad\Longrightarrow\quad
+          w_1+w_2=1.
+        \]</div>
+        <p>This is only one equation for two unknowns, so there are many possible final weight pairs.</p>
       </div>
 
-      <div class="grid cards2">
+      <div class="card" style="margin-top:12px">
+        <div class="h3">Case B · Add two informative training examples</div>
+        <p class="small">Now train on these three examples:</p>
+
+        <div class="grid cards3 small center">
+          <div class="card">
+            \[
+              (1,1,\sigma(1))
+            \]
+            gives
+            \[
+              w_1+w_2=1.
+            \]
+          </div>
+          <div class="card">
+            \[
+              (1,0,\sigma(2))
+            \]
+            gives
+            \[
+              w_1=2.
+            \]
+          </div>
+          <div class="card">
+            \[
+              (0,1,\sigma(-1))
+            \]
+            gives
+            \[
+              w_2=-1.
+            \]
+          </div>
+        </div>
+
+        <p class="small">The last two examples determine the weights directly:</p>
+        <div class="card center math-cell">\[
+          \boxed{(w_1,w_2)=(2,-1)}.
+        \]</div>
+
+        <p class="small">And this pair also satisfies the first condition because</p>
+        <div class="card center math-cell">\[
+          2+(-1)=1.
+        \]</div>
+
+        <div class="card panel small">
+          <strong>Prediction before seeing the plot:</strong> with one training point, the three runs can finish at different places on \(w_1+w_2=1\). With these three informative points, all three runs should be pulled toward the same weight pair, \((2,-1)\).
+        </div>
+      </div>
+
+      <div class="grid cards2" style="margin-top:12px">
         <div class="card space">
-          <div class="small muted">Step 1 · Choose the training data</div>
+          <div class="small muted">Now test the prediction</div>
           <button id="bp-data-one" class="btn primary" type="button">1 training point</button>
-          <button id="bp-data-many" class="btn" type="button">7 varied training points</button>
+          <button id="bp-data-many" class="btn" type="button">3 informative training points</button>
 
           <div id="bp-data-note" class="card panel small"></div>
 
-          <div id="bp-many-guide" class="card small">
-            <strong>Step 2 · Before training with 7 points, make a prediction.</strong>
-            <p>With one point, the network only learns one condition: \(w_1+w_2=1\).</p>
-            <p>With varied inputs, the network sees the weights in different combinations. For example:</p>
-            <div class="grid cards3 center">
-              <div class="card">\((1,1)\)<br><span class="muted">tests \(w_1+w_2\)</span></div>
-              <div class="card">\((1,0)\)<br><span class="muted">tests \(w_1\)</span></div>
-              <div class="card">\((0,1)\)<br><span class="muted">tests \(w_2\)</span></div>
-            </div>
-            <p><strong>Prediction:</strong> when the three runs must fit all of these conditions at once, do you expect them to finish far apart or much closer together?</p>
-          </div>
-
-          <button id="bp-run-all" class="btn primary" type="button">Step 3 · Train from all 3 starts</button>
+          <button id="bp-run-all" class="btn primary" type="button">Train from all 3 starts</button>
           <button id="bp-reset-all" class="btn" type="button">Reset experiment</button>
 
           <div class="card small">
-            <strong>Step 4 · After training, compare:</strong>
+            <strong>After training, compare the plot with your prediction:</strong>
             <ol>
-              <li>Did the three runs still finish at very different weights?</li>
-              <li>Did they move toward the same region?</li>
-              <li>How small is the final loss for each run?</li>
+              <li>With one point, do the runs finish at different places?</li>
+              <li>With three points, do they move toward \((2,-1)\)?</li>
+              <li>Are the final losses small?</li>
             </ol>
           </div>
         </div>
@@ -568,13 +615,13 @@
       <div class="card" style="margin-top:12px">
         <div class="h3">What should happen in our experiment?</div>
         <p class="small">With only one point, the three initializations can reach different final weights while still achieving very small loss.</p>
-        <p class="small">With seven varied points, the weights must satisfy several conditions at once. That gives gradient descent much less freedom, so the three runs should end much closer together.</p>
+        <p class="small">With three informative points, the weights must satisfy several conditions at once. That gives gradient descent much less freedom, so the three runs should end much closer together.</p>
       </div>
     </div>
 
     <div class="card">
       <div class="h3">Part 5 · What changes in the second experiment?</div>
-      <p class="small">When you switch from 1 point to 7 varied points, compare the three runs again.</p>
+      <p class="small">When you switch from 1 point to 3 informative points, compare the three runs again.</p>
 
       <div class="grid cards2 small">
         <div class="card">
@@ -582,7 +629,7 @@
           <p>There is a whole line of equally good solutions. Different initializations can end at different places on that line.</p>
         </div>
         <div class="card">
-          <strong>With 7 varied points</strong>
+          <strong>With 3 informative points</strong>
           <p>The extra observations provide more independent constraints, so the runs are pulled toward nearly the same weights.</p>
         </div>
       </div>
