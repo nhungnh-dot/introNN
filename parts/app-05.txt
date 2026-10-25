@@ -193,7 +193,7 @@
         <p class="small">For the one-point problem, two facts determine the final weights.</p>
 
         <div class="card small center">
-          <strong>Fact 1: the final weights must fit the training data</strong><br><br>
+          <div class="h3">Fact 1 · The final weights must fit the training data</div>
           For the training example \((x_1,x_2,t)=(1,1,\sigma(1))\), a perfect fit requires
           \[
             \boxed{w_1+w_2=1}.
