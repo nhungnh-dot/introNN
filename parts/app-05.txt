@@ -555,6 +555,12 @@
             <tbody id="bp-init-results"></tbody>
           </table>
         </div>
+
+        <div class="card panel small" style="margin-top:12px">
+          <strong>Why might a result look like \((2.001,-1.001)\) instead of exactly \((2,-1)\)?</strong>
+          <p>The exact perfect-fit weights are \((2,-1)\). The table shows the numerical result after a finite number of gradient-descent steps, so a run may stop very close to the exact solution rather than exactly on it.</p>
+          <p>A very small final loss tells us that the numerical result is already extremely close to the perfect fit.</p>
+        </div>
       </div>
     </div>
 
