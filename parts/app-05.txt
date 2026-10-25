@@ -511,7 +511,7 @@
 
       <div class="grid cards2" style="margin-top:12px">
         <div class="card space">
-          <div class="small muted">Compare the final weights</div>
+          <div class="small muted">Visualize the gradient descent paths</div>
           <button id="bp-data-one" class="btn primary" type="button">1 training point</button>
           <button id="bp-data-many" class="btn" type="button">3 varied training points</button>
 
@@ -521,17 +521,18 @@
           <button id="bp-reset-all" class="btn" type="button">Reset experiment</button>
 
           <div class="card small">
-            <strong>Compare the final weights:</strong>
+            <strong>Use the plot to visualize what gradient descent is doing:</strong>
             <ol>
-              <li>With one point, do the runs finish at different places?</li>
-              <li>With three points, do they move toward \((2,-1)\)?</li>
-              <li>Are the final losses small?</li>
+              <li>Where does each run start?</li>
+              <li>What path does each run follow?</li>
+              <li>Where does each run finish?</li>
+              <li>How does the picture change when you switch from one training point to three varied points?</li>
             </ol>
           </div>
         </div>
 
         <div class="card">
-          <div class="h3">Weight space</div>
+          <div class="h3">Visualization in weight space</div>
           <svg id="bp-init-plot" viewBox="0 0 620 430" style="width:100%" aria-label="Gradient descent paths in the w1 w2 plane">
             <g id="bp-init-grid"></g>
             <g id="bp-init-axes"></g>
