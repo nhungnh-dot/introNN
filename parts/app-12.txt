@@ -173,7 +173,7 @@ t=y.toFixed(3);
   const initTeacher={w1:2,w2:-1};
   const initData={
     one:[[1,1]],
-    many:[[1,1],[1,0],[0,1],[-1,1],[1,-1],[2,1],[-1,-2]]
+    many:[[1,1],[1,0],[0,1]]
   };
   let initMode='one';
 
@@ -250,7 +250,7 @@ t=y.toFixed(3);
     many.classList.toggle('primary',mode==='many');
     note.innerHTML=mode==='one'
       ? '<strong>One point:</strong> the model sees only (x₁,x₂)=(1,1). It only learns one condition, w₁+w₂=1, so many different weight pairs fit equally well.'
-      : '<strong>Seven varied points:</strong> now the network must fit several different input combinations at once. Some points mainly probe w₁, some probe w₂, and others probe combinations of the two. Because one pair of weights must explain all seven points, there is much less freedom for the three runs to finish at very different places.';
+      : '<strong>Three informative points:</strong> the examples (1,1), (1,0), and (0,1) impose w₁+w₂=1, w₁=2, and w₂=-1. Together they identify the weight pair (2,-1), so the three runs should move toward the same point.';
     ['bp-path-a','bp-path-b','bp-path-c'].forEach(id=>{const p=$(id);if(p)p.setAttribute('d','');});
     tbody.innerHTML='';
     drawInitBase();
