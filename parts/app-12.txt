@@ -249,7 +249,7 @@ t=y.toFixed(3);
     one.classList.toggle('primary',mode==='one');
     many.classList.toggle('primary',mode==='many');
     note.innerHTML=mode==='one'
-      ? '<strong>One point:</strong> the model sees only (x₁,x₂)=(1,1). It only learns one condition, w₁+w₂=1, so many different weight pairs fit equally well.'
+      ? '<strong>One point:</strong> the model sees only \\((x_1,x_2)=(1,1)\\). It only learns one condition, \\(w_1+w_2=1\\), so many different weight pairs fit equally well.'
       : '<strong>Three varied points:</strong> the examples (1,1), (1,0), and (0,1) impose w₁+w₂=1, w₁=2, and w₂=-1. Together they identify the single perfect-fit pair (2,-1), so all three starting points should converge to essentially the same weights.';
     ['bp-path-a','bp-path-b','bp-path-c'].forEach(id=>{const p=$(id);if(p)p.setAttribute('d','');});
     tbody.innerHTML='';
