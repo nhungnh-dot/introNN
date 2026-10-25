@@ -481,7 +481,7 @@
             \((-3,3)\)<br>
             <span class="muted">start</span><br><br>
             ↓ gradient descent ↓<br><br>
-            \((2.000,-1.000)\)<br>
+            \((2,-1)\)<br>
             <strong>finish</strong>
           </div>
           <div class="card">
@@ -489,7 +489,7 @@
             \((3,3)\)<br>
             <span class="muted">start</span><br><br>
             ↓ gradient descent ↓<br><br>
-            \((2.000,-1.000)\)<br>
+            \((2,-1)\)<br>
             <strong>finish</strong>
           </div>
           <div class="card">
