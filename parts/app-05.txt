@@ -378,7 +378,7 @@
     </div>
 
 <div class="card">
-      <div class="h3">Part 3 · Compare one training point with three informative points</div>
+      <div class="h3">Part 3 · Compare one training point with three varied points</div>
       <p class="small">Before looking at the gradient-descent paths, let us work out what the training data are telling the network.</p>
 
       <div class="card panel small">
@@ -397,8 +397,8 @@
       </div>
 
       <div class="card" style="margin-top:12px">
-        <div class="h3">Case B · Add two informative training examples</div>
-        <p class="small">Now train on these three examples:</p>
+        <div class="h3">Case B · Three varied training examples</div>
+        <p class="small">Now repeat the same idea, but use three training examples instead of one:</p>
 
         <div class="grid cards3 small center">
           <div class="card">
@@ -430,18 +430,50 @@
           </div>
         </div>
 
-        <p class="small">The last two examples determine the weights directly:</p>
+        <p class="small">This case is actually simpler: the second and third examples already tell us the two weights separately,</p>
+        <div class="card center math-cell">\[
+          \boxed{w_1=2,\qquad w_2=-1}.
+        \]</div>
+        <p class="small">The first example is consistent with those values because \(2+(-1)=1\). So there is now only one perfect-fit weight pair:</p>
         <div class="card center math-cell">\[
           \boxed{(w_1,w_2)=(2,-1)}.
         \]</div>
 
-        <p class="small">And this pair also satisfies the first condition because</p>
-        <div class="card center math-cell">\[
-          2+(-1)=1.
-        \]</div>
-
         <div class="card panel small">
-          <strong>Prediction before seeing the plot:</strong> with one training point, the three runs can finish at different places on \(w_1+w_2=1\). With these three informative points, all three runs should be pulled toward the same weight pair, \((2,-1)\).
+          <strong>What should gradient descent do?</strong> The three runs still begin from different starting weights, but now they are all trying to reach the same unique perfect-fit pair. So, unlike the one-point case, we expect all three runs to finish near \((2,-1)\).
+        </div>
+
+        <div class="grid cards3 small center" style="margin-top:12px">
+          <div class="card">
+            <strong>Run A</strong><br><br>
+            \((-3,3)\)<br>
+            <span class="muted">start</span><br><br>
+            ↓ gradient descent ↓<br><br>
+            \((2.000,-1.000)\)<br>
+            <strong>finish</strong>
+          </div>
+          <div class="card">
+            <strong>Run B</strong><br><br>
+            \((3,3)\)<br>
+            <span class="muted">start</span><br><br>
+            ↓ gradient descent ↓<br><br>
+            \((2.000,-1.000)\)<br>
+            <strong>finish</strong>
+          </div>
+          <div class="card">
+            <strong>Run C</strong><br><br>
+            \((3,-3)\)<br>
+            <span class="muted">start</span><br><br>
+            ↓ gradient descent ↓<br><br>
+            \((2.001,-1.001)\)<br>
+            <strong>finish</strong>
+          </div>
+        </div>
+
+        <div class="card small" style="margin-top:12px">
+          <strong>Compare with the one-point case:</strong>
+          <p>With one training point, different starting weights can lead to different final weights because many perfect fits exist.</p>
+          <p>With these three varied training points, the data identify one perfect-fit pair, so the three runs converge to essentially the same weights.</p>
         </div>
       </div>
 
@@ -449,7 +481,7 @@
         <div class="card space">
           <div class="small muted">Now test the prediction</div>
           <button id="bp-data-one" class="btn primary" type="button">1 training point</button>
-          <button id="bp-data-many" class="btn" type="button">3 informative training points</button>
+          <button id="bp-data-many" class="btn" type="button">3 varied training points</button>
 
           <div id="bp-data-note" class="card panel small"></div>
 
@@ -615,7 +647,7 @@
       <div class="card" style="margin-top:12px">
         <div class="h3">What should happen in our experiment?</div>
         <p class="small">With only one point, the three initializations can reach different final weights while still achieving very small loss.</p>
-        <p class="small">With three informative points, the weights must satisfy several conditions at once. That gives gradient descent much less freedom, so the three runs should end much closer together.</p>
+        <p class="small">With three varied points, the weights must satisfy several conditions at once. That gives gradient descent much less freedom, so the three runs should end much closer together.</p>
       </div>
     </div>
 
