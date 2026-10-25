@@ -268,8 +268,9 @@ t=y.toFixed(3);
       if(path)path.setAttribute('d',d);
       pts.appendChild(initSvgEl('circle',{cx:initX(r.w1),cy:initY(r.w2),r:'7',fill:colors[i],stroke:'var(--text)','stroke-width':'1.5'}));
       pts.appendChild(initSvgEl('text',{x:initX(r.w1)+10,y:initY(r.w2)+15,fill:colors[i],'font-size':'12'},'End '+s.name));
+      const fmtWeight=v=>Number.isInteger(v)?String(v):v.toFixed(3).replace(/0+$/,'').replace(/\.$/,'');
       const tr=document.createElement('tr');
-      tr.innerHTML='<td>'+s.name+'</td><td>('+s.w1.toFixed(1)+', '+s.w2.toFixed(1)+')</td><td>('+r.w1.toFixed(3)+', '+r.w2.toFixed(3)+')</td><td>'+r.loss.toExponential(2)+'</td>';
+      tr.innerHTML='<td>'+s.name+'</td><td>('+fmtWeight(s.w1)+', '+fmtWeight(s.w2)+')</td><td>('+fmtWeight(r.w1)+', '+fmtWeight(r.w2)+')</td><td>'+r.loss.toExponential(2)+'</td>';
       tbody.appendChild(tr);
     });
   }
