@@ -385,6 +385,8 @@
         <div class="card panel small" style="margin-top:12px">
           <strong>So the final point is not arbitrary.</strong> Gradient descent moves each run until it fits the data, while preserving the difference between the two weights that came from the initialization.
         </div>
+
+        <p class="small muted" style="margin-top:10px"><strong>Numerical note:</strong> the final weights shown here are the exact values predicted by the equations. A numerical gradient-descent run with finitely many steps may only get very close to these values rather than land on them exactly.</p>
       </div>
 
       <div class="card panel small" style="margin-top:12px">
@@ -606,7 +608,7 @@
             <span class="muted">start</span><br><br>
             ↓ gradient descent ↓<br><br>
             \((2,-1)\)<br>
-            <strong>theoretical finish</strong>
+            <strong>finish</strong>
           </div>
           <div class="card">
             <strong>Run B</strong><br><br>
