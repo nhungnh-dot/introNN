@@ -81,7 +81,7 @@
       </div>
     </details>
 
-    <button class="btn primary goto" data-next="bigpicture">Continue to the big picture →</button>
+    <button class="btn primary goto" data-next="bigpicture">Continue to Training &amp; Generalization →</button>
   </section>
 
   <section id="panel-bigpicture" class="section hidden space">
