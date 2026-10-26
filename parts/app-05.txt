@@ -816,6 +816,12 @@
       </div>
     </details>
 
+    <div class="card panel small" style="margin-top:12px">
+      <strong>From learning a function to learning a dynamical rule</strong>
+      <p>So far, our neural network has taken an input and produced a prediction directly. But many problems involve something that changes continuously with time, such as the position of a moving object.</p>
+      <p>Instead of asking a neural network to predict the state directly, what if we ask it to learn <em>how the state changes</em>, and then use that learned rule to predict the future? This leads to the idea of a <strong>Neural ODE</strong>.</p>
+    </div>
+
     <button class="btn primary goto" data-next="neuralode">Continue to Neural ODEs →</button>
   </section>
 
