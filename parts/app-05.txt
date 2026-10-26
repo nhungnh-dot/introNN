@@ -807,11 +807,12 @@
     <details class="card">
       <summary>Section 4 checkpoint</summary>
       <div class="small">
-        <p>1. Why does the one-point example only tell us that \(w_1+w_2=1\)?</p>
-        <p>2. Are Start A, B, and C already on the line \(w_1+w_2=1\)?</p>
-        <p>3. What happens to those starting points during gradient descent?</p>
-        <p>4. Why can the three runs end at different final weights even though they fit the same training point?</p>
-        <p>5. Why do varied training points reduce this ambiguity?</p>
+        <p>1. In the one-point case, why can many different weight pairs fit the training data equally well?</p>
+        <p>2. Why can different initial weights lead to different final weights when the training data do not uniquely determine the model parameters?</p>
+        <p>3. In the three-point case, what additional information do the examples \((1,1)\), \((1,0)\), and \((0,1)\) provide?</p>
+        <p>4. Why do the three different starting points now move toward the same perfect-fit weights?</p>
+        <p>5. More generally, how does using varied and informative training data reduce ambiguity in the learned parameters?</p>
+        <p>6. Does a small training loss always mean that the model will make the same predictions on new inputs? Why or why not?</p>
       </div>
     </details>
 
