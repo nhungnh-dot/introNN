@@ -800,7 +800,7 @@
       </div>
 
       <div class="card panel small">
-        <strong>Big picture:</strong> initialization decides where training begins. The data determine which solutions are compatible with what we observed. More informative data reduce the number of plausible solutions.
+        <strong>Key takeaway:</strong> initialization decides where training begins. The data determine which solutions are compatible with what we observed. More informative data reduce the number of plausible solutions.
       </div>
     </div>
 
