@@ -804,16 +804,6 @@
       </div>
     </div>
 
-    <div class="card panel">
-      <div class="h3">Connect the whole lesson</div>
-      <div class="grid cards4 small center">
-        <div class="card"><strong>1. Forward pass</strong><br><span class="muted">make a prediction</span></div>
-        <div class="card"><strong>2. Backpropagation</strong><br><span class="muted">compute gradients</span></div>
-        <div class="card"><strong>3. Gradient descent</strong><br><span class="muted">update the weights</span></div>
-        <div class="card"><strong>4. Data + initialization</strong><br><span class="muted">influence the final model</span></div>
-      </div>
-    </div>
-
     <details class="card">
       <summary>Section 4 checkpoint</summary>
       <div class="small">
