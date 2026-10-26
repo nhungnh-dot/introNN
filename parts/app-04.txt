@@ -217,12 +217,14 @@ x_2+b\)<br><br>
         </div>
       </div>
 
-    <div class="card" style="margin-top:14px">
-      <p style="margin:0 0 8px">Now we know how backpropagation computes the gradients: it tells us how each parameter affects the loss.</p>
-      <p style="margin:0">The next question is: <strong>what do we do with these gradients?</strong></p>
+    <div class="card" style="margin-top:18px">
+      <p style="margin:0">Backpropagation tells us how each parameter affects the loss.</p>
+      <p style="margin:14px 0 0"><strong>So how can we use those gradients to actually improve the network?</strong></p>
     </div>
 
-    <button class="btn primary goto" data-next="learn">Use these gradients for learning →</button>
+    <div style="margin-top:18px">
+      <button class="btn primary goto" data-next="learn">Continue to gradient descent →</button>
+    </div>
   </section>
 
   <section id="panel-learn" class="section hidden space">
