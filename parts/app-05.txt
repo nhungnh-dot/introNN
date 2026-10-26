@@ -768,7 +768,7 @@
         <div class="card center math-cell">\[
           w_1+w_2\approx1.
         \]</div>
-        <p class="small">Repeating that observation can reinforce the same information, but it does not tell us how to separate \(w_1\) from \(w_2\).</p>
+        <p class="small">Repeating that same point gives us the same condition again, \(w_1+w_2\approx1\). It still does not provide enough information to determine \(w_1\) and \(w_2\) individually.</p>
 
         <p class="small">By contrast, using different input combinations such as \((1,0)\), \((0,1)\), \((1,-1)\), or \((2,1)\) makes the network observe the weights from different directions.</p>
 
