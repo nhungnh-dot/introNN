@@ -113,9 +113,13 @@
             </g>
           </g>
 
-          <g fill="var(--text)" font-size="13" text-anchor="middle">
-            <text x="90" y="79">x₁</text><text x="90" y="149">x₂</text><text x="90" y="269">xₙ₋₁</text><text x="90" y="339">xₙ</text>
-            <text x="730" y="129">y₁</text><text x="730" y="279">yₘ</text>
+          <g font-size="13">
+            <foreignObject x="68" y="60" width="44" height="30"><div xmlns="http://www.w3.org/1999/xhtml" style="text-align:center;color:var(--text)">\(x_1\)</div></foreignObject>
+            <foreignObject x="68" y="130" width="44" height="30"><div xmlns="http://www.w3.org/1999/xhtml" style="text-align:center;color:var(--text)">\(x_2\)</div></foreignObject>
+            <foreignObject x="62" y="250" width="56" height="30"><div xmlns="http://www.w3.org/1999/xhtml" style="text-align:center;color:var(--text)">\(x_{n-1}\)</div></foreignObject>
+            <foreignObject x="68" y="320" width="44" height="30"><div xmlns="http://www.w3.org/1999/xhtml" style="text-align:center;color:var(--text)">\(x_n\)</div></foreignObject>
+            <foreignObject x="708" y="110" width="44" height="30"><div xmlns="http://www.w3.org/1999/xhtml" style="text-align:center;color:var(--text)">\(y_1\)</div></foreignObject>
+            <foreignObject x="708" y="260" width="44" height="30"><div xmlns="http://www.w3.org/1999/xhtml" style="text-align:center;color:var(--text)">\(y_m\)</div></foreignObject>
           </g>
 
           <g fill="var(--muted)" font-size="24" text-anchor="middle">
@@ -125,8 +129,6 @@
             <text x="730" y="205">⋮</text>
             <text x="410" y="205" font-size="34">…</text>
           </g>
-
-          <text x="410" y="235" text-anchor="middle" fill="var(--muted)" font-size="13">possibly more hidden layers</text>
           <text x="410" y="378" text-anchor="middle" fill="var(--muted)" font-size="14">Many neurons + many connections = many weights; each neuron can also have a bias.</text>
         </svg>
       </div>
