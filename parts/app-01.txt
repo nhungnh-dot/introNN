@@ -37,6 +37,17 @@ body{
   padding:22px;
   background:var(--panel);
 }
+.card > .card,
+.card > .grid,
+.card > details{
+  margin-top:18px;
+}
+.card > .card + .card,
+.card > .grid + .card,
+.card > .card + .grid,
+.card > .grid + .grid{
+  margin-top:18px;
+}
 .panel{background:var(--accentbg)}
 .small{font-size:15.5px;line-height:1.65}
 .muted{color:var(--muted)}
