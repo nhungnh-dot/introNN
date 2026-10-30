@@ -6,26 +6,128 @@
 <title>Introduction to Neural Networks</title>
 <style>
 :root{
-  --bg:#ffffff; --text:#1f2937; --muted:#6b7280; --border:#d1d5db;
-  --panel:#f8fafc; --accent:#2563eb; --accentbg:#dbeafe; --s2:#7c3aed; --s3:#059669;
+  --bg:#f7f6f0;
+  --text:#1f3047;
+  --muted:#5f6b7a;
+  --border:#d6dce5;
+  --panel:#fffef9;
+  --accent:#2563eb;
+  --accentbg:#e8f0ff;
+  --s2:#7c3aed;
+  --s3:#0f8a80;
 }
-*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:17px;line-height:1.65}
-.wrap{max-width:1100px;margin:0 auto;padding:24px}.space>*+*{margin-top:18px}.grid{display:grid;gap:14px}
-.cards2{grid-template-columns:repeat(2,minmax(0,1fr))}.cards3{grid-template-columns:repeat(3,minmax(0,1fr))}.cards4{grid-template-columns:repeat(4,minmax(0,1fr))}
-.two{grid-template-columns:300px minmax(0,1fr)} .five{grid-template-columns:repeat(5,minmax(0,1fr))}
-.card{border:1px solid var(--border);border-radius:14px;padding:16px;background:#fff}.panel{background:var(--panel)}
-.small{font-size:15.5px;line-height:1.65}.muted{color:var(--muted)} .mono{font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-style:italic}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:17px/1.65 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+.wrap{max-width:1100px;margin:0 auto;padding:34px 28px}
+.space>*+*{margin-top:22px}
+.grid{display:grid;gap:20px}
+.cards2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cards3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cards4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.two{grid-template-columns:300px minmax(0,1fr)}
+.five{grid-template-columns:repeat(5,minmax(0,1fr))}
+.card{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:22px;
+  background:var(--panel);
+}
+.panel{background:var(--accentbg)}
+.small{font-size:15.5px;line-height:1.65}
+.muted{color:var(--muted)}
+.mono{font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-style:italic}
 .math-cell{font-size:1.08em;letter-spacing:.01em}
-.center{text-align:center}.title{font-size:36px;line-height:1.12;font-weight:800;letter-spacing:-.02em;margin:0}.h2{font-size:25px;line-height:1.25;font-weight:800;margin-top:6px}.h3{font-size:18px;font-weight:750}.section>.card:first-child>.small.muted{font-size:15px;font-weight:800;color:var(--accent);letter-spacing:.04em;text-transform:uppercase}
-.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}.btn{border:1px solid var(--border);border-radius:10px;padding:10px 14px;background:#fff;cursor:pointer;font-weight:600}.sig-math-choices{display:flex;gap:10px;flex-wrap:wrap}.sig-math-choice{min-width:110px;font-size:1.08em}
-.btn.active,.btn.primary{background:var(--accentbg);border-color:transparent}.hidden{display:none!important}
-label{display:block;font-size:15.5px} input[type=range]{width:100%}.row{display:flex;justify-content:space-between;gap:12px}
-hr{border:0;border-top:1px solid var(--border)} details summary{cursor:pointer;font-weight:700}
+.center{text-align:center}
+.title{
+  font:clamp(42px,6.5vw,70px)/1.05 Georgia,"Times New Roman",serif;
+  letter-spacing:-.04em;
+  margin:12px 0 18px;
+  color:var(--text);
+}
+.h2{
+  font:34px/1.2 Georgia,"Times New Roman",serif;
+  margin:6px 0 18px;
+  color:var(--text);
+}
+.h3{
+  font-size:19px;
+  line-height:1.35;
+  font-weight:700;
+  margin-bottom:10px;
+}
+.section{
+  border-top:1px solid var(--border);
+  padding-top:34px;
+}
+.section>.card:first-child>.small.muted{
+  font-size:13px;
+  font-weight:800;
+  color:var(--accent);
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+.tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:30px 0;
+}
+.btn{
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px 16px;
+  background:var(--panel);
+  color:var(--text);
+  cursor:pointer;
+  font:inherit;
+  font-weight:600;
+}
+.btn:hover{border-color:var(--accent)}
+.btn:focus-visible,input:focus-visible,select:focus-visible{
+  outline:3px solid #d59b45;
+  outline-offset:3px;
+}
+.btn.active,.btn.primary{
+  background:var(--accent);
+  color:#fff;
+  border-color:var(--accent);
+}
+.sig-math-choices{display:flex;gap:10px;flex-wrap:wrap}
+.sig-math-choice{min-width:110px;font-size:1.08em}
+.hidden{display:none!important}
+label{display:block;font-size:15.5px}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.row{display:flex;justify-content:space-between;gap:12px}
+hr{border:0;border-top:1px solid var(--border)}
+details{
+  border-top:1px solid var(--border);
+  padding-top:16px;
+}
+details summary{cursor:pointer;font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{
+  border:0;
+  border-bottom:1px solid var(--border);
+  padding:10px 9px;
+  text-align:center;
+}
+th{font-weight:700}
 @keyframes pulse{0%{opacity:.15;transform:translateX(-5px)}45%{opacity:1}100%{opacity:.15;transform:translateX(5px)}}
 .signal{animation:pulse 1.15s ease-in-out infinite alternate}
 .sigwrap{display:grid;grid-template-columns:290px minmax(0,1fr);gap:16px;align-items:start}
 table{border-collapse:collapse;width:100%} th,td{border:1px solid var(--border);padding:8px;text-align:center}
-@media(max-width:800px){.cards2,.cards3,.cards4,.two,.five,.sigwrap{grid-template-columns:1fr}.wrap{padding:14px}}
+@media(max-width:800px){
+  .cards2,.cards3,.cards4,.two,.five,.sigwrap{grid-template-columns:1fr}
+  .wrap{padding:20px}
+  .h2{font-size:29px}
+  .card{padding:18px}
+  .tabs .btn{padding:9px 11px;font-size:14px}
+}
 </style>
 
 <script>
