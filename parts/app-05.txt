@@ -124,13 +124,13 @@
         <strong>Why gradient descent becomes more complicated:</strong>
         <p>In a real network, the loss depends on many weights and biases at the same time. Backpropagation computes a gradient for every parameter, and gradient descent updates all of them together.</p>
         <div class="center math-cell">\[
-          \boldsymbol{\theta}_{\text{new}}
+          \mathbf w_{\text{new}}
           =
-          \boldsymbol{\theta}_{\text{old}}
+          \mathbf w_{\text{old}}
           -
-          \alpha\nabla_{\boldsymbol{\theta}}L,
+          \alpha\nabla_{\mathbf w}L.
         \]</div>
-        <p>Here \(\boldsymbol{\theta}\) represents all trainable parameters in the network. For a large network, this can mean thousands, millions, or even more parameters, so the optimization takes place in a very high-dimensional space.</p>
+        <p>Here \(\mathbf w\) represents all the weights in the network. Biases are updated in the same way. For a large network, there can be thousands, millions, or even more trainable values, so gradient descent takes place in a very high-dimensional space.</p>
       </div>
     </div>
 
