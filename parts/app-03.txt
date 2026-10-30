@@ -117,48 +117,48 @@
 
           <div class="card" style="margin-top:10px">
             <p><strong>Step 1.</strong> Let \(u=1+e^{-z}\). Since \(y=u^{-1}\), what is \(\frac{dy}{du}\)?</p>
-            <select id="sig-step1" style="width:100%">
-              <option value="">Choose one</option>
-              <option value="a">\(u^{-2}\)</option>
-              <option value="b">\(-u^{-2}\)</option>
-              <option value="c">\(-u^{-1}\)</option>
-            </select>
+            <input id="sig-step1" type="hidden" value="">
+            <div class="sig-math-choices" data-step="1">
+              <button type="button" class="btn sig-math-choice" data-value="a">\(u^{-2}\)</button>
+              <button type="button" class="btn sig-math-choice" data-value="b">\(-u^{-2}\)</button>
+              <button type="button" class="btn sig-math-choice" data-value="c">\(-u^{-1}\)</button>
+            </div>
             <button type="button" class="btn" id="sig-check1" style="margin-top:8px">Check Step 1</button>
             <div id="sig-feedback1" class="small" style="margin-top:8px" aria-live="polite"></div>
           </div>
 
           <div class="card" style="margin-top:10px">
             <p><strong>Step 2.</strong> Now differentiate \(u=1+e^{-z}\). What is \(\frac{du}{dz}\)?</p>
-            <select id="sig-step2" style="width:100%">
-              <option value="">Choose one</option>
-              <option value="a">\(e^{-z}\)</option>
-              <option value="b">\(-e^{-z}\)</option>
-              <option value="c">\(-ze^{-z}\)</option>
-            </select>
+            <input id="sig-step2" type="hidden" value="">
+            <div class="sig-math-choices" data-step="2">
+              <button type="button" class="btn sig-math-choice" data-value="a">\(e^{-z}\)</button>
+              <button type="button" class="btn sig-math-choice" data-value="b">\(-e^{-z}\)</button>
+              <button type="button" class="btn sig-math-choice" data-value="c">\(-ze^{-z}\)</button>
+            </div>
             <button type="button" class="btn" id="sig-check2" style="margin-top:8px">Check Step 2</button>
             <div id="sig-feedback2" class="small" style="margin-top:8px" aria-live="polite"></div>
           </div>
 
           <div class="card" style="margin-top:10px">
             <p><strong>Step 3.</strong> Multiply \(\frac{dy}{du}\frac{du}{dz}\). Which derivative do you get?</p>
-            <select id="sig-step3" style="width:100%">
-              <option value="">Choose one</option>
-              <option value="a">\(\frac{e^{-z}}{(1+e^{-z})^2}\)</option>
-              <option value="b">\(-\frac{e^{-z}}{1+e^{-z}}\)</option>
-              <option value="c">\(\frac{1}{(1+e^{-z})^2}\)</option>
-            </select>
+            <input id="sig-step3" type="hidden" value="">
+            <div class="sig-math-choices" data-step="3">
+              <button type="button" class="btn sig-math-choice" data-value="a">\(\frac{e^{-z}}{(1+e^{-z})^2}\)</button>
+              <button type="button" class="btn sig-math-choice" data-value="b">\(-\frac{e^{-z}}{1+e^{-z}}\)</button>
+              <button type="button" class="btn sig-math-choice" data-value="c">\(\frac{1}{(1+e^{-z})^2}\)</button>
+            </div>
             <button type="button" class="btn" id="sig-check3" style="margin-top:8px">Check Step 3</button>
             <div id="sig-feedback3" class="small" style="margin-top:8px" aria-live="polite"></div>
           </div>
 
           <div class="card" style="margin-top:10px">
             <p><strong>Step 4.</strong> Since \(y=\frac{1}{1+e^{-z}}\), rewrite the derivative using only \(y\).</p>
-            <select id="sig-step4" style="width:100%">
-              <option value="">Choose one</option>
-              <option value="a">\(y^2\)</option>
-              <option value="b">\(1-y\)</option>
-              <option value="c">\(y(1-y)\)</option>
-            </select>
+            <input id="sig-step4" type="hidden" value="">
+            <div class="sig-math-choices" data-step="4">
+              <button type="button" class="btn sig-math-choice" data-value="a">\(y^2\)</button>
+              <button type="button" class="btn sig-math-choice" data-value="b">\(1-y\)</button>
+              <button type="button" class="btn sig-math-choice" data-value="c">\(y(1-y)\)</button>
+            </div>
             <button type="button" class="btn primary" id="sig-check4" style="margin-top:8px">Check final step</button>
             <div id="sig-feedback4" class="small" style="margin-top:8px" aria-live="polite"></div>
           </div>
