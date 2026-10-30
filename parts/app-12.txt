@@ -28,6 +28,18 @@ t=y.toFixed(3);
   }
   ['bp-x1','bp-x2','bp-w1','bp-w2','bp-b','bp-t'].forEach(id=>$(id).addEventListener('input',renderBP));
 
+  document.querySelectorAll('.sig-math-choices').forEach(group=>{
+    const step=group.dataset.step;
+    const input=$('sig-step'+step);
+    group.querySelectorAll('.sig-math-choice').forEach(choice=>{
+      choice.addEventListener('click',()=>{
+        if(input) input.value=choice.dataset.value || '';
+        group.querySelectorAll('.sig-math-choice').forEach(btn=>btn.classList.remove('primary'));
+        choice.classList.add('primary');
+      });
+    });
+  });
+
   const sigAnswers={1:'b',2:'b',3:'a',4:'c'};
   [1,2,3,4].forEach(n=>{
     const btn=$('sig-check'+n), sel=$('sig-step'+n), fb=$('sig-feedback'+n);
