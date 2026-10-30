@@ -70,6 +70,70 @@
       </ol>
     </div>
 
+    <div class="card" style="margin-top:12px">
+      <div class="h3">From one neuron to a larger neural network</div>
+      <p class="small">Our examples used only a few parameters so that we could see every gradient-descent update clearly. A larger neural network can have many neurons in several hidden layers, and every connection carries a weight.</p>
+
+      <div class="card center" style="overflow-x:auto">
+        <svg viewBox="0 0 760 360" style="width:100%;max-width:760px;min-width:620px" aria-label="Neural network with multiple hidden layers and many weights">
+          <defs>
+            <marker id="nn-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="var(--muted)"></path>
+            </marker>
+          </defs>
+
+          <text x="90" y="28" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Input layer</text>
+          <text x="285" y="28" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Hidden layer 1</text>
+          <text x="475" y="28" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Hidden layer 2</text>
+          <text x="665" y="28" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Output layer</text>
+
+          <g stroke="var(--border)" stroke-width="1.5" opacity="0.85">
+            <line x1="110" y1="80" x2="265" y2="65"></line><line x1="110" y1="80" x2="265" y2="125"></line><line x1="110" y1="80" x2="265" y2="185"></line><line x1="110" y1="80" x2="265" y2="245"></line>
+            <line x1="110" y1="150" x2="265" y2="65"></line><line x1="110" y1="150" x2="265" y2="125"></line><line x1="110" y1="150" x2="265" y2="185"></line><line x1="110" y1="150" x2="265" y2="245"></line>
+            <line x1="110" y1="220" x2="265" y2="65"></line><line x1="110" y1="220" x2="265" y2="125"></line><line x1="110" y1="220" x2="265" y2="185"></line><line x1="110" y1="220" x2="265" y2="245"></line>
+            <line x1="110" y1="290" x2="265" y2="65"></line><line x1="110" y1="290" x2="265" y2="125"></line><line x1="110" y1="290" x2="265" y2="185"></line><line x1="110" y1="290" x2="265" y2="245"></line>
+
+            <line x1="305" y1="65" x2="455" y2="80"></line><line x1="305" y1="65" x2="455" y2="150"></line><line x1="305" y1="65" x2="455" y2="220"></line><line x1="305" y1="65" x2="455" y2="290"></line>
+            <line x1="305" y1="125" x2="455" y2="80"></line><line x1="305" y1="125" x2="455" y2="150"></line><line x1="305" y1="125" x2="455" y2="220"></line><line x1="305" y1="125" x2="455" y2="290"></line>
+            <line x1="305" y1="185" x2="455" y2="80"></line><line x1="305" y1="185" x2="455" y2="150"></line><line x1="305" y1="185" x2="455" y2="220"></line><line x1="305" y1="185" x2="455" y2="290"></line>
+            <line x1="305" y1="245" x2="455" y2="80"></line><line x1="305" y1="245" x2="455" y2="150"></line><line x1="305" y1="245" x2="455" y2="220"></line><line x1="305" y1="245" x2="455" y2="290"></line>
+
+            <line x1="495" y1="80" x2="645" y2="125"></line><line x1="495" y1="80" x2="645" y2="225"></line>
+            <line x1="495" y1="150" x2="645" y2="125"></line><line x1="495" y1="150" x2="645" y2="225"></line>
+            <line x1="495" y1="220" x2="645" y2="125"></line><line x1="495" y1="220" x2="645" y2="225"></line>
+            <line x1="495" y1="290" x2="645" y2="125"></line><line x1="495" y1="290" x2="645" y2="225"></line>
+          </g>
+
+          <g fill="var(--card)" stroke="var(--text)" stroke-width="2">
+            <circle cx="90" cy="80" r="20"></circle><circle cx="90" cy="150" r="20"></circle><circle cx="90" cy="220" r="20"></circle><circle cx="90" cy="290" r="20"></circle>
+            <circle cx="285" cy="65" r="20"></circle><circle cx="285" cy="125" r="20"></circle><circle cx="285" cy="185" r="20"></circle><circle cx="285" cy="245" r="20"></circle>
+            <circle cx="475" cy="80" r="20"></circle><circle cx="475" cy="150" r="20"></circle><circle cx="475" cy="220" r="20"></circle><circle cx="475" cy="290" r="20"></circle>
+            <circle cx="665" cy="125" r="20"></circle><circle cx="665" cy="225" r="20"></circle>
+          </g>
+
+          <g fill="var(--text)" font-size="13" text-anchor="middle">
+            <text x="90" y="84">x₁</text><text x="90" y="154">x₂</text><text x="90" y="224">x₃</text><text x="90" y="294">x₄</text>
+            <text x="665" y="129">y₁</text><text x="665" y="229">y₂</text>
+          </g>
+
+          <text x="380" y="340" text-anchor="middle" fill="var(--muted)" font-size="14">Each connection has a weight; each neuron can also have a bias.</text>
+        </svg>
+      </div>
+
+      <div class="card panel small" style="margin-top:12px">
+        <strong>Why gradient descent becomes more complicated:</strong>
+        <p>In a real network, the loss depends on many weights and biases at the same time. Backpropagation computes a gradient for every parameter, and gradient descent updates all of them together.</p>
+        <div class="center math-cell">\[
+          \boldsymbol{\theta}_{\text{new}}
+          =
+          \boldsymbol{\theta}_{\text{old}}
+          -
+          \alpha\nabla_{\boldsymbol{\theta}}L,
+        \]</div>
+        <p>Here \(\boldsymbol{\theta}\) represents all trainable parameters in the network. For a large network, this can mean thousands, millions, or even more parameters, so the optimization takes place in a very high-dimensional space.</p>
+      </div>
+    </div>
+
     <details class="card">
       <summary>Section 3 checkpoint</summary>
       <div class="small">
