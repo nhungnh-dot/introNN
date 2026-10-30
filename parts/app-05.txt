@@ -75,48 +75,59 @@
       <p class="small">Our examples used only a few parameters so that we could see every gradient-descent update clearly. A larger neural network can have many neurons in several hidden layers, and every connection carries a weight.</p>
 
       <div class="card center" style="overflow-x:auto">
-        <svg viewBox="0 0 760 360" style="width:100%;max-width:760px;min-width:620px" aria-label="Neural network with multiple hidden layers and many weights">
-          <defs>
-            <marker id="nn-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-              <path d="M0,0 L8,4 L0,8 Z" fill="var(--muted)"></path>
-            </marker>
-          </defs>
+        <svg viewBox="0 0 820 390" style="width:100%;max-width:820px;min-width:660px" aria-label="General neural network with many neurons, hidden layers, weights, and biases">
+          <text x="90" y="30" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Input layer</text>
+          <text x="280" y="30" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Hidden layer</text>
+          <text x="540" y="30" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Hidden layer</text>
+          <text x="730" y="30" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Output layer</text>
 
-          <text x="90" y="28" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Input layer</text>
-          <text x="285" y="28" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Hidden layer 1</text>
-          <text x="475" y="28" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Hidden layer 2</text>
-          <text x="665" y="28" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Output layer</text>
+          <g stroke="var(--muted)" stroke-width="1.2" opacity="0.38">
+            <line x1="112" y1="75" x2="258" y2="65"></line><line x1="112" y1="75" x2="258" y2="125"></line><line x1="112" y1="75" x2="258" y2="245"></line><line x1="112" y1="75" x2="258" y2="305"></line>
+            <line x1="112" y1="145" x2="258" y2="65"></line><line x1="112" y1="145" x2="258" y2="125"></line><line x1="112" y1="145" x2="258" y2="245"></line><line x1="112" y1="145" x2="258" y2="305"></line>
+            <line x1="112" y1="265" x2="258" y2="65"></line><line x1="112" y1="265" x2="258" y2="125"></line><line x1="112" y1="265" x2="258" y2="245"></line><line x1="112" y1="265" x2="258" y2="305"></line>
+            <line x1="112" y1="335" x2="258" y2="65"></line><line x1="112" y1="335" x2="258" y2="125"></line><line x1="112" y1="335" x2="258" y2="245"></line><line x1="112" y1="335" x2="258" y2="305"></line>
 
-          <g stroke="var(--border)" stroke-width="1.5" opacity="0.85">
-            <line x1="110" y1="80" x2="265" y2="65"></line><line x1="110" y1="80" x2="265" y2="125"></line><line x1="110" y1="80" x2="265" y2="185"></line><line x1="110" y1="80" x2="265" y2="245"></line>
-            <line x1="110" y1="150" x2="265" y2="65"></line><line x1="110" y1="150" x2="265" y2="125"></line><line x1="110" y1="150" x2="265" y2="185"></line><line x1="110" y1="150" x2="265" y2="245"></line>
-            <line x1="110" y1="220" x2="265" y2="65"></line><line x1="110" y1="220" x2="265" y2="125"></line><line x1="110" y1="220" x2="265" y2="185"></line><line x1="110" y1="220" x2="265" y2="245"></line>
-            <line x1="110" y1="290" x2="265" y2="65"></line><line x1="110" y1="290" x2="265" y2="125"></line><line x1="110" y1="290" x2="265" y2="185"></line><line x1="110" y1="290" x2="265" y2="245"></line>
+            <line x1="302" y1="65" x2="518" y2="75"></line><line x1="302" y1="65" x2="518" y2="145"></line><line x1="302" y1="65" x2="518" y2="265"></line><line x1="302" y1="65" x2="518" y2="335"></line>
+            <line x1="302" y1="125" x2="518" y2="75"></line><line x1="302" y1="125" x2="518" y2="145"></line><line x1="302" y1="125" x2="518" y2="265"></line><line x1="302" y1="125" x2="518" y2="335"></line>
+            <line x1="302" y1="245" x2="518" y2="75"></line><line x1="302" y1="245" x2="518" y2="145"></line><line x1="302" y1="245" x2="518" y2="265"></line><line x1="302" y1="245" x2="518" y2="335"></line>
+            <line x1="302" y1="305" x2="518" y2="75"></line><line x1="302" y1="305" x2="518" y2="145"></line><line x1="302" y1="305" x2="518" y2="265"></line><line x1="302" y1="305" x2="518" y2="335"></line>
 
-            <line x1="305" y1="65" x2="455" y2="80"></line><line x1="305" y1="65" x2="455" y2="150"></line><line x1="305" y1="65" x2="455" y2="220"></line><line x1="305" y1="65" x2="455" y2="290"></line>
-            <line x1="305" y1="125" x2="455" y2="80"></line><line x1="305" y1="125" x2="455" y2="150"></line><line x1="305" y1="125" x2="455" y2="220"></line><line x1="305" y1="125" x2="455" y2="290"></line>
-            <line x1="305" y1="185" x2="455" y2="80"></line><line x1="305" y1="185" x2="455" y2="150"></line><line x1="305" y1="185" x2="455" y2="220"></line><line x1="305" y1="185" x2="455" y2="290"></line>
-            <line x1="305" y1="245" x2="455" y2="80"></line><line x1="305" y1="245" x2="455" y2="150"></line><line x1="305" y1="245" x2="455" y2="220"></line><line x1="305" y1="245" x2="455" y2="290"></line>
-
-            <line x1="495" y1="80" x2="645" y2="125"></line><line x1="495" y1="80" x2="645" y2="225"></line>
-            <line x1="495" y1="150" x2="645" y2="125"></line><line x1="495" y1="150" x2="645" y2="225"></line>
-            <line x1="495" y1="220" x2="645" y2="125"></line><line x1="495" y1="220" x2="645" y2="225"></line>
-            <line x1="495" y1="290" x2="645" y2="125"></line><line x1="495" y1="290" x2="645" y2="225"></line>
+            <line x1="562" y1="75" x2="708" y2="125"></line><line x1="562" y1="75" x2="708" y2="275"></line>
+            <line x1="562" y1="145" x2="708" y2="125"></line><line x1="562" y1="145" x2="708" y2="275"></line>
+            <line x1="562" y1="265" x2="708" y2="125"></line><line x1="562" y1="265" x2="708" y2="275"></line>
+            <line x1="562" y1="335" x2="708" y2="125"></line><line x1="562" y1="335" x2="708" y2="275"></line>
           </g>
 
-          <g fill="var(--card)" stroke="var(--text)" stroke-width="2">
-            <circle cx="90" cy="80" r="20"></circle><circle cx="90" cy="150" r="20"></circle><circle cx="90" cy="220" r="20"></circle><circle cx="90" cy="290" r="20"></circle>
-            <circle cx="285" cy="65" r="20"></circle><circle cx="285" cy="125" r="20"></circle><circle cx="285" cy="185" r="20"></circle><circle cx="285" cy="245" r="20"></circle>
-            <circle cx="475" cy="80" r="20"></circle><circle cx="475" cy="150" r="20"></circle><circle cx="475" cy="220" r="20"></circle><circle cx="475" cy="290" r="20"></circle>
-            <circle cx="665" cy="125" r="20"></circle><circle cx="665" cy="225" r="20"></circle>
+          <g stroke-width="2">
+            <g fill="var(--viz-series-2, #dbeafe)" stroke="var(--viz-series-2, #60a5fa)">
+              <circle cx="90" cy="75" r="22"></circle><circle cx="90" cy="145" r="22"></circle><circle cx="90" cy="265" r="22"></circle><circle cx="90" cy="335" r="22"></circle>
+            </g>
+            <g fill="var(--viz-series-3, #ede9fe)" stroke="var(--viz-series-3, #8b5cf6)">
+              <circle cx="280" cy="65" r="22"></circle><circle cx="280" cy="125" r="22"></circle><circle cx="280" cy="245" r="22"></circle><circle cx="280" cy="305" r="22"></circle>
+            </g>
+            <g fill="var(--viz-series-4, #dcfce7)" stroke="var(--viz-series-4, #22c55e)">
+              <circle cx="540" cy="75" r="22"></circle><circle cx="540" cy="145" r="22"></circle><circle cx="540" cy="265" r="22"></circle><circle cx="540" cy="335" r="22"></circle>
+            </g>
+            <g fill="var(--viz-series-5, #ffedd5)" stroke="var(--viz-series-5, #f97316)">
+              <circle cx="730" cy="125" r="22"></circle><circle cx="730" cy="275" r="22"></circle>
+            </g>
           </g>
 
           <g fill="var(--text)" font-size="13" text-anchor="middle">
-            <text x="90" y="84">x₁</text><text x="90" y="154">x₂</text><text x="90" y="224">x₃</text><text x="90" y="294">x₄</text>
-            <text x="665" y="129">y₁</text><text x="665" y="229">y₂</text>
+            <text x="90" y="79">x₁</text><text x="90" y="149">x₂</text><text x="90" y="269">xₙ₋₁</text><text x="90" y="339">xₙ</text>
+            <text x="730" y="129">y₁</text><text x="730" y="279">yₘ</text>
           </g>
 
-          <text x="380" y="340" text-anchor="middle" fill="var(--muted)" font-size="14">Each connection has a weight; each neuron can also have a bias.</text>
+          <g fill="var(--muted)" font-size="24" text-anchor="middle">
+            <text x="90" y="215">⋮</text>
+            <text x="280" y="195">⋮</text>
+            <text x="540" y="215">⋮</text>
+            <text x="730" y="205">⋮</text>
+            <text x="410" y="205" font-size="34">…</text>
+          </g>
+
+          <text x="410" y="235" text-anchor="middle" fill="var(--muted)" font-size="13">possibly more hidden layers</text>
+          <text x="410" y="378" text-anchor="middle" fill="var(--muted)" font-size="14">Many neurons + many connections = many weights; each neuron can also have a bias.</text>
         </svg>
       </div>
 
