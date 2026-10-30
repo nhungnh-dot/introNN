@@ -50,7 +50,7 @@
         <b>how the current state changes over time</b>. That naturally leads to a differential-equation viewpoint.
       </p>
 
-      <div class="grid two">
+      <div class="grid two" style="margin-top:18px">
         <div class="card panel">
           <div class="h3">Regular neural network</div>
           <p class="small">
@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <div class="card panel small">
+      <div class="card panel small" style="margin-top:20px">
         <strong>Why might a regular neural network be a weaker choice for this task?</strong>
         If we train a network only to learn the map
         \(t\mapsto z(t)\),
@@ -84,7 +84,7 @@
         For trajectory data, that continuous evolution structure is often exactly what we want to model.
       </div>
 
-      <div class="card panel small">
+      <div class="card panel small" style="margin-top:16px">
         <strong>Important:</strong> a regular neural network can still be used for future prediction.
         The advantage of a Neural ODE here is that it builds continuous-time evolution directly into the model.
       </div>
