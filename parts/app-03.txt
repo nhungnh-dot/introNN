@@ -1,4 +1,4 @@
-/div><div style="margin-top:6px"><strong>\(L=0.81\)</strong></div></div>
+</div><div style="margin-top:6px"><strong>\(L=0.81\)</strong></div></div>
       </div>
     </div>
 
